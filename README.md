@@ -2,7 +2,7 @@
 
 **BongoOS 11** is a fast, lightweight, browser-based desktop operating system inspired by modern glassmorphic UI design—complete with a floating AI purple gorilla desktop assistant (**Bongo**), a tabbed live web browser (**BongoChrome**), a simulated **Wi-Fi Manager** connected to real internet APIs, and a full suite of built-in apps.
 
-Built as a **single-file, zero-dependency web app** (`index.html`), BongoOS 11 can be hosted anywhere for free (GitHub Pages, Vercel, Netlify, or itch.io).
+Just download a release and you are all set.
 
 ---
 

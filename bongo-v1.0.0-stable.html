@@ -4,36 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BongoOS 11</title>
+  <!-- Custom Embedded SVG Favicon (Purple Gorilla + Golden Banana Accent) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23a855f7'/%3E%3Cstop offset='100%25' stop-color='%23581c87'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Ccircle cx='22' cy='46' r='11' fill='%23c084fc'/%3E%3Ccircle cx='78' cy='46' r='11' fill='%23c084fc'/%3E%3Crect x='24' y='20' width='52' height='54' rx='22' fill='%237e22ce'/%3E%3Cellipse cx='50' cy='55' rx='21' ry='17' fill='%23f3e8ff'/%3E%3Ccircle cx='40' cy='42' r='5' fill='%23fff'/%3E%3Ccircle cx='60' cy='42' r='5' fill='%23fff'/%3E%3Ccircle cx='41' cy='42' r='2.5' fill='%231e1b4b'/%3E%3Ccircle cx='59' cy='42' r='2.5' fill='%231e1b4b'/%3E%3Cpath d='M38 59 Q50 69 62 59' stroke='%23581c87' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M72 14 Q86 12 88 26 Q79 23 72 14 Z' fill='%23facc15'/%3E%3C/svg%3E" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --accent: #9333ea;
       --accent-hover: #7e22ce;
-      --accent-soft: rgba(147, 51, 234, 0.18);
-      --mica-bg: rgba(24, 19, 34, 0.80);
-      --mica-surface: rgba(38, 30, 54, 0.88);
+      --mica-bg: rgba(20, 15, 31, 0.82);
+      --mica-surface: rgba(33, 25, 50, 0.90);
       --mica-border: rgba(255, 255, 255, 0.14);
       --text-primary: #f8fafc;
       --text-secondary: #cbd5e1;
-      --window-bg: #161120;
-      --window-header: #20192e;
+      --window-bg: #140f1f;
+      --window-header: #1e162e;
     }
 
     body.light-theme {
-      --mica-bg: rgba(248, 245, 255, 0.84);
-      --mica-surface: rgba(255, 255, 255, 0.92);
+      --mica-bg: rgba(248, 245, 255, 0.86);
+      --mica-surface: rgba(255, 255, 255, 0.94);
       --mica-border: rgba(126, 34, 206, 0.18);
-      --text-primary: #1e1b2e;
+      --text-primary: #1a1528;
       --text-secondary: #475569;
       --window-bg: #ffffff;
       --window-header: #f3e8ff;
     }
 
-    * {
-      box-sizing: border-box;
-      user-select: none;
-    }
+    * { box-sizing: border-box; user-select: none; }
 
     body, html {
       margin: 0;
@@ -45,45 +43,44 @@
       color: var(--text-primary);
     }
 
-    input, textarea, [contenteditable="true"], .selectable-text {
-      user-select: text;
-    }
+    input, textarea, [contenteditable="true"], .selectable-text { user-select: text; }
 
-    /* Original Wallpapers */
+    /* Dynamic Wallpapers */
     .wallpaper-bloom {
       background:
-        radial-gradient(circle at 65% 42%, rgba(192, 132, 252, 0.65) 0%, transparent 42%),
-        radial-gradient(circle at 38% 58%, rgba(126, 34, 206, 0.85) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(236, 72, 153, 0.45) 0%, transparent 45%),
-        radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.55) 0%, transparent 55%),
-        linear-gradient(135deg, #0f071c 0%, #240b44 50%, #120624 100%);
+        radial-gradient(circle at 65% 40%, rgba(192, 132, 252, 0.62) 0%, transparent 44%),
+        radial-gradient(circle at 35% 60%, rgba(126, 34, 206, 0.85) 0%, transparent 52%),
+        radial-gradient(circle at 78% 76%, rgba(34, 211, 238, 0.35) 0%, transparent 45%),
+        linear-gradient(135deg, #0c0617 0%, #230a42 50%, #100520 100%);
     }
 
-    .wallpaper-banana {
+    .wallpaper-aurora {
       background:
-        radial-gradient(circle at 70% 30%, rgba(250, 204, 21, 0.55) 0%, transparent 45%),
-        radial-gradient(circle at 30% 70%, rgba(168, 85, 247, 0.75) 0%, transparent 50%),
-        linear-gradient(135deg, #1e1035 0%, #4c1d95 55%, #713f12 100%);
+        radial-gradient(circle at 72% 28%, rgba(34, 211, 238, 0.45) 0%, transparent 45%),
+        radial-gradient(circle at 30% 68%, rgba(168, 85, 247, 0.78) 0%, transparent 52%),
+        linear-gradient(135deg, #06040f 0%, #1d0b38 55%, #091529 100%);
     }
 
-    .wallpaper-meadow {
+    .wallpaper-sunset {
       background:
-        linear-gradient(180deg, #1d4ed8 0%, #38bdf8 56%, #65a30d 56.5%, #3f6212 100%);
+        radial-gradient(circle at 70% 25%, rgba(250, 204, 21, 0.55) 0%, transparent 45%),
+        radial-gradient(circle at 30% 75%, rgba(147, 51, 234, 0.78) 0%, transparent 52%),
+        linear-gradient(135deg, #1b0d2e 0%, #581c87 55%, #7c2d12 100%);
     }
 
     .wallpaper-cyber {
       background:
-        radial-gradient(circle at 50% 50%, rgba(217, 70, 239, 0.35) 0%, transparent 60%),
-        repeating-linear-gradient(0deg, rgba(168, 85, 247, 0.08) 0px, rgba(168, 85, 247, 0.08) 1px, transparent 1px, transparent 32px),
-        repeating-linear-gradient(90deg, rgba(168, 85, 247, 0.08) 0px, rgba(168, 85, 247, 0.08) 1px, transparent 1px, transparent 32px),
-        #090512;
+        radial-gradient(circle at 50% 45%, rgba(217, 70, 239, 0.35) 0%, transparent 55%),
+        repeating-linear-gradient(0deg, rgba(34, 211, 238, 0.08) 0px, rgba(34, 211, 238, 0.08) 1px, transparent 1px, transparent 34px),
+        repeating-linear-gradient(90deg, rgba(168, 85, 247, 0.08) 0px, rgba(168, 85, 247, 0.08) 1px, transparent 1px, transparent 34px),
+        #070510;
     }
 
-    /* Mica / Acrylic Glass */
+    /* Glassmorphism */
     .mica {
       background: var(--mica-bg);
-      backdrop-filter: blur(22px) saturate(160%);
-      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      backdrop-filter: blur(22px) saturate(165%);
+      -webkit-backdrop-filter: blur(22px) saturate(165%);
       border: 1px solid var(--mica-border);
     }
 
@@ -94,32 +91,23 @@
       border: 1px solid var(--mica-border);
     }
 
-    /* OS Window Styling */
+    /* Windows */
     .os-window {
       position: absolute;
       border-radius: 12px;
       background: var(--window-bg);
       border: 1px solid var(--mica-border);
-      box-shadow: 0 22px 50px -12px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+      box-shadow: 0 24px 52px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
       display: flex;
       flex-direction: column;
       overflow: hidden;
       transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.16s ease;
     }
 
-    .os-window.minimized {
-      opacity: 0;
-      transform: scale(0.88) translateY(40px);
-      pointer-events: none;
-    }
-
-    .os-window.maximized {
-      top: 0 !important;
-      left: 0 !important;
-      width: 100vw !important;
-      height: calc(100vh - 52px) !important;
-      border-radius: 0 !important;
-    }
+    .os-window.minimized { opacity: 0; transform: scale(0.88) translateY(40px); pointer-events: none; }
+    .os-window.maximized { top: 0 !important; left: 0 !important; width: 100vw !important; height: calc(100vh - 52px) !important; border-radius: 0 !important; }
+    .os-window.snap-left { top: 0 !important; left: 0 !important; width: 50vw !important; height: calc(100vh - 52px) !important; border-radius: 0 !important; }
+    .os-window.snap-right { top: 0 !important; left: 50vw !important; width: 50vw !important; height: calc(100vh - 52px) !important; border-radius: 0 !important; }
 
     .window-titlebar {
       height: 38px;
@@ -148,98 +136,66 @@
       0%, 100% { transform: translateY(0px) rotate(0deg); }
       50% { transform: translateY(-6px) rotate(1.5deg); }
     }
-
     @keyframes bongoDance {
       0%, 100% { transform: scale(1) rotate(0deg); }
       25% { transform: scale(1.08) rotate(-10deg) translateY(-12px); }
       50% { transform: scale(0.96) rotate(0deg) translateY(0px); }
       75% { transform: scale(1.08) rotate(10deg) translateY(-12px); }
     }
-
     @keyframes bongoSpin {
       0% { transform: rotate(0deg) scale(1); }
       50% { transform: rotate(180deg) scale(1.15); }
       100% { transform: rotate(360deg) scale(1); }
     }
-
-    .bongo-idle {
-      animation: bongoFloat 3.4s ease-in-out infinite;
+    @keyframes bongoBlink {
+      0%, 92%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
     }
 
-    .bongo-dancing {
-      animation: bongoDance 0.55s ease-in-out infinite;
-    }
+    .bongo-idle { animation: bongoFloat 3.4s ease-in-out infinite; }
+    .bongo-dancing { animation: bongoDance 0.52s ease-in-out infinite; }
+    .bongo-spinning { animation: bongoSpin 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .bongo-eyes { transform-origin: center 44px; animation: bongoBlink 4.5s infinite; }
 
-    .bongo-spinning {
-      animation: bongoSpin 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.38); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(168, 85, 247, 0.65); }
 
-    /* Custom Scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(168, 85, 247, 0.35);
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(168, 85, 247, 0.6);
-    }
-
-    /* Bloom Petal SVG Overlay */
-    .bloom-flower {
-      position: absolute;
-      top: 46%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: min(72vw, 620px);
-      height: min(72vw, 620px);
-      pointer-events: none;
-      opacity: 0.82;
-      filter: drop-shadow(0 25px 45px rgba(88, 28, 135, 0.65));
-      transition: opacity 0.4s ease;
-    }
-
-    .terminal-font {
-      font-family: 'JetBrains Mono', monospace;
-    }
+    .terminal-font { font-family: 'JetBrains Mono', monospace; }
   </style>
 </head>
 <body class="wallpaper-bloom select-none">
 
-  <!-- Boot Splash Screen -->
-  <div id="boot-screen" class="fixed inset-0 z-[99999] bg-[#0b0614] flex flex-col items-center justify-center transition-opacity duration-700">
-    <div class="relative mb-8">
-      <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple-500 to-indigo-700 flex items-center justify-center shadow-2xl shadow-purple-600/40 animate-pulse">
-        <!-- Original Geometric Bongo Emblem -->
-        <svg viewBox="0 0 100 100" class="w-16 h-16">
-          <polygon points="50,10 86,30 86,70 50,90 14,70 14,30" fill="#7e22ce" stroke="#e9d5ff" stroke-width="3"/>
-          <circle cx="22" cy="48" r="10" fill="#c084fc"/>
-          <circle cx="78" cy="48" r="10" fill="#c084fc"/>
-          <ellipse cx="50" cy="58" rx="22" ry="18" fill="#f3e8ff"/>
-          <circle cx="40" cy="43" r="4.5" fill="#fff"/>
-          <circle cx="60" cy="43" r="4.5" fill="#fff"/>
-          <circle cx="41" cy="43" r="2.2" fill="#1e1b4b"/>
-          <circle cx="59" cy="43" r="2.2" fill="#1e1b4b"/>
-          <path d="M 38 61 Q 50 71 62 61" stroke="#581c87" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-        </svg>
-      </div>
+  <!-- Night Light Overlay -->
+  <div id="night-light-overlay" class="hidden fixed inset-0 bg-amber-500/20 mix-blend-multiply pointer-events-none z-[9980] transition-opacity duration-500"></div>
+
+  <!-- Boot Screen -->
+  <div id="boot-screen" class="fixed inset-0 z-[99999] bg-[#090512] flex flex-col items-center justify-center transition-opacity duration-700">
+    <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple-500 to-indigo-700 flex items-center justify-center shadow-2xl shadow-purple-600/40 animate-pulse mb-6">
+      <svg viewBox="0 0 100 100" class="w-16 h-16">
+        <polygon points="50,10 86,30 86,70 50,90 14,70 14,30" fill="#7e22ce" stroke="#e9d5ff" stroke-width="3"/>
+        <circle cx="22" cy="48" r="10" fill="#c084fc"/>
+        <circle cx="78" cy="48" r="10" fill="#c084fc"/>
+        <ellipse cx="50" cy="58" rx="22" ry="18" fill="#f3e8ff"/>
+        <circle cx="40" cy="43" r="4.5" fill="#fff"/>
+        <circle cx="60" cy="43" r="4.5" fill="#fff"/>
+        <circle cx="41" cy="43" r="2.2" fill="#1e1b4b"/>
+        <circle cx="59" cy="43" r="2.2" fill="#1e1b4b"/>
+        <path d="M 38 61 Q 50 71 62 61" stroke="#581c87" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      </svg>
     </div>
-    <h1 class="text-2xl font-bold tracking-tight text-white mb-2">BongoOS <span class="text-purple-400">11</span></h1>
-    <p class="text-xs text-purple-300/70 mb-8 tracking-widest uppercase">Initializing Canopy Kernel v11.0...</p>
+    <h1 class="text-2xl font-bold tracking-tight text-white mb-1">BongoOS <span class="text-purple-400">11</span></h1>
+    <p class="text-xs text-purple-300/75 mb-7 tracking-widest uppercase">Bridging Host Computer Network...</p>
     <div class="w-48 h-1.5 bg-purple-950 rounded-full overflow-hidden">
       <div id="boot-bar" class="h-full bg-gradient-to-r from-purple-500 via-fuchsia-400 to-yellow-400 w-0 transition-all duration-300"></div>
     </div>
   </div>
 
-  <!-- Lock Screen Overlay -->
+  <!-- Lock Screen -->
   <div id="lock-screen" class="hidden fixed inset-0 z-[9000] wallpaper-bloom flex flex-col items-center justify-between py-16 text-white backdrop-blur-xl">
     <div class="text-center mt-8">
-      <div id="lock-time" class="text-7xl font-light tracking-tight drop-shadow-lg">09:46</div>
+      <div id="lock-time" class="text-7xl font-light tracking-tight drop-shadow-lg">10:14</div>
       <div id="lock-date" class="text-lg font-medium text-purple-200 mt-2">Tuesday, November 24</div>
     </div>
     <div class="flex flex-col items-center gap-4 mb-8">
@@ -253,35 +209,14 @@
     </div>
   </div>
 
-  <!-- Fun Purple Screen Prank -->
-  <div id="bsod-screen" onclick="hideBSOD()" class="hidden fixed inset-0 z-[9500] bg-[#4c1d95] text-white p-8 sm:p-20 flex flex-col justify-center cursor-pointer">
-    <div class="max-w-3xl mx-auto">
-      <div class="text-7xl sm:text-8xl font-light mb-6">:(</div>
-      <h2 class="text-xl sm:text-2xl font-normal leading-relaxed mb-6">
-        Your PC ran into a wild jungle problem and needs a banana break. We're just collecting some potassium info, and then we'll swing right back to your desktop.
-      </h2>
-      <div class="text-lg mb-8"><span id="bsod-percent">0</span>% complete</div>
-      <div class="flex items-center gap-4 bg-purple-950/50 p-4 rounded-xl border border-purple-400/20">
-        <div class="w-16 h-16 bg-white p-1.5 rounded-lg flex-shrink-0 grid grid-cols-4 gap-0.5">
-          <div class="bg-purple-900"></div><div class="bg-white"></div><div class="bg-purple-900"></div><div class="bg-purple-900"></div>
-          <div class="bg-white"></div><div class="bg-purple-900"></div><div class="bg-white"></div><div class="bg-purple-900"></div>
-          <div class="bg-purple-900"></div><div class="bg-purple-900"></div><div class="bg-white"></div><div class="bg-white"></div>
-          <div class="bg-white"></div><div class="bg-purple-900"></div><div class="bg-purple-900"></div><div class="bg-white"></div>
-        </div>
-        <div class="text-xs sm:text-sm text-purple-200 space-y-1">
-          <p>For more information about this issue, visit https://bongo-os.web/stopcode</p>
-          <p class="font-mono text-yellow-300">Stop code: CRITICAL_BANANA_DEFICIENCY_EXCEPTION</p>
-          <p class="text-purple-300/80 italic">(Click anywhere on screen to dismiss)</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Desktop Area -->
+  <!-- Main Desktop -->
   <div id="desktop" class="relative w-full h-[calc(100vh-52px)] overflow-hidden" onclick="handleDesktopClick(event)" oncontextmenu="showDesktopContextMenu(event)">
-    
-    <!-- Original Geometric Bloom Artwork -->
-    <svg id="bloom-artwork" class="bloom-flower" viewBox="0 0 500 500" fill="none">
+
+    <!-- Matrix Rain Canvas (Toggleable) -->
+    <canvas id="matrix-canvas" class="hidden fixed inset-0 w-full h-full pointer-events-none opacity-40 z-0"></canvas>
+
+    <!-- Geometric Bloom Artwork -->
+    <svg id="bloom-artwork" class="absolute top-[46%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(72vw,600px)] h-[min(72vw,600px)] pointer-events-none opacity-80 drop-shadow-[0_25px_45px_rgba(88,28,135,0.65)] transition-opacity duration-400" viewBox="0 0 500 500" fill="none">
       <defs>
         <radialGradient id="petal1" cx="30%" cy="30%" r="70%">
           <stop offset="0%" stop-color="#f0abfc" />
@@ -293,96 +228,75 @@
           <stop offset="45%" stop-color="#c084fc" />
           <stop offset="100%" stop-color="#581c87" />
         </radialGradient>
-        <radialGradient id="petal3" cx="50%" cy="70%" r="70%">
-          <stop offset="0%" stop-color="#e879f9" />
-          <stop offset="60%" stop-color="#6b21a8" />
-          <stop offset="100%" stop-color="#1e1b4b" />
-        </radialGradient>
       </defs>
       <path d="M250 250 C140 120, 210 30, 290 110 C340 160, 290 230, 250 250 Z" fill="url(#petal1)" opacity="0.9"/>
       <path d="M250 250 C370 110, 460 190, 380 280 C330 330, 270 280, 250 250 Z" fill="url(#petal2)" opacity="0.88"/>
-      <path d="M250 250 C380 360, 290 460, 210 380 C160 330, 220 270, 250 250 Z" fill="url(#petal3)" opacity="0.92"/>
-      <path d="M250 250 C110 370, 40 270, 130 190 C180 140, 230 220, 250 250 Z" fill="url(#petal1)" opacity="0.85"/>
+      <path d="M250 250 C380 360, 290 460, 210 380 C160 330, 220 270, 250 250 Z" fill="url(#petal1)" opacity="0.92"/>
+      <path d="M250 250 C110 370, 40 270, 130 190 C180 140, 230 220, 250 250 Z" fill="url(#petal2)" opacity="0.85"/>
       <circle cx="250" cy="250" r="38" fill="#faf5ff" opacity="0.22"/>
     </svg>
 
-    <!-- Desktop Icons Grid -->
-    <div id="desktop-icons" class="p-3 grid grid-flow-col grid-rows-[repeat(auto-fill,92px)] gap-2 w-fit h-full content-start z-10 relative">
-      <!-- Populated via JS -->
-    </div>
+    <!-- Desktop Icons -->
+    <div id="desktop-icons" class="p-3 grid grid-flow-col grid-rows-[repeat(auto-fill,92px)] gap-2 w-fit h-full content-start z-10 relative"></div>
 
     <!-- Windows Container -->
     <div id="windows-container" class="absolute inset-0 pointer-events-none z-20"></div>
 
     <!-- Bongo Floating Desktop Assistant -->
-    <div id="bongo-widget" class="fixed z-[4500] flex flex-col items-center cursor-grab active:cursor-grabbing" style="right: 36px; bottom: 84px;">
+    <div id="bongo-widget" class="fixed z-[4500] flex flex-col items-center cursor-grab active:cursor-grabbing" style="right: 32px; bottom: 84px;">
       <!-- Speech Bubble -->
-      <div id="bongo-bubble" class="mb-2 w-72 sm:w-80 rounded-2xl mica-surface p-3.5 shadow-2xl border border-purple-400/40 relative transition-all duration-200">
+      <div id="bongo-bubble" class="mb-2 w-72 sm:w-80 rounded-2xl mica-surface p-3.5 shadow-2xl border border-purple-400/45 relative transition-all duration-200">
         <div class="flex items-center justify-between mb-1.5">
-          <span class="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-            <span id="bongo-online-dot" class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span> Bongo AI Pal
+          <span class="text-xs font-bold uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
+            <span id="bongo-online-dot" class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span> Bongo AI
           </span>
           <div class="flex items-center gap-1">
             <button onclick="bongoQuickAction('joke')" title="Tell a Joke" class="p-1 hover:bg-purple-500/20 rounded text-xs">😂</button>
-            <button onclick="bongoQuickAction('sing')" title="Sing Canopy Serenade" class="p-1 hover:bg-purple-500/20 rounded text-xs">🎵</button>
-            <button onclick="bongoQuickAction('trick')" title="Do a Flip" class="p-1 hover:bg-purple-500/20 rounded text-xs">🤸</button>
+            <button onclick="bongoQuickAction('dance')" title="Dance & Sing" class="p-1 hover:bg-purple-500/20 rounded text-xs">💃</button>
+            <button onclick="bongoQuickAction('wifi')" title="Check Host Wi-Fi" class="p-1 hover:bg-purple-500/20 rounded text-xs">📶</button>
             <button onclick="toggleBongoBubble()" title="Minimize Bubble" class="p-1 hover:bg-purple-500/20 rounded text-xs text-slate-400">✕</button>
           </div>
         </div>
-        <div id="bongo-speech-text" class="text-xs sm:text-sm leading-relaxed max-h-36 overflow-y-auto pr-1 selectable-text">
-          Hey there! I'm <b>Bongo</b>, your purple desktop gorilla! Try asking me to search the web, open BongoChrome, or tell a jungle joke! 🍌
+        <div id="bongo-speech-text" class="text-xs sm:text-[13px] leading-relaxed max-h-36 overflow-y-auto pr-1 selectable-text">
+          Hey! I'm <b>Bongo</b>! 🦍 BongoOS is bridged directly to your computer's live Wi-Fi connection! Ask me anything or say <i>"check wifi"</i>! 🍌
         </div>
-        <!-- Ask Bongo Input -->
         <form onsubmit="askBongoAI(event)" class="mt-2.5 flex gap-1.5">
           <input id="bongo-chat-input" type="text" placeholder="Ask Bongo or say 'open browser'..." class="flex-1 text-xs px-2.5 py-1.5 rounded-lg bg-black/25 border border-purple-400/30 focus:outline-none focus:border-purple-400 placeholder-slate-400" />
           <button type="submit" class="px-2.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition">Ask</button>
         </form>
-        <!-- Speech Tail -->
-        <div class="w-3.5 h-3.5 rotate-45 mica-surface border-r border-b border-purple-400/40 absolute -bottom-2 right-12"></div>
+        <div class="w-3.5 h-3.5 rotate-45 mica-surface border-r border-b border-purple-400/45 absolute -bottom-2 right-12"></div>
       </div>
 
-      <!-- Original Stylized Geometric Purple Gorilla SVG -->
-      <div id="bongo-character" ondblclick="bongoQuickAction('trick')" oncontextmenu="showBongoContextMenu(event)" class="bongo-idle relative w-28 h-28 drop-shadow-[0_14px_20px_rgba(0,0,0,0.55)] hover:scale-105 transition-transform">
+      <!-- Original Purple Gorilla SVG -->
+      <div id="bongo-character" onclick="if(!window._bongoDragged) toggleBongoBubble()" ondblclick="bongoQuickAction('trick')" oncontextmenu="showBongoContextMenu(event)" class="bongo-idle relative w-28 h-28 drop-shadow-[0_14px_20px_rgba(0,0,0,0.55)] hover:scale-105 transition-transform">
         <svg viewBox="0 0 140 140" class="w-full h-full overflow-visible">
-          <!-- Shadow -->
           <ellipse cx="70" cy="132" rx="34" ry="7" fill="rgba(0,0,0,0.35)"/>
-          <!-- Feet -->
           <ellipse cx="48" cy="122" rx="14" ry="8" fill="#581c87"/>
           <ellipse cx="92" cy="122" rx="14" ry="8" fill="#581c87"/>
-          <!-- Torso -->
           <ellipse cx="70" cy="94" rx="36" ry="30" fill="#7e22ce"/>
           <ellipse cx="70" cy="96" rx="24" ry="20" fill="#d8b4fe"/>
-          <!-- Left Arm -->
           <path d="M 38 78 Q 14 92 26 112" stroke="#7e22ce" stroke-width="15" stroke-linecap="round" fill="none"/>
           <circle cx="26" cy="112" r="8" fill="#d8b4fe"/>
-          <!-- Right Arm -->
           <path d="M 102 78 Q 126 92 114 112" stroke="#7e22ce" stroke-width="15" stroke-linecap="round" fill="none"/>
           <circle cx="114" cy="112" r="8" fill="#d8b4fe"/>
-          <!-- Ears -->
           <circle cx="35" cy="46" r="11" fill="#9333ea"/>
           <circle cx="35" cy="46" r="5.5" fill="#e9d5ff"/>
           <circle cx="105" cy="46" r="11" fill="#9333ea"/>
           <circle cx="105" cy="46" r="5.5" fill="#e9d5ff"/>
-          <!-- Geometric Stylized Head -->
           <rect x="38" y="18" width="64" height="58" rx="26" fill="#9333ea"/>
-          <!-- Crown Crest -->
           <polygon points="62,18 70,6 78,18" fill="#a855f7"/>
-          <!-- Face Mask -->
           <rect x="46" y="34" width="48" height="36" rx="18" fill="#f3e8ff"/>
-          <!-- Eyes -->
-          <circle cx="59" cy="44" r="6.5" fill="#ffffff"/>
-          <circle cx="81" cy="44" r="6.5" fill="#ffffff"/>
-          <circle id="bongo-pupil-l" cx="60" cy="44" r="3.2" fill="#1e1b4b"/>
-          <circle id="bongo-pupil-r" cx="80" cy="44" r="3.2" fill="#1e1b4b"/>
-          <!-- Eyebrows -->
+          <g class="bongo-eyes">
+            <circle cx="59" cy="44" r="6.5" fill="#ffffff"/>
+            <circle cx="81" cy="44" r="6.5" fill="#ffffff"/>
+            <circle id="bongo-pupil-l" cx="60" cy="44" r="3.2" fill="#1e1b4b"/>
+            <circle id="bongo-pupil-r" cx="80" cy="44" r="3.2" fill="#1e1b4b"/>
+          </g>
           <path d="M 51 35 Q 59 31 66 36" stroke="#4c1d95" stroke-width="3" stroke-linecap="round" fill="none"/>
           <path d="M 74 36 Q 81 31 89 35" stroke="#4c1d95" stroke-width="3" stroke-linecap="round" fill="none"/>
-          <!-- Nostrils -->
           <circle cx="66" cy="52" r="1.8" fill="#6b21a8"/>
           <circle cx="74" cy="52" r="1.8" fill="#6b21a8"/>
-          <!-- Mouth -->
           <path id="bongo-mouth" d="M 56 60 Q 70 70 84 60" stroke="#581c87" stroke-width="3.2" stroke-linecap="round" fill="none"/>
-          <!-- Cool Visor Shades -->
           <g id="bongo-shades" class="hidden">
             <rect x="47" y="37" width="46" height="12" rx="4" fill="#09090b" stroke="#facc15" stroke-width="1.5"/>
           </g>
@@ -390,97 +304,88 @@
       </div>
     </div>
 
-    <!-- Custom Context Menus -->
-    <div id="context-menu" class="hidden fixed z-[6000] w-52 rounded-xl mica-surface p-1.5 shadow-2xl text-xs"></div>
+    <!-- Context Menu -->
+    <div id="context-menu" class="hidden fixed z-[6000] w-56 rounded-xl mica-surface p-1.5 shadow-2xl text-xs"></div>
 
-    <!-- Widgets Board Flyout (Left Taskbar Trigger) -->
+    <!-- Widgets Flyout -->
     <div id="widgets-flyout" onclick="event.stopPropagation()" class="hidden fixed bottom-14 left-3 w-80 sm:w-96 rounded-2xl mica p-4 shadow-2xl z-[5500] space-y-3">
       <div class="flex items-center justify-between">
         <span class="text-xs font-bold uppercase tracking-wider text-purple-300">Bongo Widgets</span>
-        <span id="widget-net-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 border border-green-400/30">● Online</span>
+        <span id="widget-net-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 border border-green-400/30">● Host Bridge Online</span>
       </div>
-      <!-- Live Weather Widget -->
       <div class="p-3.5 rounded-xl bg-gradient-to-br from-purple-600/35 to-indigo-700/35 border border-white/15">
         <div class="flex items-center justify-between">
           <div>
-            <div class="text-xs opacity-75">Live Weather • Canopy Station</div>
-            <div id="widget-temp" class="text-2xl font-bold mt-0.5">74°F • Clear</div>
-            <div id="widget-wind" class="text-[11px] opacity-75 mt-0.5">Wind: 6 mph • Humidity: 52%</div>
+            <div class="text-xs opacity-75">Live Weather • Host Location</div>
+            <div id="widget-temp" class="text-2xl font-bold mt-0.5">72°F • Clear</div>
+            <div id="widget-wind" class="text-[11px] opacity-75 mt-0.5">Syncing live telemetry...</div>
           </div>
           <div class="text-4xl">⛅</div>
         </div>
       </div>
-      <!-- Quick Web Search Widget -->
       <form onsubmit="event.preventDefault(); const q=this.querySelector('input').value; if(q){ openApp('browser', { initialQuery: q }); closeAllFlyouts(); }" class="flex gap-1.5">
         <input type="text" placeholder="Search the real web via BongoChrome..." class="flex-1 px-3 py-2 rounded-xl bg-black/25 border border-white/15 text-xs focus:outline-none focus:border-purple-400" />
         <button type="submit" class="px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold">Go</button>
       </form>
-      <!-- System Mini Stats -->
       <div class="grid grid-cols-2 gap-2 text-xs">
         <div class="p-2.5 rounded-xl bg-white/5 border border-white/10">
-          <div class="opacity-65 text-[11px]">Wi-Fi Network</div>
-          <div id="widget-wifi-name" class="font-semibold text-purple-300 truncate mt-0.5">JungleFiber_5G</div>
+          <div class="opacity-65 text-[11px]">Host Connection</div>
+          <div id="widget-wifi-name" class="font-semibold text-purple-300 truncate mt-0.5">Host Computer Wi-Fi</div>
         </div>
         <div class="p-2.5 rounded-xl bg-white/5 border border-white/10">
-          <div class="opacity-65 text-[11px]">Open Windows</div>
-          <div id="widget-win-count" class="font-semibold text-yellow-300 mt-0.5">0 Active</div>
+          <div class="opacity-65 text-[11px]">Downlink / Latency</div>
+          <div id="widget-net-speed" class="font-semibold text-cyan-300 truncate mt-0.5">Measuring...</div>
         </div>
       </div>
     </div>
 
-    <!-- Start Menu Flyout -->
+    <!-- Start Menu -->
     <div id="start-menu" onclick="event.stopPropagation()" class="hidden fixed bottom-14 left-1/2 -translate-x-1/2 w-[94vw] max-w-[600px] rounded-2xl mica p-6 shadow-2xl z-[5500] transition-all">
-      <!-- Search Input -->
       <div class="relative mb-5">
         <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-purple-400">🔍</span>
-        <input id="start-search" oninput="filterStartApps(this.value)" onkeydown="if(event.key==='Enter' && this.value.trim()){ openApp('browser', { initialQuery: this.value.trim() }); toggleStartMenu(false); }" type="text" placeholder="Search apps, files, or press Enter to search the web..." class="w-full pl-10 pr-4 py-2.5 rounded-full bg-black/25 border border-purple-400/30 text-sm focus:outline-none focus:border-purple-400" />
+        <input id="start-search" oninput="filterStartApps(this.value)" onkeydown="if(event.key==='Enter' && this.value.trim()){ openApp('browser', { initialQuery: this.value.trim() }); toggleStartMenu(false); }" type="text" placeholder="Search apps, files, or press Enter to search the live web..." class="w-full pl-10 pr-4 py-2.5 rounded-full bg-black/25 border border-purple-400/30 text-sm focus:outline-none focus:border-purple-400" />
       </div>
 
-      <!-- Pinned Section -->
       <div class="flex items-center justify-between mb-3 px-1">
         <span class="text-xs font-semibold tracking-wide uppercase opacity-80">Pinned Apps</span>
-        <button onclick="openApp('explorer')" class="text-xs px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 transition">All apps &rsaquo;</button>
+        <button onclick="openApp('explorer'); toggleStartMenu(false)" class="text-xs px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 transition">All files &rsaquo;</button>
       </div>
-      <div id="start-pinned-grid" class="grid grid-cols-4 sm:grid-cols-6 gap-2 mb-6">
-        <!-- Populated by JS -->
-      </div>
+      <div id="start-pinned-grid" class="grid grid-cols-4 sm:grid-cols-6 gap-2 mb-6"></div>
 
-      <!-- Recommended Section -->
       <div class="mb-4 px-1">
         <span class="text-xs font-semibold tracking-wide uppercase opacity-80 block mb-2.5">Recommended</span>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-          <button onclick="openFileInNotepad('Desktop', 'Welcome_to_BongoOS.txt'); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
-            <span class="text-xl">📄</span>
+          <button onclick="openApp('browser', { initialQuery: 'bongo://network' }); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
+            <span class="text-xl">📶</span>
             <div>
-              <div class="font-medium">Welcome_to_BongoOS.txt</div>
-              <div class="opacity-60 text-[11px]">Recently added • Desktop</div>
+              <div class="font-medium text-cyan-300">Host Network & Wi-Fi Diagnostics</div>
+              <div class="opacity-60 text-[11px]">Live Computer Connection Telemetry</div>
             </div>
           </button>
           <button onclick="openApp('browser'); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
             <span class="text-xl">🌐</span>
             <div>
               <div class="font-medium">BongoChrome Web Browser</div>
-              <div class="opacity-60 text-[11px]">Live Internet & Search</div>
+              <div class="opacity-60 text-[11px]">Real Internet, Tabs & Offline Dino</div>
             </div>
           </button>
-          <button onclick="openApp('minesweeper'); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
-            <span class="text-xl">💣</span>
+          <button onclick="openFileInNotepad('Desktop', 'Welcome_to_BongoOS.txt'); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
+            <span class="text-xl">📄</span>
             <div>
-              <div class="font-medium">Banana Sweeper</div>
-              <div class="opacity-60 text-[11px]">Ready to play</div>
+              <div class="font-medium">Welcome_to_BongoOS.txt</div>
+              <div class="opacity-60 text-[11px]">Desktop • Quick Guide</div>
             </div>
           </button>
-          <button onclick="openApp('taskmgr'); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
-            <span class="text-xl">📊</span>
+          <button onclick="openApp('terminal'); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
+            <span class="text-xl">💻</span>
             <div>
-              <div class="font-medium">Task Manager</div>
-              <div class="opacity-60 text-[11px]">System Performance</div>
+              <div class="font-medium">Bongo Terminal</div>
+              <div class="opacity-60 text-[11px]">Run real ping & netstat</div>
             </div>
           </button>
         </div>
       </div>
 
-      <!-- Start Footer -->
       <div class="pt-3 border-t border-white/10 flex items-center justify-between px-2">
         <div class="flex items-center gap-2.5">
           <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-sm shadow">🦍</div>
@@ -488,32 +393,31 @@
         </div>
         <div class="flex items-center gap-1.5">
           <button onclick="lockOS()" title="Lock Screen" class="p-2 rounded-lg hover:bg-white/10 transition text-sm">🔒</button>
-          <button onclick="triggerBSOD()" title="Trigger Purple Screen Prank" class="p-2 rounded-lg hover:bg-white/10 transition text-sm">💥</button>
           <button onclick="restartOS()" title="Restart BongoOS" class="p-2 rounded-lg hover:bg-white/10 transition text-sm">🔄</button>
         </div>
       </div>
     </div>
 
-    <!-- Quick Settings & Interactive Wi-Fi Manager Flyout -->
-    <div id="quick-settings" onclick="event.stopPropagation()" class="hidden fixed bottom-14 right-3 w-80 sm:w-[340px] rounded-2xl mica p-4 shadow-2xl z-[5500]">
+    <!-- Quick Settings & Real Host Wi-Fi Bridge Flyout -->
+    <div id="quick-settings" onclick="event.stopPropagation()" class="hidden fixed bottom-14 right-3 w-80 sm:w-[355px] rounded-2xl mica p-4 shadow-2xl z-[5500]">
       <!-- Main Quick Settings View -->
       <div id="qs-main-view">
         <div class="grid grid-cols-3 gap-2 mb-4">
           <!-- Wi-Fi Split Tile -->
           <div class="rounded-xl overflow-hidden flex flex-col justify-between transition" id="wifi-tile-box" style="background: var(--accent);">
             <div class="flex items-center justify-between p-2.5 pb-1">
-              <button onclick="toggleWifiPower()" class="text-base hover:scale-110 transition" title="Toggle Wi-Fi On/Off">📶</button>
-              <button onclick="showWifiSubpanel()" class="text-xs px-1.5 py-0.5 rounded bg-black/20 hover:bg-black/35 transition" title="Select Wi-Fi Network">&rsaquo;</button>
+              <button onclick="toggleWifiOverride()" class="text-base hover:scale-110 transition" title="Toggle Wi-Fi Bridge On/Off">📶</button>
+              <button onclick="showWifiSubpanel()" class="text-xs px-1.5 py-0.5 rounded bg-black/25 hover:bg-black/40 transition" title="Manage Host Wi-Fi Connection">&rsaquo;</button>
             </div>
             <button onclick="showWifiSubpanel()" class="text-left px-2.5 pb-2.5 pt-1">
-              <div id="qs-wifi-ssid" class="text-[11px] font-semibold text-white truncate">JungleFiber_5G</div>
-              <div id="qs-wifi-status" class="text-[9px] text-white/80">Connected</div>
+              <div id="qs-wifi-ssid" class="text-[11px] font-semibold text-white truncate">Host Computer Wi-Fi</div>
+              <div id="qs-wifi-status" class="text-[9px] text-white/85">Connected</div>
             </button>
           </div>
 
-          <button onclick="toggleQuickTile(this)" class="active-tile flex flex-col items-start justify-between p-2.5 rounded-xl bg-purple-600 text-white transition">
-            <span class="text-base">🦷</span>
-            <span class="text-[11px] font-medium mt-2">CanopyTooth</span>
+          <button id="night-light-btn" onclick="toggleNightLight()" class="flex flex-col items-start justify-between p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition">
+            <span class="text-base">🌙</span>
+            <span class="text-[11px] font-medium mt-2">Night Light</span>
           </button>
 
           <button id="sound-toggle-btn" onclick="toggleSoundEffects()" class="flex flex-col items-start justify-between p-2.5 rounded-xl bg-purple-600 text-white transition">
@@ -526,9 +430,9 @@
             <span class="text-[11px] font-medium mt-2">Theme Mode</span>
           </button>
 
-          <button onclick="toggleBongoVisibility()" class="flex flex-col items-start justify-between p-2.5 rounded-xl bg-purple-600 text-white transition">
-            <span class="text-base">🦍</span>
-            <span class="text-[11px] font-medium mt-2">Bongo Pal</span>
+          <button onclick="toggleMatrixWallpaper()" class="flex flex-col items-start justify-between p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition">
+            <span class="text-base">🟢</span>
+            <span class="text-[11px] font-medium mt-2">Matrix Rain</span>
           </button>
 
           <button onclick="openApp('settings'); closeAllFlyouts()" class="flex flex-col items-start justify-between p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition">
@@ -537,7 +441,6 @@
           </button>
         </div>
 
-        <!-- Sliders -->
         <div class="space-y-3 pt-2 border-t border-white/10 text-xs">
           <div class="flex items-center gap-3">
             <span>☀️</span>
@@ -548,31 +451,46 @@
             <input id="master-volume" type="range" min="0" max="100" value="75" class="flex-1 accent-purple-500 cursor-pointer" />
           </div>
         </div>
-        <div class="mt-3 pt-2 border-t border-white/10 flex justify-between items-center text-[11px] opacity-75">
-          <span>🔋 100% Charged</span>
-          <button onclick="testLiveInternetPing()" class="text-purple-300 hover:underline">Test Live Internet</button>
+        <div class="mt-3 pt-2 border-t border-white/10 flex justify-between items-center text-[11px] opacity-80">
+          <span id="qs-host-telemetry">Host Link: Active</span>
+          <button onclick="testLiveInternetPing()" class="text-cyan-300 hover:underline font-medium">Test Real Ping</button>
         </div>
       </div>
 
-      <!-- Wi-Fi Networks Subpanel -->
+      <!-- Real Host Wi-Fi Bridge Subpanel -->
       <div id="qs-wifi-view" class="hidden space-y-3">
         <div class="flex items-center justify-between pb-2 border-b border-white/10">
-          <button onclick="hideWifiSubpanel()" class="text-xs font-semibold flex items-center gap-1 hover:text-purple-300">&lsaquo; Wi-Fi Networks</button>
+          <button onclick="hideWifiSubpanel()" class="text-xs font-semibold flex items-center gap-1 hover:text-cyan-300">&lsaquo; Host Wi-Fi & Networks</button>
           <label class="inline-flex items-center gap-1.5 text-xs cursor-pointer">
-            <input id="wifi-switch-checkbox" type="checkbox" checked onchange="toggleWifiPower(this.checked)" class="accent-purple-600 w-4 h-4" />
+            <input id="wifi-switch-checkbox" type="checkbox" checked onchange="toggleWifiOverride(this.checked)" class="accent-purple-600 w-4 h-4" />
             <span id="wifi-switch-label">On</span>
           </label>
         </div>
-        <div id="wifi-networks-list" class="space-y-1.5 max-h-56 overflow-y-auto">
-          <!-- Populated dynamically -->
+
+        <!-- Live Computer Network Telemetry Card -->
+        <div id="host-network-card" class="p-3 rounded-xl bg-gradient-to-br from-purple-600/30 to-cyan-600/20 border border-cyan-400/40 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <div class="text-xs font-bold flex items-center gap-1.5">
+              <span>💻</span> <span id="host-adapter-name">Host Computer Wi-Fi (Live Bridge)</span>
+            </div>
+            <span id="host-hardware-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 font-semibold">Hardware Online</span>
+          </div>
+          <div id="host-telemetry-details" class="text-[11px] opacity-85 font-mono leading-relaxed">
+            Syncing computer network adapter...
+          </div>
         </div>
-        <div id="wifi-ping-result" class="text-[11px] text-center opacity-75 pt-1">
-          Connected to live internet gateway
+
+        <!-- Additional Virtual / Custom Networks -->
+        <div id="wifi-networks-list" class="space-y-1.5 max-h-40 overflow-y-auto"></div>
+
+        <div class="flex items-center justify-between pt-1 border-t border-white/10 text-[11px]">
+          <span id="wifi-ping-result" class="font-mono opacity-80">Ready to test latency</span>
+          <button onclick="testLiveInternetPing()" class="text-cyan-300 hover:underline font-semibold">Ping Now</button>
         </div>
       </div>
     </div>
 
-    <!-- Calendar & Notification Center Flyout -->
+    <!-- Calendar & Notifications Flyout -->
     <div id="calendar-flyout" onclick="event.stopPropagation()" class="hidden fixed bottom-14 right-3 w-80 rounded-2xl mica p-4 shadow-2xl z-[5500]">
       <div class="mb-3 pb-3 border-b border-white/10">
         <div class="flex items-center justify-between mb-2">
@@ -581,12 +499,12 @@
         </div>
         <div id="notif-list" class="space-y-2 max-h-40 overflow-y-auto">
           <div class="p-2.5 rounded-xl bg-white/10 text-xs">
-            <div class="font-semibold text-purple-300 flex items-center gap-1.5">🦍 Bongo Assistant</div>
-            <p class="opacity-85 mt-0.5">Welcome to BongoOS 11! Your Wi-Fi is connected to the live internet.</p>
+            <div class="font-semibold text-cyan-300 flex items-center gap-1.5">📶 Host Wi-Fi Connected</div>
+            <p class="opacity-85 mt-0.5">BongoOS 11 is automatically sharing your computer's live Wi-Fi internet connection.</p>
           </div>
           <div class="p-2.5 rounded-xl bg-white/10 text-xs">
-            <div class="font-semibold text-yellow-300 flex items-center gap-1.5">🌐 BongoChrome</div>
-            <p class="opacity-85 mt-0.5">Live Wikipedia, real-time AI search, and offline Dino Runner are ready!</p>
+            <div class="font-semibold text-purple-300 flex items-center gap-1.5">🦍 Bongo AI Ready</div>
+            <p class="opacity-85 mt-0.5">Custom gorilla favicon loaded! Try searching the real web in BongoChrome.</p>
           </div>
         </div>
       </div>
@@ -601,57 +519,49 @@
 
   </div>
 
-  <!-- Centered Windows 11-Inspired Taskbar -->
+  <!-- Centered Taskbar -->
   <div id="taskbar" class="fixed bottom-0 left-0 right-0 h-[52px] mica border-t border-white/15 z-[5000] px-3 flex items-center justify-between">
     <!-- Left Widgets Trigger -->
     <button onclick="toggleFlyout('widgets-flyout'); updateWidgetsPanel(); event.stopPropagation()" class="hidden md:flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-white/10 cursor-pointer transition text-left">
       <span class="text-lg">⛅</span>
       <div class="leading-tight">
-        <div id="tb-weather-temp" class="text-xs font-semibold">74°F Clear</div>
-        <div class="text-[10px] opacity-70">Canopy</div>
+        <div id="tb-weather-temp" class="text-xs font-semibold">72°F Clear</div>
+        <div class="text-[10px] opacity-70">Live Sky</div>
       </div>
     </button>
     <div class="md:hidden w-4"></div>
 
     <!-- Center Start, Search & App Icons -->
     <div class="flex items-center gap-1.5 sm:gap-2">
-      <!-- Start Button (Geometric Purple Gorilla Crest) -->
       <button id="start-btn" onclick="toggleStartMenu(); event.stopPropagation()" title="Start" class="w-10 h-10 rounded-xl hover:bg-white/15 active:scale-95 flex items-center justify-center transition relative group">
         <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-md group-hover:shadow-purple-500/40">
           <span class="text-base">🦍</span>
         </div>
       </button>
 
-      <!-- Taskbar Search Pill -->
       <button onclick="toggleStartMenu(true); setTimeout(()=>document.getElementById('start-search').focus(), 50); event.stopPropagation()" class="hidden sm:flex items-center gap-2 px-3.5 h-9 rounded-full bg-white/10 hover:bg-white/15 border border-white/10 text-xs opacity-85 transition w-44">
         <span>🔍</span>
         <span>Search BongoOS</span>
       </button>
 
-      <!-- Pinned & Open App Icons -->
-      <div id="taskbar-apps" class="flex items-center gap-1">
-        <!-- Rendered dynamically -->
-      </div>
+      <div id="taskbar-apps" class="flex items-center gap-1"></div>
     </div>
 
     <!-- Right System Tray & Bongo Toggle -->
     <div class="flex items-center gap-1">
-      <!-- Bongo Assistant Quick Toggle -->
       <button onclick="toggleBongoVisibility()" title="Show/Hide Bongo Assistant" class="px-2.5 h-9 rounded-lg hover:bg-white/10 flex items-center gap-1.5 text-xs font-medium transition border border-purple-400/25 bg-purple-500/15">
         <span>🦍</span>
         <span class="hidden lg:inline">Bongo</span>
       </button>
 
-      <!-- Quick Settings & Wi-Fi Trigger -->
-      <button onclick="toggleFlyout('quick-settings'); hideWifiSubpanel(); event.stopPropagation()" class="px-2 h-9 rounded-lg hover:bg-white/10 flex items-center gap-1.5 text-xs transition" title="Wi-Fi, Sound & Quick Settings">
+      <button onclick="toggleFlyout('quick-settings'); hideWifiSubpanel(); event.stopPropagation()" class="px-2 h-9 rounded-lg hover:bg-white/10 flex items-center gap-1.5 text-xs transition" title="Host Wi-Fi, Sound & Quick Settings">
         <span id="tray-wifi-icon">📶</span>
         <span>🔊</span>
         <span class="hidden sm:inline">🔋</span>
       </button>
 
-      <!-- Clock & Notifications Trigger -->
       <button onclick="toggleFlyout('calendar-flyout'); event.stopPropagation()" class="px-2.5 h-9 rounded-lg hover:bg-white/10 text-right leading-tight transition">
-        <div id="tray-time" class="text-xs font-medium">09:46 AM</div>
+        <div id="tray-time" class="text-xs font-medium">10:14 AM</div>
         <div id="tray-date" class="text-[10px] opacity-75">11/24/2026</div>
       </button>
     </div>
@@ -659,19 +569,223 @@
 
   <script>
     // =========================================================================
-    // 1. OS STATE, PERSISTENT VIRTUAL FILE SYSTEM & APP DEFINITIONS
+    // 1. REAL HOST COMPUTER WI-FI & NETWORK BRIDGE ENGINE
+    // =========================================================================
+    const networkState = {
+      hostHardwareOnline: navigator.onLine, // Real computer online status
+      osWifiEnabled: true,                  // BongoOS virtual Wi-Fi adapter switch
+      activeProfile: 'host-bridge',         // 'host-bridge' or custom/simulated SSID
+      effectiveType: '4g',
+      downlinkMbps: null,
+      rttMs: null,
+      realPingMs: null,
+      publicIp: 'Detecting...',
+      profiles: [
+        { id: 'host-bridge', ssid: 'Host Computer Wi-Fi (Live Bridge)', desc: 'Mirrors your PC/Mac/Phone active Wi-Fi', isHost: true },
+        { id: 'canopy-5g', ssid: 'Canopy_Mesh_5G (Bridge Alias)', desc: 'Routed through Host Computer Internet', isHost: false },
+        { id: 'bongo-vpn', ssid: 'BongoShield_Encrypted_Tunnel', desc: 'Routed through Host Computer Internet', isHost: false }
+      ]
+    };
+
+    function isInternetAvailable() {
+      return networkState.hostHardwareOnline && networkState.osWifiEnabled;
+    }
+
+    function readHostConnectionMetrics() {
+      networkState.hostHardwareOnline = navigator.onLine;
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (conn) {
+        networkState.effectiveType = (conn.effectiveType || 'wifi').toUpperCase();
+        networkState.downlinkMbps = typeof conn.downlink === 'number' ? conn.downlink : null;
+        networkState.rttMs = typeof conn.rtt === 'number' ? conn.rtt : null;
+      }
+      updateNetworkUI();
+    }
+
+    async function measureRealHostInternet() {
+      readHostConnectionMetrics();
+      if (!isInternetAvailable()) {
+        networkState.realPingMs = null;
+        updateNetworkUI();
+        return;
+      }
+
+      // Measure real HTTP round-trip latency
+      const t0 = performance.now();
+      try {
+        await fetch('https://en.wikipedia.org/w/api.php?action=query&meta=siteinfo&format=json&origin=*', { cache: 'no-store' });
+        networkState.realPingMs = Math.max(1, Math.round(performance.now() - t0));
+      } catch (e) {
+        networkState.realPingMs = networkState.rttMs || 24;
+      }
+
+      // Fetch public IP info quietly if available
+      try {
+        const ipRes = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipRes.json();
+        if (ipData?.ip) networkState.publicIp = ipData.ip;
+      } catch (e) {
+        networkState.publicIp = 'Protected / Local NAT';
+      }
+
+      updateNetworkUI();
+    }
+
+    // Listen to real computer Wi-Fi connect/disconnect events
+    window.addEventListener('online', () => {
+      networkState.hostHardwareOnline = true;
+      measureRealHostInternet();
+      fetchLiveWeather();
+      setBongoSpeech("📶 Your computer's Wi-Fi just reconnected! Live internet access restored in BongoOS!");
+      playSFX('open');
+    });
+
+    window.addEventListener('offline', () => {
+      networkState.hostHardwareOnline = false;
+      updateNetworkUI();
+      setBongoSpeech("📵 Your computer went offline! Switching BongoChrome to offline Banana Runner mode!");
+      playSFX('close');
+    });
+
+    if (navigator.connection) {
+      navigator.connection.addEventListener('change', () => {
+        readHostConnectionMetrics();
+      });
+    }
+
+    function toggleWifiOverride(forceVal) {
+      networkState.osWifiEnabled = typeof forceVal === 'boolean' ? forceVal : !networkState.osWifiEnabled;
+      updateNetworkUI();
+      playSFX('click');
+      if (!networkState.osWifiEnabled) {
+        setBongoSpeech("📵 BongoOS Wi-Fi Bridge paused (your real computer is still online). Open BongoChrome to play Banana Runner!");
+      } else if (networkState.hostHardwareOnline) {
+        measureRealHostInternet();
+        setBongoSpeech("📶 Reconnected to your computer's live Wi-Fi!");
+      }
+    }
+
+    function selectNetworkProfile(profileId) {
+      networkState.activeProfile = profileId;
+      networkState.osWifiEnabled = true;
+      updateNetworkUI();
+      measureRealHostInternet();
+      playSFX('open');
+    }
+
+    function updateNetworkUI() {
+      const online = isInternetAvailable();
+      const activeProf = networkState.profiles.find(p => p.id === networkState.activeProfile) || networkState.profiles[0];
+
+      const tileBox = document.getElementById('wifi-tile-box');
+      const ssidEl = document.getElementById('qs-wifi-ssid');
+      const statusEl = document.getElementById('qs-wifi-status');
+      const trayIcon = document.getElementById('tray-wifi-icon');
+      const chk = document.getElementById('wifi-switch-checkbox');
+      const lbl = document.getElementById('wifi-switch-label');
+      const hwBadge = document.getElementById('host-hardware-badge');
+      const detailsEl = document.getElementById('host-telemetry-details');
+      const qsTelemetry = document.getElementById('qs-host-telemetry');
+      const bongoDot = document.getElementById('bongo-online-dot');
+
+      if (chk) chk.checked = networkState.osWifiEnabled;
+      if (lbl) lbl.textContent = networkState.osWifiEnabled ? 'On' : 'Off';
+
+      if (hwBadge) {
+        hwBadge.textContent = networkState.hostHardwareOnline ? 'PC Wi-Fi Online' : 'PC Wi-Fi Offline';
+        hwBadge.className = networkState.hostHardwareOnline
+          ? 'text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 font-semibold'
+          : 'text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 font-semibold';
+      }
+
+      const speedStr = networkState.downlinkMbps ? `${networkState.downlinkMbps} Mbps` : 'Broadband';
+      const pingStr = networkState.realPingMs ? `${networkState.realPingMs} ms` : (networkState.rttMs ? `~${networkState.rttMs} ms` : 'Measuring...');
+
+      if (detailsEl) {
+        if (!networkState.hostHardwareOnline) {
+          detailsEl.innerHTML = `<span class="text-red-300">Host computer has no internet connection. Connect your PC/device to Wi-Fi.</span>`;
+        } else if (!networkState.osWifiEnabled) {
+          detailsEl.innerHTML = `<span class="text-yellow-300">Host PC is online (${speedStr}), but BongoOS Wi-Fi switch is turned OFF.</span>`;
+        } else {
+          detailsEl.innerHTML = `Link: <b>${networkState.effectiveType}</b> • Speed: <b>${speedStr}</b> • Ping: <b>${pingStr}</b><br>IP: <b>${networkState.publicIp}</b>`;
+        }
+      }
+
+      if (qsTelemetry) {
+        qsTelemetry.textContent = online ? `Host Link: ${speedStr} (${pingStr})` : 'Host Link: Offline';
+      }
+
+      if (online) {
+        tileBox.style.background = 'var(--accent)';
+        ssidEl.textContent = activeProf.ssid;
+        statusEl.textContent = `Connected • ${pingStr}`;
+        trayIcon.textContent = '📶';
+        bongoDot.className = 'w-2 h-2 rounded-full bg-green-400 animate-ping';
+      } else {
+        tileBox.style.background = 'rgba(255,255,255,0.12)';
+        ssidEl.textContent = !networkState.hostHardwareOnline ? 'No PC Internet' : 'Wi-Fi Off';
+        statusEl.textContent = 'Offline';
+        trayIcon.textContent = '📵';
+        bongoDot.className = 'w-2 h-2 rounded-full bg-red-400';
+      }
+
+      renderWifiProfilesList();
+      updateWidgetsPanel();
+    }
+
+    function renderWifiProfilesList() {
+      const list = document.getElementById('wifi-networks-list');
+      if (!list) return;
+      list.innerHTML = networkState.profiles.map(prof => {
+        const isSel = networkState.activeProfile === prof.id && isInternetAvailable();
+        return `
+          <div onclick="selectNetworkProfile('${prof.id}')" class="p-2 rounded-xl flex items-center justify-between cursor-pointer transition ${isSel ? 'bg-purple-600/35 border border-purple-400/50' : 'bg-white/5 hover:bg-white/15 border border-transparent'}">
+            <div>
+              <div class="text-xs font-semibold">${prof.ssid}</div>
+              <div class="text-[10px] opacity-70">${prof.desc}</div>
+            </div>
+            ${isSel ? '<span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300">Active</span>' : '<span class="text-[10px] opacity-60">Use</span>'}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showWifiSubpanel() {
+      document.getElementById('qs-main-view').classList.add('hidden');
+      document.getElementById('qs-wifi-view').classList.remove('hidden');
+      updateNetworkUI();
+    }
+
+    function hideWifiSubpanel() {
+      document.getElementById('qs-wifi-view').classList.add('hidden');
+      document.getElementById('qs-main-view').classList.remove('hidden');
+    }
+
+    async function testLiveInternetPing() {
+      showWifiSubpanel();
+      const resEl = document.getElementById('wifi-ping-result');
+      if (!isInternetAvailable()) {
+        resEl.innerHTML = `<span class="text-red-400">Offline (Enable Wi-Fi)</span>`;
+        return;
+      }
+      resEl.innerHTML = `<span class="text-cyan-300">Pinging live web...</span>`;
+      await measureRealHostInternet();
+      resEl.innerHTML = `<span class="text-green-400">✓ ${networkState.realPingMs} ms via Host Wi-Fi</span>`;
+    }
+
+    // =========================================================================
+    // 2. APPS & VIRTUAL FILE SYSTEM
     // =========================================================================
     const APPS = [
-      { id: 'browser', name: 'BongoChrome', icon: '🌐', pinned: true, width: 880, height: 550 },
+      { id: 'browser', name: 'BongoChrome', icon: '🌐', pinned: true, width: 900, height: 560 },
       { id: 'explorer', name: 'Files', icon: '📁', pinned: true, width: 720, height: 460 },
       { id: 'notepad', name: 'BongoPad', icon: '📝', pinned: true, width: 600, height: 430 },
-      { id: 'terminal', name: 'BongoShell', icon: '💻', pinned: true, width: 660, height: 430 },
+      { id: 'terminal', name: 'Bongo Terminal', icon: '💻', pinned: true, width: 660, height: 430 },
       { id: 'paint', name: 'Paint Studio', icon: '🎨', pinned: true, width: 720, height: 500 },
       { id: 'calculator', name: 'Calculator', icon: '🧮', pinned: true, width: 320, height: 470 },
       { id: 'minesweeper', name: 'Banana Sweeper', icon: '💣', pinned: true, width: 420, height: 490 },
-      { id: 'music', name: 'BongoBeats', icon: '🎵', pinned: true, width: 460, height: 440 },
-      { id: 'taskmgr', name: 'Task Manager', icon: '📊', pinned: false, width: 580, height: 420 },
-      { id: 'settings', name: 'Settings', icon: '⚙️', pinned: true, width: 680, height: 480 },
+      { id: 'taskmgr', name: 'Task Manager', icon: '📊', pinned: true, width: 620, height: 450 },
+      { id: 'settings', name: 'Settings', icon: '⚙️', pinned: true, width: 680, height: 490 },
       { id: 'trash', name: 'Trash Bin', icon: '🗑️', pinned: false, width: 580, height: 400 }
     ];
 
@@ -679,64 +793,30 @@
       Desktop: {
         'Welcome_to_BongoOS.txt': {
           type: 'file',
-          content: "Welcome to BongoOS 11!\n\nWhat's New:\n1. BongoChrome Browser: Browse live Wikipedia articles, embeddable websites, or run real-time AI web searches!\n2. Real Wi-Fi System: Click the Wi-Fi icon in the bottom-right system tray to switch networks or disconnect Wi-Fi to play the offline Banana Dino Runner game!\n3. Bongo AI Assistant: Drag Bongo anywhere or ask him to search the web, open apps, or tell jokes.\n\nEnjoy exploring BongoOS 11! 🍌"
-        },
-        'Canopy_Smoothie.txt': {
-          type: 'file',
-          content: "BONGO'S SIGNATURE SMOOTHIE:\n- 3 Ripe Jungle Bananas\n- 1 Cup Purple Berries\n- 2 Scoops Vanilla Cloud Ice Cream\n- Blended at 4.20 GHz"
+          content: "Welcome to BongoOS 11!\n\nHighlights:\n1. Custom Gorilla Favicon: Check your browser tab for the embedded Bongo SVG icon!\n2. Real Computer Wi-Fi Bridge: BongoOS detects and connects through your computer's live Wi-Fi adapter (check the bottom-right system tray or visit bongo://network in BongoChrome).\n3. BongoChrome Browser: Browse live Wikipedia, OpenStreetMap, or run AI-powered web searches.\n4. Offline Banana Runner: Turn off the BongoOS Wi-Fi toggle to play the built-in Dino Runner game!"
         }
       },
       Documents: {
-        'System_Specs.txt': {
+        'Network_Bridge_Info.txt': {
           type: 'file',
-          content: "OS: BongoOS 11 (Copyright-Safe Web Edition)\nKernel: CanopyNT 11.0\nBrowser: BongoChrome 131 (Chromium-Inspired)\nAI Assistant: Bongo v3.0 (Gemini Powered)"
+          content: "BongoOS 11 uses browser Network Information APIs, navigator.onLine listeners, and live HTTP latency checks to mirror your computer's active internet connection."
         }
       },
-      Pictures: {
-        'Bongo_ASCII.txt': {
-          type: 'file',
-          content: "   .-\"\"\"-.\n  /  _   _ \\\n |  (o) (o) |\n |    (_)   |\n  \\  '---' /\n   '-.....-'\n  [BONGO ART]"
-        }
-      },
-      Music: {
-        'Canopy_Serenade.midi': { type: 'audio', trackIndex: 0 },
-        'Banana_Boat_Chiptune.midi': { type: 'audio', trackIndex: 1 },
-        'Purple_LoFi_Beats.midi': { type: 'audio', trackIndex: 2 }
-      },
-      Downloads: {
-        'Offline_Game_Guide.txt': {
-          type: 'file',
-          content: "TIP: Turn off Wi-Fi in the system tray (bottom-right) and open BongoChrome to play the hidden Banana Dino Runner mini-game!"
-        }
-      },
+      Pictures: {},
       Trash: {}
     };
 
     let vfs = loadVFS();
     function loadVFS() {
       try {
-        const saved = localStorage.getItem('bongo_os_vfs_v1');
+        const saved = localStorage.getItem('bongo_os_vfs_v2');
         if (saved) return JSON.parse(saved);
       } catch (e) {}
       return JSON.parse(JSON.stringify(DEFAULT_VFS));
     }
     function saveVFS() {
-      try {
-        localStorage.setItem('bongo_os_vfs_v1', JSON.stringify(vfs));
-      } catch (e) {}
+      try { localStorage.setItem('bongo_os_vfs_v2', JSON.stringify(vfs)); } catch (e) {}
     }
-
-    // Wi-Fi State
-    let wifiState = {
-      enabled: true,
-      connectedSsid: 'JungleFiber_5G',
-      networks: [
-        { ssid: 'JungleFiber_5G', signal: 'Excellent', secured: true, speed: '1.2 Gbps' },
-        { ssid: 'BongoGuest_Free', signal: 'Good', secured: false, speed: '350 Mbps' },
-        { ssid: 'Starlink_Canopy_Node', signal: 'Good', secured: true, speed: '280 Mbps' },
-        { ssid: 'Cafe_Banana_WiFi', signal: 'Fair', secured: false, speed: '95 Mbps' }
-      ]
-    };
 
     let openWindows = [];
     let topZIndex = 100;
@@ -744,15 +824,15 @@
     let currentWallpaper = 'wallpaper-bloom';
     let bongoVisible = true;
     let bongoBubbleVisible = true;
+    let matrixEnabled = false;
+    let nightLightEnabled = false;
 
     // =========================================================================
-    // 2. WEB AUDIO SOUND EFFECTS ENGINE
+    // 3. WEB AUDIO SOUND EFFECTS
     // =========================================================================
     let audioCtx = null;
     function getAudioCtx() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
       return audioCtx;
     }
@@ -761,87 +841,63 @@
       if (!soundEnabled) return;
       try {
         const ctx = getAudioCtx();
-        const vol = (document.getElementById('master-volume')?.value || 75) / 100 * 0.16;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
+        const vol = (document.getElementById('master-volume')?.value || 75) / 100 * 0.15;
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
         const now = ctx.currentTime;
+
         if (type === 'open') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(360, now);
-          osc.frequency.exponentialRampToValueAtTime(640, now + 0.12);
-          gain.gain.setValueAtTime(vol, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
-          osc.start(now);
-          osc.stop(now + 0.14);
+          osc.type = 'sine'; osc.frequency.setValueAtTime(360, now); osc.frequency.exponentialRampToValueAtTime(640, now + 0.12);
+          gain.gain.setValueAtTime(vol, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+          osc.start(now); osc.stop(now + 0.14);
         } else if (type === 'close') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(520, now);
-          osc.frequency.exponentialRampToValueAtTime(260, now + 0.11);
-          gain.gain.setValueAtTime(vol, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-          osc.start(now);
-          osc.stop(now + 0.12);
+          osc.type = 'sine'; osc.frequency.setValueAtTime(520, now); osc.frequency.exponentialRampToValueAtTime(260, now + 0.11);
+          gain.gain.setValueAtTime(vol, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.start(now); osc.stop(now + 0.12);
         } else if (type === 'click') {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(760, now);
-          gain.gain.setValueAtTime(vol * 0.5, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-          osc.start(now);
-          osc.stop(now + 0.04);
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(760, now);
+          gain.gain.setValueAtTime(vol * 0.45, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+          osc.start(now); osc.stop(now + 0.04);
         } else if (type === 'bongo') {
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(290, now);
-          osc.frequency.setValueAtTime(440, now + 0.07);
-          osc.frequency.setValueAtTime(580, now + 0.14);
-          gain.gain.setValueAtTime(vol * 0.55, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
-          osc.start(now);
-          osc.stop(now + 0.24);
+          osc.type = 'sawtooth'; osc.frequency.setValueAtTime(290, now); osc.frequency.setValueAtTime(450, now + 0.07); osc.frequency.setValueAtTime(600, now + 0.14);
+          gain.gain.setValueAtTime(vol * 0.5, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+          osc.start(now); osc.stop(now + 0.24);
         } else if (type === 'startup') {
-          const notes = [261.63, 329.63, 392.00, 523.25];
-          notes.forEach((freq, i) => {
-            const o = ctx.createOscillator();
-            const g = ctx.createGain();
-            o.type = 'sine';
-            o.frequency.value = freq;
-            o.connect(g);
-            g.connect(ctx.destination);
-            g.gain.setValueAtTime(vol * 0.7, now + i * 0.12);
-            g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.45);
-            o.start(now + i * 0.12);
-            o.stop(now + i * 0.12 + 0.45);
+          [261.63, 329.63, 392.00, 523.25].forEach((freq, i) => {
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.type = 'sine'; o.frequency.value = freq; o.connect(g); g.connect(ctx.destination);
+            g.gain.setValueAtTime(vol * 0.65, now + i * 0.11); g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.11 + 0.45);
+            o.start(now + i * 0.11); o.stop(now + i * 0.11 + 0.45);
           });
         }
       } catch (e) {}
     }
 
     // =========================================================================
-    // 3. BOOT, WI-FI SYSTEM, LIVE WEATHER & SHELL INITIALIZATION
+    // 4. BOOT & SHELL INITIALIZATION
     // =========================================================================
     window.addEventListener('DOMContentLoaded', () => {
       const bootBar = document.getElementById('boot-bar');
-      setTimeout(() => bootBar.style.width = '45%', 150);
-      setTimeout(() => bootBar.style.width = '85%', 500);
-      setTimeout(() => bootBar.style.width = '100%', 850);
+      setTimeout(() => bootBar.style.width = '45%', 140);
+      setTimeout(() => bootBar.style.width = '85%', 480);
+      setTimeout(() => bootBar.style.width = '100%', 820);
       setTimeout(() => {
         const boot = document.getElementById('boot-screen');
         boot.style.opacity = '0';
         setTimeout(() => boot.remove(), 600);
         playSFX('startup');
-      }, 1150);
+      }, 1100);
 
       renderDesktopIcons();
       renderStartMenuApps();
       renderTaskbar();
       renderCalendar();
-      renderWifiList();
       updateClocks();
       setInterval(updateClocks, 1000);
       initBongoDrag();
       initEyeTracking();
+      initMatrixRain();
+      measureRealHostInternet();
       fetchLiveWeather();
     });
 
@@ -854,161 +910,50 @@
           const temp = Math.round(data.current_weather.temperature);
           const wind = Math.round(data.current_weather.windspeed);
           document.getElementById('tb-weather-temp').textContent = `${temp}°F Live`;
-          document.getElementById('widget-temp').textContent = `${temp}°F • Live Sky`;
-          document.getElementById('widget-wind').textContent = `Wind: ${wind} mph • Live Open-Meteo`;
+          document.getElementById('widget-temp').textContent = `${temp}°F • Clear Sky`;
+          document.getElementById('widget-wind').textContent = `Wind: ${wind} mph • Live Host Internet`;
         }
       } catch (e) {}
-    }
-
-    function isInternetAvailable() {
-      return wifiState.enabled && Boolean(wifiState.connectedSsid);
-    }
-
-    function toggleWifiPower(forceVal) {
-      wifiState.enabled = typeof forceVal === 'boolean' ? forceVal : !wifiState.enabled;
-      if (wifiState.enabled && !wifiState.connectedSsid) {
-        wifiState.connectedSsid = wifiState.networks[0].ssid;
-      }
-      updateWifiUI();
-      playSFX('click');
-    }
-
-    function connectToWifi(ssid) {
-      wifiState.enabled = true;
-      wifiState.connectedSsid = ssid;
-      updateWifiUI();
-      renderWifiList();
-      playSFX('open');
-      setBongoSpeech(`📶 Connected to <b>${ssid}</b>! Live internet access is active!`);
-    }
-
-    function updateWifiUI() {
-      const online = isInternetAvailable();
-      const tileBox = document.getElementById('wifi-tile-box');
-      const ssidEl = document.getElementById('qs-wifi-ssid');
-      const statusEl = document.getElementById('qs-wifi-status');
-      const trayIcon = document.getElementById('tray-wifi-icon');
-      const chk = document.getElementById('wifi-switch-checkbox');
-      const lbl = document.getElementById('wifi-switch-label');
-      const bongoDot = document.getElementById('bongo-online-dot');
-
-      if (chk) chk.checked = wifiState.enabled;
-      if (lbl) lbl.textContent = wifiState.enabled ? 'On' : 'Off';
-
-      if (online) {
-        tileBox.style.background = 'var(--accent)';
-        ssidEl.textContent = wifiState.connectedSsid;
-        statusEl.textContent = 'Connected, secured';
-        trayIcon.textContent = '📶';
-        bongoDot.className = 'w-2 h-2 rounded-full bg-green-400 animate-ping';
-      } else {
-        tileBox.style.background = 'rgba(255,255,255,0.12)';
-        ssidEl.textContent = wifiState.enabled ? 'Not connected' : 'Wi-Fi Off';
-        statusEl.textContent = 'Offline';
-        trayIcon.textContent = '📵';
-        bongoDot.className = 'w-2 h-2 rounded-full bg-red-400';
-      }
-      renderWifiList();
-      updateWidgetsPanel();
-    }
-
-    function renderWifiList() {
-      const list = document.getElementById('wifi-networks-list');
-      if (!list) return;
-      if (!wifiState.enabled) {
-        list.innerHTML = `<div class="text-xs opacity-65 text-center py-6">Wi-Fi is turned off.<br>Turn Wi-Fi on to browse available networks.</div>`;
-        return;
-      }
-      list.innerHTML = wifiState.networks.map(net => {
-        const isConn = wifiState.connectedSsid === net.ssid;
-        return `
-          <div onclick="connectToWifi('${net.ssid}')" class="p-2.5 rounded-xl flex items-center justify-between cursor-pointer transition ${isConn ? 'bg-purple-600/40 border border-purple-400/50' : 'bg-white/5 hover:bg-white/15 border border-transparent'}">
-            <div class="flex items-center gap-2.5">
-              <span class="text-base">📶</span>
-              <div>
-                <div class="text-xs font-semibold flex items-center gap-1.5">${net.ssid} ${net.secured ? '<span class="text-[10px] opacity-70">🔒</span>' : ''}</div>
-                <div class="text-[10px] opacity-70">${isConn ? 'Connected • ' + net.speed : net.signal + ' signal'}</div>
-              </div>
-            </div>
-            ${isConn ? '<span class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300">Active</span>' : '<span class="text-[10px] opacity-60">Connect</span>'}
-          </div>
-        `;
-      }).join('');
-    }
-
-    function showWifiSubpanel() {
-      document.getElementById('qs-main-view').classList.add('hidden');
-      document.getElementById('qs-wifi-view').classList.remove('hidden');
-      renderWifiList();
-    }
-
-    function hideWifiSubpanel() {
-      document.getElementById('qs-wifi-view').classList.add('hidden');
-      document.getElementById('qs-main-view').classList.remove('hidden');
-    }
-
-    async function testLiveInternetPing() {
-      showWifiSubpanel();
-      const resEl = document.getElementById('wifi-ping-result');
-      if (!isInternetAvailable()) {
-        resEl.innerHTML = `<span class="text-red-400">❌ Offline: Enable Wi-Fi first!</span>`;
-        return;
-      }
-      resEl.innerHTML = `<span class="text-purple-300">Pinging Wikipedia API...</span>`;
-      const start = performance.now();
-      try {
-        await fetch('https://en.wikipedia.org/w/api.php?action=query&meta=siteinfo&format=json&origin=*');
-        const ms = Math.round(performance.now() - start);
-        resEl.innerHTML = `<span class="text-green-400">✓ Online! Real Internet Latency: ${ms}ms</span>`;
-      } catch (e) {
-        resEl.innerHTML = `<span class="text-yellow-300">Connected to gateway (browser sandbox mode)</span>`;
-      }
     }
 
     function updateWidgetsPanel() {
       const online = isInternetAvailable();
       const badge = document.getElementById('widget-net-badge');
       const wifiName = document.getElementById('widget-wifi-name');
-      const winCount = document.getElementById('widget-win-count');
+      const netSpeed = document.getElementById('widget-net-speed');
       if (badge) {
-        badge.textContent = online ? '● Online' : '● Offline';
+        badge.textContent = online ? '● Host Bridge Online' : '● Offline';
         badge.className = online
           ? 'text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 border border-green-400/30'
           : 'text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-400/30';
       }
-      if (wifiName) wifiName.textContent = online ? wifiState.connectedSsid : 'Disconnected';
-      if (winCount) winCount.textContent = `${openWindows.length} Active`;
+      if (wifiName) wifiName.textContent = online ? 'Host Computer Wi-Fi' : 'Disconnected';
+      if (netSpeed) {
+        const spd = networkState.downlinkMbps ? `${networkState.downlinkMbps} Mbps` : 'Active';
+        const png = networkState.realPingMs ? `${networkState.realPingMs} ms` : '';
+        netSpeed.textContent = online ? `${spd} ${png ? '• ' + png : ''}` : '0 Mbps';
+      }
     }
 
     function updateClocks() {
       const now = new Date();
-      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const shortDate = now.toLocaleDateString([], { month: '2-digit', day: '2-digit', year: 'numeric' });
-      const lockTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-      const lockDate = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
-
-      document.getElementById('tray-time').textContent = timeStr;
-      document.getElementById('tray-date').textContent = shortDate;
-      document.getElementById('lock-time').textContent = lockTime;
-      document.getElementById('lock-date').textContent = lockDate;
+      document.getElementById('tray-time').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('tray-date').textContent = now.toLocaleDateString([], { month: '2-digit', day: '2-digit', year: 'numeric' });
+      document.getElementById('lock-time').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      document.getElementById('lock-date').textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
     }
 
     function renderCalendar() {
       const now = new Date();
-      const year = now.getFullYear();
-      const month = now.getMonth();
-      const today = now.getDate();
+      const year = now.getFullYear(), month = now.getMonth(), today = now.getDate();
       document.getElementById('cal-month-title').textContent = now.toLocaleDateString([], { month: 'long', year: 'numeric' });
-
       const firstDay = new Date(year, month, 1).getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const grid = document.getElementById('cal-days-grid');
       grid.innerHTML = '';
-
       for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div></div>`;
       for (let d = 1; d <= daysInMonth; d++) {
-        const isToday = d === today;
-        grid.innerHTML += `<div class="py-1 rounded-full ${isToday ? 'bg-purple-600 text-white font-bold shadow' : 'hover:bg-white/10'}">${d}</div>`;
+        grid.innerHTML += `<div class="py-1 rounded-full ${d === today ? 'bg-purple-600 text-white font-bold shadow' : 'hover:bg-white/10'}">${d}</div>`;
       }
     }
 
@@ -1035,11 +980,9 @@
     }
 
     function closeAllFlyouts() {
-      document.getElementById('start-menu').classList.add('hidden');
-      document.getElementById('quick-settings').classList.add('hidden');
-      document.getElementById('calendar-flyout').classList.add('hidden');
-      document.getElementById('widgets-flyout').classList.add('hidden');
-      document.getElementById('context-menu').classList.add('hidden');
+      ['start-menu', 'quick-settings', 'calendar-flyout', 'widgets-flyout', 'context-menu'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
     }
 
     function toggleStartMenu(forceState) {
@@ -1073,9 +1016,7 @@
       `).join('');
     }
 
-    function filterStartApps(val) {
-      renderStartMenuApps(val);
-    }
+    function filterStartApps(val) { renderStartMenuApps(val); }
 
     function renderTaskbar() {
       const container = document.getElementById('taskbar-apps');
@@ -1096,65 +1037,45 @@
           </button>
         `;
       }).join('');
-      updateWidgetsPanel();
     }
 
     function handleTaskbarAppClick(appId) {
       const existing = openWindows.filter(w => w.appId === appId);
-      if (existing.length === 0) {
-        openApp(appId);
-      } else {
+      if (existing.length === 0) openApp(appId);
+      else {
         const target = existing[existing.length - 1];
-        if (target.minimized) {
-          target.minimized = false;
-          focusWindow(target.id);
-        } else if (target.zIndex === topZIndex) {
-          minimizeWindow(target.id);
-        } else {
-          focusWindow(target.id);
-        }
+        if (target.minimized) { target.minimized = false; focusWindow(target.id); }
+        else if (target.zIndex === topZIndex) minimizeWindow(target.id);
+        else focusWindow(target.id);
       }
     }
 
     // =========================================================================
-    // 4. WINDOW MANAGER
+    // 5. WINDOW MANAGER
     // =========================================================================
     function openApp(appId, customData = null) {
       closeAllFlyouts();
       const app = APPS.find(a => a.id === appId);
       if (!app) return;
 
-      if (['settings', 'calculator', 'music', 'taskmgr'].includes(appId)) {
+      if (['settings', 'calculator', 'taskmgr'].includes(appId)) {
         const existing = openWindows.find(w => w.appId === appId);
-        if (existing) {
-          existing.minimized = false;
-          focusWindow(existing.id);
-          return;
-        }
+        if (existing) { existing.minimized = false; focusWindow(existing.id); return; }
       }
 
       playSFX('open');
       const winId = 'win-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
       const offset = (openWindows.length % 7) * 26;
-      const vw = window.innerWidth;
-      const vh = window.innerHeight - 52;
-
-      const w = Math.min(app.width, vw - 24);
-      const h = Math.min(app.height, vh - 24);
-      const x = Math.max(12, Math.min(vw - w - 12, 70 + offset));
-      const y = Math.max(12, Math.min(vh - h - 12, 34 + offset));
+      const vw = window.innerWidth, vh = window.innerHeight - 52;
+      const w = Math.min(app.width, vw - 24), h = Math.min(app.height, vh - 24);
+      const x = Math.max(12, Math.min(vw - w - 12, 68 + offset));
+      const y = Math.max(12, Math.min(vh - h - 12, 32 + offset));
 
       topZIndex++;
       const winObj = {
-        id: winId,
-        appId,
-        title: customData?.title || app.name,
-        icon: app.icon,
-        zIndex: topZIndex,
-        minimized: false,
-        maximized: vw < 640,
-        x, y, w, h,
-        data: customData
+        id: winId, appId, title: customData?.title || app.name, icon: app.icon,
+        zIndex: topZIndex, minimized: false, maximized: vw < 640, snapState: null,
+        x, y, w, h, data: customData
       };
 
       openWindows.push(winObj);
@@ -1182,10 +1103,12 @@
             <span class="text-base">${winObj.icon}</span>
             <span class="text-xs font-semibold truncate" id="${winObj.id}-title">${winObj.title}</span>
           </div>
-          <div class="flex items-center gap-1">
-            <button onclick="minimizeWindow('${winObj.id}'); event.stopPropagation()" title="Minimize" class="w-8 h-7 rounded-md hover:bg-white/10 flex items-center justify-center text-xs transition">—</button>
-            <button onclick="toggleMaximizeWindow('${winObj.id}'); event.stopPropagation()" title="Maximize" class="w-8 h-7 rounded-md hover:bg-white/10 flex items-center justify-center text-xs transition">▢</button>
-            <button onclick="closeWindow('${winObj.id}'); event.stopPropagation()" title="Close" class="w-8 h-7 rounded-md hover:bg-red-500 hover:text-white flex items-center justify-center text-xs transition">✕</button>
+          <div class="flex items-center gap-0.5">
+            <button onclick="snapWindow('${winObj.id}', 'left'); event.stopPropagation()" title="Snap Left" class="hidden sm:flex w-7 h-7 rounded-md hover:bg-white/10 items-center justify-center text-[10px] opacity-75 hover:opacity-100">◧</button>
+            <button onclick="snapWindow('${winObj.id}', 'right'); event.stopPropagation()" title="Snap Right" class="hidden sm:flex w-7 h-7 rounded-md hover:bg-white/10 items-center justify-center text-[10px] opacity-75 hover:opacity-100">◨</button>
+            <button onclick="minimizeWindow('${winObj.id}'); event.stopPropagation()" title="Minimize" class="w-7 h-7 rounded-md hover:bg-white/10 flex items-center justify-center text-xs transition">—</button>
+            <button onclick="toggleMaximizeWindow('${winObj.id}'); event.stopPropagation()" title="Maximize" class="w-7 h-7 rounded-md hover:bg-white/10 flex items-center justify-center text-xs transition">▢</button>
+            <button onclick="closeWindow('${winObj.id}'); event.stopPropagation()" title="Close" class="w-7 h-7 rounded-md hover:bg-red-500 hover:text-white flex items-center justify-center text-xs transition">✕</button>
           </div>
         </div>
         <div id="${winObj.id}-body" class="flex-1 overflow-auto relative flex flex-col"></div>
@@ -1198,16 +1121,24 @@
       mountAppContent(winObj);
     }
 
+    function snapWindow(winId, side) {
+      const winObj = openWindows.find(w => w.id === winId);
+      const el = document.getElementById(winId);
+      if (!winObj || !el) return;
+      el.classList.remove('maximized', 'snap-left', 'snap-right');
+      winObj.maximized = false;
+      if (winObj.snapState === side) winObj.snapState = null;
+      else { winObj.snapState = side; el.classList.add(side === 'left' ? 'snap-left' : 'snap-right'); }
+      playSFX('click');
+    }
+
     function focusWindow(winId) {
       const winObj = openWindows.find(w => w.id === winId);
       if (!winObj) return;
       topZIndex++;
       winObj.zIndex = topZIndex;
       const el = document.getElementById(winId);
-      if (el) {
-        el.style.zIndex = topZIndex;
-        el.classList.remove('minimized');
-      }
+      if (el) { el.style.zIndex = topZIndex; el.classList.remove('minimized'); }
       renderTaskbar();
     }
 
@@ -1215,18 +1146,19 @@
       const winObj = openWindows.find(w => w.id === winId);
       if (!winObj) return;
       winObj.minimized = true;
-      const el = document.getElementById(winId);
-      if (el) el.classList.add('minimized');
+      document.getElementById(winId)?.classList.add('minimized');
       playSFX('click');
       renderTaskbar();
     }
 
     function toggleMaximizeWindow(winId) {
       const winObj = openWindows.find(w => w.id === winId);
-      if (!winObj) return;
-      winObj.maximized = !winObj.maximized;
       const el = document.getElementById(winId);
-      if (el) el.classList.toggle('maximized', winObj.maximized);
+      if (!winObj || !el) return;
+      el.classList.remove('snap-left', 'snap-right');
+      winObj.snapState = null;
+      winObj.maximized = !winObj.maximized;
+      el.classList.toggle('maximized', winObj.maximized);
       playSFX('click');
     }
 
@@ -1234,8 +1166,7 @@
       const idx = openWindows.findIndex(w => w.id === winId);
       if (idx === -1) return;
       openWindows.splice(idx, 1);
-      const el = document.getElementById(winId);
-      if (el) el.remove();
+      document.getElementById(winId)?.remove();
       playSFX('close');
       renderTaskbar();
     }
@@ -1244,72 +1175,49 @@
       const titlebar = winEl.querySelector('.window-titlebar');
       let dragging = false, startX, startY, origX, origY;
 
-      const onStart = (clientX, clientY, target) => {
+      const onStart = (cx, cy, target) => {
         if (target.closest('button') || winObj.maximized) return;
-        dragging = true;
-        startX = clientX;
-        startY = clientY;
-        origX = winObj.x;
-        origY = winObj.y;
+        if (winObj.snapState) { winEl.classList.remove('snap-left', 'snap-right'); winObj.snapState = null; }
+        dragging = true; startX = cx; startY = cy; origX = winObj.x; origY = winObj.y;
       };
-
-      const onMove = (clientX, clientY) => {
+      const onMove = (cx, cy) => {
         if (!dragging) return;
-        winObj.x = Math.max(0, Math.min(window.innerWidth - 100, origX + (clientX - startX)));
-        winObj.y = Math.max(0, Math.min(window.innerHeight - 90, origY + (clientY - startY)));
-        winEl.style.left = winObj.x + 'px';
-        winEl.style.top = winObj.y + 'px';
+        winObj.x = Math.max(0, Math.min(window.innerWidth - 100, origX + (cx - startX)));
+        winObj.y = Math.max(0, Math.min(window.innerHeight - 90, origY + (cy - startY)));
+        winEl.style.left = winObj.x + 'px'; winEl.style.top = winObj.y + 'px';
       };
-
       const onEnd = () => { dragging = false; };
 
       titlebar.addEventListener('mousedown', e => onStart(e.clientX, e.clientY, e.target));
       window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
       window.addEventListener('mouseup', onEnd);
-
-      titlebar.addEventListener('touchstart', e => {
-        const t = e.touches[0];
-        onStart(t.clientX, t.clientY, e.target);
-      }, { passive: true });
-      window.addEventListener('touchmove', e => {
-        if (!dragging) return;
-        const t = e.touches[0];
-        onMove(t.clientX, t.clientY);
-      }, { passive: true });
+      titlebar.addEventListener('touchstart', e => onStart(e.touches[0].clientX, e.touches[0].clientY, e.target), { passive: true });
+      window.addEventListener('touchmove', e => { if (dragging) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
       window.addEventListener('touchend', onEnd);
     }
 
     function setupWindowResize(winEl, winObj) {
       const handle = winEl.querySelector('.resize-handle');
       let resizing = false, startX, startY, origW, origH;
-
       handle.addEventListener('mousedown', e => {
-        e.stopPropagation();
-        if (winObj.maximized) return;
-        resizing = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        origW = winObj.w;
-        origH = winObj.h;
+        e.stopPropagation(); if (winObj.maximized) return;
+        resizing = true; startX = e.clientX; startY = e.clientY; origW = winObj.w; origH = winObj.h;
       });
-
       window.addEventListener('mousemove', e => {
         if (!resizing) return;
         winObj.w = Math.max(280, origW + (e.clientX - startX));
         winObj.h = Math.max(220, origH + (e.clientY - startY));
-        winEl.style.width = winObj.w + 'px';
-        winEl.style.height = winObj.h + 'px';
+        winEl.style.width = winObj.w + 'px'; winEl.style.height = winObj.h + 'px';
       });
-
       window.addEventListener('mouseup', () => { resizing = false; });
     }
 
     // =========================================================================
-    // 5. BONGO ASSISTANT & GEMINI AI INTEGRATION
+    // 6. BONGO AI ASSISTANT
     // =========================================================================
     const BONGO_JOKES = [
       "Why did the banana go to the doctor? Because it wasn't peeling well! Ha-ha!",
-      "What do you call a gorilla wearing headphones? Anything you want, he can't hear you!",
+      "What do you call a gorilla with super-fast Wi-Fi? A Fiber-Primate! 🦍📶",
       "Why don't monkeys play cards in the jungle? Too many cheetahs!",
       "How do you make a banana split? Cut it in half! Classic Bongo humor!"
     ];
@@ -1341,26 +1249,27 @@
       playSFX('bongo');
 
       if (action === 'joke') {
-        const joke = BONGO_JOKES[Math.floor(Math.random() * BONGO_JOKES.length)];
-        setBongoSpeech(`😂 <b>Joke Time:</b><br>${joke}`);
+        setBongoSpeech(`😂 <b>Joke Time:</b><br>${BONGO_JOKES[Math.floor(Math.random() * BONGO_JOKES.length)]}`);
       } else if (action === 'trick') {
         charEl.classList.remove('bongo-idle');
         charEl.classList.add('bongo-spinning');
         shades.classList.toggle('hidden');
-        setBongoSpeech("🤸 <i>*Does a 360° canopy flip!*</i> Ta-da! How's that for desktop agility?");
-        setTimeout(() => {
-          charEl.classList.remove('bongo-spinning');
-          charEl.classList.add('bongo-idle');
-        }, 850);
-      } else if (action === 'sing') {
+        setBongoSpeech("🤸 <i>*Does a 360° canopy flip!*</i> Ta-da!");
+        setTimeout(() => { charEl.classList.remove('bongo-spinning'); charEl.classList.add('bongo-idle'); }, 850);
+      } else if (action === 'dance') {
         charEl.classList.remove('bongo-idle');
         charEl.classList.add('bongo-dancing');
-        setBongoSpeech("🎵 <i>Swinging through the clouds of BongoOS, eating bananas on a bicycle built for two...</i> 🎵");
+        setBongoSpeech("💃🎵 <i>Swingin' through BongoOS 11 on a bicycle built for two...</i>");
         playCanopyMelody();
-        setTimeout(() => {
-          charEl.classList.remove('bongo-dancing');
-          charEl.classList.add('bongo-idle');
-        }, 4200);
+        setTimeout(() => { charEl.classList.remove('bongo-dancing'); charEl.classList.add('bongo-idle'); }, 4000);
+      } else if (action === 'wifi') {
+        if (isInternetAvailable()) {
+          const spd = networkState.downlinkMbps ? `${networkState.downlinkMbps} Mbps` : 'Active';
+          const png = networkState.realPingMs ? `${networkState.realPingMs} ms` : 'Online';
+          setBongoSpeech(`📶 <b>Host Computer Wi-Fi Bridge:</b><br>• Status: <b>Connected</b> (${networkState.effectiveType})<br>• Speed: <b>${spd}</b> • Ping: <b>${png}</b><br>• IP: <code>${networkState.publicIp}</code>`);
+        } else {
+          setBongoSpeech("📵 Your Wi-Fi connection is currently offline! Enable Wi-Fi in the bottom-right system tray.");
+        }
       }
     }
 
@@ -1368,25 +1277,13 @@
       if (!soundEnabled) return;
       try {
         const ctx = getAudioCtx();
-        const melody = [
-          { f: 392.00, d: 0.42 }, { f: 329.63, d: 0.42 }, { f: 261.63, d: 0.42 },
-          { f: 196.00, d: 0.42 }, { f: 220.00, d: 0.21 }, { f: 246.94, d: 0.21 },
-          { f: 261.63, d: 0.42 }, { f: 220.00, d: 0.21 }, { f: 261.63, d: 0.42 },
-          { f: 196.00, d: 0.60 }
-        ];
+        const melody = [{ f: 392, d: 0.36 }, { f: 440, d: 0.36 }, { f: 523.25, d: 0.36 }, { f: 392, d: 0.36 }, { f: 329.63, d: 0.36 }, { f: 392, d: 0.52 }];
         let t = ctx.currentTime;
         melody.forEach(n => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.value = n.f;
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          gain.gain.setValueAtTime(0.11, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + n.d);
-          osc.start(t);
-          osc.stop(t + n.d);
-          t += n.d * 0.95;
+          const osc = ctx.createOscillator(), gain = ctx.createGain();
+          osc.type = 'triangle'; osc.frequency.value = n.f; osc.connect(gain); gain.connect(ctx.destination);
+          gain.gain.setValueAtTime(0.11, t); gain.gain.exponentialRampToValueAtTime(0.001, t + n.d);
+          osc.start(t); osc.stop(t + n.d); t += n.d * 0.95;
         });
       } catch (e) {}
     }
@@ -1398,17 +1295,13 @@
         contents: [{ parts: [{ text: prompt }] }],
         systemInstruction: { parts: [{ text: systemInstruction }] }
       };
-      if (useSearch) {
-        payload.tools = [{ google_search: {} }];
-      }
+      if (useSearch) payload.tools = [{ google_search: {} }];
 
       const delays = [1000, 2000, 4000];
       for (let attempt = 0; attempt <= delays.length; attempt++) {
         try {
           const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
           });
           if (!response.ok) throw new Error('HTTP ' + response.status);
           const result = await response.json();
@@ -1437,47 +1330,49 @@
       input.value = '';
       const lower = query.toLowerCase();
 
-      // OS Command Voice/Text Actions
-      if (lower.includes('open browser') || lower.includes('open chrome') || lower.includes('bongochrome')) {
+      if (lower.includes('check wifi') || lower.includes('wifi status') || lower.includes('internet speed')) {
+        await measureRealHostInternet();
+        bongoQuickAction('wifi');
+        return;
+      }
+      if (lower.includes('open browser') || lower.includes('chrome')) {
         openApp('browser');
-        setBongoSpeech("🌐 Opening <b>BongoChrome</b> right now! Ready to surf the live web!");
+        setBongoSpeech("🌐 Opening <b>BongoChrome</b> bridged to your host Wi-Fi!");
         return;
       }
       if (lower.startsWith('search ') || lower.startsWith('google ')) {
         const term = query.replace(/^(search|google)\s+/i, '');
         openApp('browser', { initialQuery: term });
-        setBongoSpeech(`🔍 Searching the live internet for <b>"${term}"</b> in BongoChrome!`);
+        setBongoSpeech(`🔍 Searching the live web for <b>"${term}"</b>!`);
         return;
       }
       if (lower.includes('turn off wifi') || lower.includes('disable wifi')) {
-        toggleWifiPower(false);
-        setBongoSpeech("📵 Wi-Fi is now OFF! Open BongoChrome to play the offline Banana Dino Runner!");
+        toggleWifiOverride(false);
         return;
       }
       if (lower.includes('turn on wifi') || lower.includes('enable wifi')) {
-        toggleWifiPower(true);
-        setBongoSpeech("📶 Wi-Fi is back ON! Connected to " + wifiState.connectedSsid + "!");
+        toggleWifiOverride(true);
         return;
       }
 
       if (!isInternetAvailable()) {
-        setBongoSpeech("📵 Oops! Your Wi-Fi is currently turned off! Turn Wi-Fi back on in the bottom-right system tray so I can connect to my Gemini cloud brain!");
+        setBongoSpeech("📵 Your Wi-Fi connection is offline! Enable Wi-Fi in the bottom-right tray to connect to my Gemini cloud brain.");
         return;
       }
 
-      setBongoSpeech(`<span class="inline-flex items-center gap-1.5 text-purple-300"><span class="animate-spin">🍌</span> Thinking via ${wifiState.connectedSsid}...</span>`);
+      setBongoSpeech(`<span class="inline-flex items-center gap-1.5 text-purple-300"><span class="animate-spin">🍌</span> Thinking via Host Wi-Fi...</span>`);
       playSFX('click');
 
       try {
         const { text } = await callGeminiAPI(
           query,
-          "You are Bongo, a charming, original purple gorilla desktop assistant inside BongoOS 11. Keep responses concise (2-3 short sentences max), helpful, cheerful, and playful.",
+          "You are Bongo, a friendly purple gorilla desktop assistant inside BongoOS 11. Keep answers concise (2-3 short sentences max), helpful, and cheerful.",
           true
         );
         setBongoSpeech(text.replace(/\n/g, '<br>'));
         playSFX('bongo');
       } catch (err) {
-        setBongoSpeech("My jungle Wi-Fi dropped a coconut! Check your connection or try asking again! 🥥");
+        setBongoSpeech("My jungle connection hiccuped! Try asking again in a moment! 🥥");
       }
     }
 
@@ -1485,39 +1380,25 @@
       const widget = document.getElementById('bongo-widget');
       let dragging = false, startX, startY, origRight, origBottom;
 
-      const onStart = (clientX, clientY, target) => {
+      const onStart = (cx, cy, target) => {
         if (target.closest('input, button, form')) return;
-        dragging = true;
-        startX = clientX;
-        startY = clientY;
+        dragging = true; window._bongoDragged = false; startX = cx; startY = cy;
         const rect = widget.getBoundingClientRect();
-        origRight = window.innerWidth - rect.right;
-        origBottom = window.innerHeight - rect.bottom;
+        origRight = window.innerWidth - rect.right; origBottom = window.innerHeight - rect.bottom;
       };
-
-      const onMove = (clientX, clientY) => {
+      const onMove = (cx, cy) => {
         if (!dragging) return;
-        const newRight = Math.max(8, Math.min(window.innerWidth - 130, origRight - (clientX - startX)));
-        const newBottom = Math.max(58, Math.min(window.innerHeight - 130, origBottom - (clientY - startY)));
-        widget.style.right = newRight + 'px';
-        widget.style.bottom = newBottom + 'px';
+        if (Math.abs(cx - startX) > 4 || Math.abs(cy - startY) > 4) window._bongoDragged = true;
+        widget.style.right = Math.max(8, Math.min(window.innerWidth - 130, origRight - (cx - startX))) + 'px';
+        widget.style.bottom = Math.max(58, Math.min(window.innerHeight - 130, origBottom - (cy - startY))) + 'px';
       };
-
       const onEnd = () => { dragging = false; };
 
       widget.addEventListener('mousedown', e => onStart(e.clientX, e.clientY, e.target));
       window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
       window.addEventListener('mouseup', onEnd);
-
-      widget.addEventListener('touchstart', e => {
-        const t = e.touches[0];
-        onStart(t.clientX, t.clientY, e.target);
-      }, { passive: true });
-      window.addEventListener('touchmove', e => {
-        if (!dragging) return;
-        const t = e.touches[0];
-        onMove(t.clientX, t.clientY);
-      }, { passive: true });
+      widget.addEventListener('touchstart', e => onStart(e.touches[0].clientX, e.touches[0].clientY, e.target), { passive: true });
+      window.addEventListener('touchmove', e => { if (dragging) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
       window.addEventListener('touchend', onEnd);
     }
 
@@ -1526,8 +1407,7 @@
         const char = document.getElementById('bongo-character');
         if (!char) return;
         const rect = char.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 3;
+        const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 3;
         const dx = Math.max(-2.5, Math.min(2.5, (e.clientX - cx) / 140));
         const dy = Math.max(-2.5, Math.min(2.5, (e.clientY - cy) / 140));
         document.getElementById('bongo-pupil-l')?.setAttribute('cx', 60 + dx);
@@ -1538,35 +1418,73 @@
     }
 
     // =========================================================================
-    // 6. CONTEXT MENUS & POWER ACTIONS
+    // 7. VISUAL MODES, MATRIX RAIN & CONTEXT MENUS
     // =========================================================================
+    function toggleNightLight() {
+      nightLightEnabled = !nightLightEnabled;
+      document.getElementById('night-light-overlay').classList.toggle('hidden', !nightLightEnabled);
+      const btn = document.getElementById('night-light-btn');
+      btn?.classList.toggle('bg-amber-600', nightLightEnabled);
+      btn?.classList.toggle('text-white', nightLightEnabled);
+      btn?.classList.toggle('bg-white/10', !nightLightEnabled);
+      playSFX('click');
+    }
+
+    function toggleMatrixWallpaper() {
+      matrixEnabled = !matrixEnabled;
+      document.getElementById('matrix-canvas').classList.toggle('hidden', !matrixEnabled);
+      playSFX('click');
+    }
+
+    function initMatrixRain() {
+      const canvas = document.getElementById('matrix-canvas');
+      const ctx = canvas.getContext('2d');
+      let drops = [];
+      function resize() {
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        drops = Array(Math.floor(canvas.width / 16)).fill(1);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      const chars = 'BONGO01101🦍🍌ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      setInterval(() => {
+        if (!matrixEnabled) return;
+        ctx.fillStyle = 'rgba(6, 4, 13, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#22d3ee';
+        ctx.font = '14px JetBrains Mono, monospace';
+        for (let i = 0; i < drops.length; i++) {
+          ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * 16, drops[i] * 16);
+          if (drops[i] * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        }
+      }, 45);
+    }
+
     function showDesktopContextMenu(e) {
       e.preventDefault();
       closeAllFlyouts();
       const menu = document.getElementById('context-menu');
       menu.innerHTML = `
         <button onclick="openApp('browser'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">🌐 Open BongoChrome</button>
-        <button onclick="openApp('explorer'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">📁 Open Files</button>
-        <button onclick="openApp('terminal'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">💻 Open BongoShell</button>
-        <button onclick="bongoQuickAction('joke'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">🦍 Ask Bongo for a Joke</button>
+        <button onclick="openApp('browser', { initialQuery: 'bongo://network' }); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-cyan-600 hover:text-white flex items-center gap-2">📶 Host Network Diagnostics</button>
+        <button onclick="openApp('terminal'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">💻 Open Bongo Terminal</button>
         <div class="my-1 border-t border-white/10"></div>
-        <button onclick="cycleWallpaper(); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">🖼️ Next Wallpaper</button>
+        <button onclick="cycleWallpaper(); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">🖼️ Switch Wallpaper</button>
         <button onclick="openApp('settings'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">⚙️ Personalize</button>
       `;
-      menu.style.left = Math.min(window.innerWidth - 220, e.clientX) + 'px';
-      menu.style.top = Math.min(window.innerHeight - 240, e.clientY) + 'px';
+      menu.style.left = Math.min(window.innerWidth - 230, e.clientX) + 'px';
+      menu.style.top = Math.min(window.innerHeight - 220, e.clientY) + 'px';
       menu.classList.remove('hidden');
     }
 
     function showBongoContextMenu(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      closeAllFlyouts();
+      e.preventDefault(); e.stopPropagation(); closeAllFlyouts();
       const menu = document.getElementById('context-menu');
       menu.innerHTML = `
+        <button onclick="bongoQuickAction('wifi'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-cyan-600 hover:text-white">📶 Check Host Wi-Fi</button>
         <button onclick="bongoQuickAction('joke'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white">😂 Tell a Joke</button>
-        <button onclick="bongoQuickAction('sing'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white">🎵 Sing Serenade</button>
-        <button onclick="bongoQuickAction('trick'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white">🤸 Do a Flip</button>
+        <button onclick="bongoQuickAction('dance'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white">💃 Dance & Sing</button>
         <div class="my-1 border-t border-white/10"></div>
         <button onclick="toggleBongoVisibility(); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-red-500 hover:text-white">🙈 Hide Bongo</button>
       `;
@@ -1575,41 +1493,9 @@
       menu.classList.remove('hidden');
     }
 
-    function lockOS() {
-      closeAllFlyouts();
-      document.getElementById('lock-screen').classList.remove('hidden');
-      playSFX('close');
-    }
-
-    function unlockOS() {
-      document.getElementById('lock-screen').classList.add('hidden');
-      playSFX('startup');
-    }
-
-    function triggerBSOD() {
-      closeAllFlyouts();
-      const bsod = document.getElementById('bsod-screen');
-      const pct = document.getElementById('bsod-percent');
-      bsod.classList.remove('hidden');
-      let p = 0;
-      pct.textContent = p;
-      const timer = setInterval(() => {
-        if (bsod.classList.contains('hidden')) { clearInterval(timer); return; }
-        p = Math.min(100, p + Math.floor(Math.random() * 18) + 5);
-        pct.textContent = p;
-        if (p >= 100) clearInterval(timer);
-      }, 450);
-    }
-
-    function hideBSOD() {
-      document.getElementById('bsod-screen').classList.add('hidden');
-      setBongoSpeech("Whew! That Purple Screen was close! Glad you're back! 🍌");
-    }
-
-    function restartOS() {
-      closeAllFlyouts();
-      location.reload();
-    }
+    function lockOS() { closeAllFlyouts(); document.getElementById('lock-screen').classList.remove('hidden'); playSFX('close'); }
+    function unlockOS() { document.getElementById('lock-screen').classList.add('hidden'); playSFX('startup'); }
+    function restartOS() { closeAllFlyouts(); location.reload(); }
 
     function toggleSoundEffects() {
       soundEnabled = !soundEnabled;
@@ -1620,33 +1506,22 @@
       btn.classList.toggle('bg-white/10', !soundEnabled);
     }
 
-    function toggleThemeMode() {
-      document.body.classList.toggle('light-theme');
-      playSFX('click');
-    }
-
-    function toggleQuickTile(btn) {
-      btn.classList.toggle('bg-purple-600');
-      btn.classList.toggle('bg-white/10');
-      playSFX('click');
-    }
+    function toggleThemeMode() { document.body.classList.toggle('light-theme'); playSFX('click'); }
 
     function setWallpaper(wpClass) {
-      document.body.classList.remove('wallpaper-bloom', 'wallpaper-banana', 'wallpaper-meadow', 'wallpaper-cyber');
+      document.body.classList.remove('wallpaper-bloom', 'wallpaper-aurora', 'wallpaper-sunset', 'wallpaper-cyber');
       document.body.classList.add(wpClass);
       currentWallpaper = wpClass;
-      const bloom = document.getElementById('bloom-artwork');
-      bloom.style.opacity = wpClass === 'wallpaper-bloom' ? '0.82' : '0';
+      document.getElementById('bloom-artwork').style.opacity = (wpClass === 'wallpaper-bloom' || wpClass === 'wallpaper-aurora') ? '0.80' : '0';
     }
 
     function cycleWallpaper() {
-      const list = ['wallpaper-bloom', 'wallpaper-banana', 'wallpaper-meadow', 'wallpaper-cyber'];
-      const next = list[(list.indexOf(currentWallpaper) + 1) % list.length];
-      setWallpaper(next);
+      const list = ['wallpaper-bloom', 'wallpaper-aurora', 'wallpaper-sunset', 'wallpaper-cyber'];
+      setWallpaper(list[(list.indexOf(currentWallpaper) + 1) % list.length]);
     }
 
     // =========================================================================
-    // 7. BUILT-IN APPLICATIONS
+    // 8. APPLICATIONS
     // =========================================================================
     function mountAppContent(winObj) {
       const body = document.getElementById(`${winObj.id}-body`);
@@ -1659,29 +1534,23 @@
         case 'paint': return renderPaintApp(body, winObj);
         case 'calculator': return renderCalculatorApp(body, winObj);
         case 'minesweeper': return renderMinesweeperApp(body, winObj);
-        case 'music': return renderMusicApp(body, winObj);
         case 'taskmgr': return renderTaskManagerApp(body, winObj);
         case 'settings': return renderSettingsApp(body, winObj);
       }
     }
 
-    // --- APP 1: BONGOCHROME (CHROMIUM-INSPIRED TABBED LIVE BROWSER + OFFLINE RUNNER) ---
+    // --- APP 1: BONGOCHROME (LIVE INTERNET + HOST NETWORK DIAGNOSTICS + OFFLINE RUNNER) ---
     function renderBongoChromeApp(container, winObj) {
-      let tabs = [
-        { id: 't1', title: 'New Tab', url: 'bongo://newtab', history: ['bongo://newtab'], histIdx: 0 }
-      ];
+      let tabs = [{ id: 't1', title: 'New Tab', url: 'bongo://newtab', history: ['bongo://newtab'], histIdx: 0 }];
       let activeTabId = 't1';
       let showInspector = false;
 
-      function getActiveTab() {
-        return tabs.find(t => t.id === activeTabId) || tabs[0];
-      }
+      const getActiveTab = () => tabs.find(t => t.id === activeTabId) || tabs[0];
 
       function renderBrowserShell() {
         const activeTab = getActiveTab();
         container.innerHTML = `
-          <!-- Chromium-Style Tab Strip -->
-          <div class="flex items-center gap-1 px-2 pt-1.5 bg-black/35 border-b border-white/10 overflow-x-auto">
+          <div class="flex items-center gap-1 px-2 pt-1.5 bg-black/40 border-b border-white/10 overflow-x-auto">
             ${tabs.map(tab => {
               const isAct = tab.id === activeTabId;
               return `
@@ -1694,38 +1563,35 @@
             <button onclick="addChromeTab()" title="New Tab" class="w-7 h-7 rounded-full hover:bg-white/15 flex items-center justify-center text-sm font-bold flex-shrink-0">+</button>
           </div>
 
-          <!-- Navigation & Omnibox Bar -->
-          <div class="flex items-center gap-1.5 px-3 py-2 border-b border-white/10 bg-black/15">
+          <div class="flex items-center gap-1.5 px-3 py-2 border-b border-white/10 bg-black/20">
             <button onclick="chromeBack()" ${activeTab.histIdx <= 0 ? 'disabled class="opacity-30 p-1.5 text-xs"' : 'class="p-1.5 rounded-full hover:bg-white/10 text-xs"'} title="Back">←</button>
             <button onclick="chromeForward()" ${activeTab.histIdx >= activeTab.history.length - 1 ? 'disabled class="opacity-30 p-1.5 text-xs"' : 'class="p-1.5 rounded-full hover:bg-white/10 text-xs"'} title="Forward">→</button>
             <button onclick="chromeNavigate(getActiveTabUrl())" class="p-1.5 rounded-full hover:bg-white/10 text-xs" title="Reload">↻</button>
             <button onclick="chromeNavigate('bongo://newtab')" class="p-1.5 rounded-full hover:bg-white/10 text-xs" title="Home">🏠</button>
 
-            <form id="${winObj.id}-omnibox-form" class="flex-1 flex items-center bg-black/30 border border-white/15 focus-within:border-purple-400 rounded-full px-3.5 py-1.5">
+            <form id="${winObj.id}-omnibox-form" class="flex-1 flex items-center bg-black/35 border border-white/15 focus-within:border-purple-400 rounded-full px-3.5 py-1.5">
               <span class="text-xs mr-2">${isInternetAvailable() ? '🔒' : '⚠️'}</span>
-              <input id="${winObj.id}-omnibox" type="text" value="${activeTab.url}" class="flex-1 bg-transparent text-xs focus:outline-none" placeholder="Search the web or type a URL (e.g., wikipedia.org, space news)..." />
+              <input id="${winObj.id}-omnibox" type="text" value="${activeTab.url}" class="flex-1 bg-transparent text-xs focus:outline-none" placeholder="Search real web or enter URL (bongo://network, bongo://dino, wikipedia.org)..." />
             </form>
 
-            <button onclick="toggleChromeInspector()" title="Toggle Source / Network Inspector" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[11px] font-mono">&lt;/&gt;</button>
+            <button onclick="toggleChromeInspector()" title="DevTools Inspector" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[11px] font-mono">&lt;/&gt;</button>
           </div>
 
-          <!-- Bookmarks Bar -->
           <div class="flex items-center gap-2 px-3 py-1 border-b border-white/10 bg-black/10 text-[11px] overflow-x-auto">
-            <button onclick="chromeNavigate('https://en.m.wikipedia.org/wiki/Gorilla')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">📚 Wikipedia Live</button>
-            <button onclick="chromeNavigate('https://www.openstreetmap.org/export/embed.html?bbox=-74.02,40.70,-73.97,40.73&layer=mapnik')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">🗺️ Live World Map</button>
-            <button onclick="chromeNavigate('Latest technology and science news today')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">📰 Live Web News</button>
-            <button onclick="chromeNavigate('bongo://offline-game')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">🦖 Banana Runner</button>
+            <button onclick="chromeNavigate('https://en.m.wikipedia.org/wiki/Gorilla')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">📚 Wikipedia</button>
+            <button onclick="chromeNavigate('https://www.openstreetmap.org/export/embed.html?bbox=-74.02,40.70,-73.97,40.73&layer=mapnik')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">🗺️ OpenStreetMap</button>
+            <button onclick="chromeNavigate('bongo://network')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap text-cyan-300">📶 Host Wi-Fi Diagnostics</button>
+            <button onclick="chromeNavigate('bongo://dino')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">🦖 Banana Runner</button>
           </div>
 
-          <!-- Content + Optional DevTools Split -->
           <div class="flex-1 flex overflow-hidden">
             <div id="${winObj.id}-viewport" class="flex-1 overflow-y-auto relative"></div>
-            <div id="${winObj.id}-devtools" class="${showInspector ? 'w-64 border-l border-white/15 p-3 bg-black/40 font-mono text-[11px] overflow-y-auto' : 'hidden'}">
+            <div id="${winObj.id}-devtools" class="${showInspector ? 'w-64 border-l border-white/15 p-3 bg-black/45 font-mono text-[11px] overflow-y-auto' : 'hidden'}">
               <div class="font-bold text-purple-300 mb-2">BongoChrome DevTools</div>
-              <div>Status: <span class="${isInternetAvailable() ? 'text-green-400' : 'text-red-400'}">${isInternetAvailable() ? '200 OK (Online)' : 'ERR_INTERNET_DISCONNECTED'}</span></div>
-              <div class="mt-1">Gateway: ${isInternetAvailable() ? wifiState.connectedSsid : 'None'}</div>
+              <div>Status: <span class="${isInternetAvailable() ? 'text-green-400' : 'text-red-400'}">${isInternetAvailable() ? '200 OK (Host Wi-Fi)' : 'ERR_INTERNET_DISCONNECTED'}</span></div>
+              <div class="mt-1">Link Type: ${networkState.effectiveType}</div>
+              <div class="mt-1">Ping: ${networkState.realPingMs ? networkState.realPingMs + 'ms' : 'N/A'}</div>
               <div class="mt-1 break-all">URL: ${activeTab.url}</div>
-              <div class="mt-3 text-slate-400">User-Agent: BongoChrome/131.0 (BongoOS 11)</div>
             </div>
           </div>
         `;
@@ -1737,19 +1603,12 @@
         };
       }
 
-      // Expose tab helpers on window scoped to this browser instance
       window.getActiveTabUrl = () => getActiveTab().url;
-      window.switchChromeTab = (tid) => {
-        activeTabId = tid;
-        renderBrowserShell();
-        loadTabContent(getActiveTab().url, false);
-      };
+      window.switchChromeTab = (tid) => { activeTabId = tid; renderBrowserShell(); loadTabContent(getActiveTab().url); };
       window.addChromeTab = () => {
         const nid = 't-' + Date.now();
         tabs.push({ id: nid, title: 'New Tab', url: 'bongo://newtab', history: ['bongo://newtab'], histIdx: 0 });
-        activeTabId = nid;
-        renderBrowserShell();
-        loadTabContent('bongo://newtab', false);
+        activeTabId = nid; renderBrowserShell(); loadTabContent('bongo://newtab');
       };
       window.closeChromeTab = (tid, e) => {
         e.stopPropagation();
@@ -1757,32 +1616,17 @@
         if (idx === -1 || tabs.length === 1) return;
         tabs.splice(idx, 1);
         if (activeTabId === tid) activeTabId = tabs[Math.max(0, idx - 1)].id;
-        renderBrowserShell();
-        loadTabContent(getActiveTab().url, false);
+        renderBrowserShell(); loadTabContent(getActiveTab().url);
       };
       window.chromeBack = () => {
         const t = getActiveTab();
-        if (t.histIdx > 0) {
-          t.histIdx--;
-          t.url = t.history[t.histIdx];
-          renderBrowserShell();
-          loadTabContent(t.url, false);
-        }
+        if (t.histIdx > 0) { t.histIdx--; t.url = t.history[t.histIdx]; renderBrowserShell(); loadTabContent(t.url); }
       };
       window.chromeForward = () => {
         const t = getActiveTab();
-        if (t.histIdx < t.history.length - 1) {
-          t.histIdx++;
-          t.url = t.history[t.histIdx];
-          renderBrowserShell();
-          loadTabContent(t.url, false);
-        }
+        if (t.histIdx < t.history.length - 1) { t.histIdx++; t.url = t.history[t.histIdx]; renderBrowserShell(); loadTabContent(t.url); }
       };
-      window.toggleChromeInspector = () => {
-        showInspector = !showInspector;
-        renderBrowserShell();
-        loadTabContent(getActiveTab().url, false);
-      };
+      window.toggleChromeInspector = () => { showInspector = !showInspector; renderBrowserShell(); loadTabContent(getActiveTab().url); };
       window.chromeNavigate = (target) => {
         const t = getActiveTab();
         t.history = t.history.slice(0, t.histIdx + 1);
@@ -1791,15 +1635,60 @@
         t.url = target;
         t.title = target.replace(/^https?:\/\//, '').slice(0, 22);
         renderBrowserShell();
-        loadTabContent(target, true);
+        loadTabContent(target);
       };
 
       async function loadTabContent(query) {
         const view = document.getElementById(`${winObj.id}-viewport`);
         if (!view) return;
 
-        // Offline Mini-Game Route (Works anytime or when Wi-Fi is off!)
-        if (query === 'bongo://offline-game' || (!isInternetAvailable() && query !== 'bongo://newtab')) {
+        // Host Network Diagnostics Page (bongo://network)
+        if (query === 'bongo://network') {
+          await measureRealHostInternet();
+          view.innerHTML = `
+            <div class="max-w-2xl mx-auto p-6 space-y-5">
+              <div class="p-5 rounded-2xl bg-gradient-to-br from-purple-700/40 to-cyan-700/30 border border-cyan-400/35 flex items-center justify-between">
+                <div>
+                  <div class="text-xs font-mono text-cyan-300">bongo://network • Host Adapter Bridge</div>
+                  <h2 class="text-xl font-extrabold mt-0.5">Host Computer Wi-Fi Diagnostics</h2>
+                  <p class="text-xs opacity-80 mt-1">Real-time telemetry bridged directly from your computer's active internet connection.</p>
+                </div>
+                <span class="text-4xl">📶</span>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                  <div class="opacity-65">Host PC Status</div>
+                  <div class="text-sm font-bold mt-1 ${networkState.hostHardwareOnline ? 'text-green-400' : 'text-red-400'}">${networkState.hostHardwareOnline ? '● Online' : '● Offline'}</div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                  <div class="opacity-65">Connection Type</div>
+                  <div class="text-sm font-bold text-purple-300 mt-1">${networkState.effectiveType}</div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                  <div class="opacity-65">Est. Downlink</div>
+                  <div class="text-sm font-bold text-cyan-300 mt-1">${networkState.downlinkMbps ? networkState.downlinkMbps + ' Mbps' : 'Active'}</div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                  <div class="opacity-65">Live Latency</div>
+                  <div class="text-sm font-bold text-yellow-300 mt-1">${networkState.realPingMs ? networkState.realPingMs + ' ms' : 'N/A'}</div>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-white/5 border border-white/10 text-xs space-y-2 font-mono">
+                <div>Public IP / Gateway: <b>${networkState.publicIp}</b></div>
+                <div>BongoOS Wi-Fi Switch: <b>${networkState.osWifiEnabled ? 'Enabled (Bridged)' : 'Disabled (Simulated Offline)'}</b></div>
+                <div class="pt-2 flex gap-2">
+                  <button onclick="chromeNavigate('bongo://network')" class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-sans font-semibold">Refresh Telemetry</button>
+                  <button onclick="toggleWifiOverride(); chromeNavigate('bongo://network')" class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 font-sans font-semibold">${networkState.osWifiEnabled ? 'Test Offline Mode' : 'Reconnect Host Wi-Fi'}</button>
+                </div>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        if (query === 'bongo://dino' || (!isInternetAvailable() && query !== 'bongo://newtab')) {
           renderOfflineDinoGame(view, query);
           return;
         }
@@ -1809,9 +1698,9 @@
             <div class="max-w-xl mx-auto text-center pt-10 px-4">
               <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 via-fuchsia-500 to-yellow-400 text-3xl shadow-lg mb-4">🌐</div>
               <h1 class="text-3xl font-extrabold tracking-tight mb-1">Bongo<span class="text-purple-400">Chrome</span></h1>
-              <p class="text-xs opacity-70 mb-6">${isInternetAvailable() ? `Connected via ${wifiState.connectedSsid} • Real Internet Ready` : '⚠️ Offline Mode • Turn on Wi-Fi in System Tray'}</p>
+              <p class="text-xs opacity-75 mb-6">${isInternetAvailable() ? `Connected via Host Computer Wi-Fi (${networkState.effectiveType}${networkState.realPingMs ? ' • ' + networkState.realPingMs + 'ms' : ''})` : '⚠️ Offline Mode • Reconnect Wi-Fi in System Tray'}</p>
               <form onsubmit="event.preventDefault(); const v=this.querySelector('input').value.trim(); if(v) chromeNavigate(v);" class="flex gap-2 mb-8">
-                <input type="text" placeholder="Search real Wikipedia, live news, or enter a URL..." class="flex-1 px-4 py-2.5 rounded-full bg-white/10 border border-purple-400/30 text-sm focus:outline-none focus:border-purple-400" />
+                <input type="text" placeholder="Search real web, Wikipedia, or enter URL..." class="flex-1 px-4 py-2.5 rounded-full bg-white/10 border border-purple-400/35 text-sm focus:outline-none focus:border-purple-400" />
                 <button type="submit" class="px-5 py-2.5 rounded-full bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold">Search</button>
               </form>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
@@ -1821,10 +1710,10 @@
                 <button onclick="chromeNavigate('https://www.openstreetmap.org/export/embed.html?bbox=-74.02,40.70,-73.97,40.73&layer=mapnik')" class="p-3 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center gap-1.5 transition">
                   <span class="text-2xl">🗺️</span><span class="font-medium">Live Maps</span>
                 </button>
-                <button onclick="chromeNavigate('What are the biggest space and AI discoveries right now?')" class="p-3 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center gap-1.5 transition">
-                  <span class="text-2xl">🚀</span><span class="font-medium">Live AI Web</span>
+                <button onclick="chromeNavigate('bongo://network')" class="p-3 rounded-xl bg-white/5 hover:bg-white/15 border border-cyan-400/30 flex flex-col items-center gap-1.5 transition">
+                  <span class="text-2xl">📶</span><span class="font-medium text-cyan-300">Host Wi-Fi Info</span>
                 </button>
-                <button onclick="chromeNavigate('bongo://offline-game')" class="p-3 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center gap-1.5 transition">
+                <button onclick="chromeNavigate('bongo://dino')" class="p-3 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center gap-1.5 transition">
                   <span class="text-2xl">🦖</span><span class="font-medium">Banana Runner</span>
                 </button>
               </div>
@@ -1833,7 +1722,6 @@
           return;
         }
 
-        // Direct Embeddable URLs (Wikipedia, OpenStreetMap, Archive.org, etc.)
         const isUrl = /^(https?:\/\/|www\.)/i.test(query);
         if (isUrl) {
           const fullUrl = query.startsWith('http') ? query : 'https://' + query;
@@ -1841,9 +1729,9 @@
           if (embedSafe) {
             view.innerHTML = `
               <div class="w-full h-full flex flex-col">
-                <div class="px-3 py-1 bg-purple-950/60 text-[11px] flex items-center justify-between border-b border-white/10">
-                  <span>🌐 Live Embedded Web Frame: <b>${fullUrl}</b></span>
-                  <a href="${fullUrl}" target="_blank" rel="noopener noreferrer" class="text-purple-300 underline">Open in External Tab ↗</a>
+                <div class="px-3 py-1 bg-purple-950/70 text-[11px] flex items-center justify-between border-b border-white/10">
+                  <span>🌐 Live Embedded Frame: <b>${fullUrl}</b></span>
+                  <a href="${fullUrl}" target="_blank" rel="noopener noreferrer" class="text-cyan-300 underline">Open in External Tab ↗</a>
                 </div>
                 <iframe src="${fullUrl}" class="w-full flex-1 bg-white border-0"></iframe>
               </div>
@@ -1852,33 +1740,30 @@
           }
         }
 
-        // Live Web Search (Wikipedia Live API + Gemini Grounded Web Search)
-        view.innerHTML = `<div class="flex flex-col items-center justify-center h-64 gap-3 text-sm"><div class="text-3xl animate-bounce">🌐</div><div>Searching the real internet via <b>${wifiState.connectedSsid}</b>...</div></div>`;
+        view.innerHTML = `<div class="flex flex-col items-center justify-center h-64 gap-3 text-sm"><div class="text-3xl animate-bounce">🌐</div><div>Searching live internet via <b>Host Computer Wi-Fi</b>...</div></div>`;
 
         try {
           const [wikiRes, aiRes] = await Promise.allSettled([
             fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*`).then(r => r.json()),
             callGeminiAPI(
-              `Provide a comprehensive, up-to-date web search summary for: "${query}". Include key facts, context, and helpful details.`,
-              "You are BongoChrome's Live Web Search Engine. Present accurate, real-time web information clearly with headings and bullet points.",
+              `Provide a clear, up-to-date web search summary for: "${query}". Include key facts and structured bullet points.`,
+              "You are BongoChrome's Live Web Search Engine. Present accurate, real-time web information clearly.",
               true
             )
           ]);
 
           const wikiHits = wikiRes.status === 'fulfilled' ? (wikiRes.value?.query?.search || []).slice(0, 3) : [];
-          const aiData = aiRes.status === 'fulfilled' ? aiRes.value : { text: 'Unable to fetch AI web summary right now.', sources: [] };
+          const aiData = aiRes.status === 'fulfilled' ? aiRes.value : { text: 'Live AI overview unavailable.', sources: [] };
 
           view.innerHTML = `
             <div class="max-w-3xl mx-auto p-6 space-y-6 selectable-text">
               <div class="flex items-center justify-between border-b border-white/10 pb-3">
                 <div>
-                  <div class="text-xs text-purple-400 font-semibold">Live Internet Results • ${wifiState.connectedSsid}</div>
+                  <div class="text-xs text-purple-400 font-semibold">Live Internet Results • Host Wi-Fi Bridge</div>
                   <h2 class="text-xl font-bold mt-0.5">${query}</h2>
                 </div>
                 <span class="text-xs px-2.5 py-1 rounded-full bg-green-500/20 text-green-300 border border-green-400/30">Live Web</span>
               </div>
-
-              <!-- AI Grounded Overview -->
               <div class="p-4 rounded-2xl bg-purple-500/10 border border-purple-400/25 space-y-2">
                 <div class="text-xs font-bold uppercase tracking-wider text-purple-300">✨ Live Web Overview</div>
                 <div class="text-sm leading-relaxed">${aiData.text.replace(/\n/g, '<br>')}</div>
@@ -1888,11 +1773,9 @@
                   </div>
                 ` : ''}
               </div>
-
-              <!-- Real Wikipedia Live Articles -->
               ${wikiHits.length ? `
                 <div class="space-y-2.5">
-                  <div class="text-xs font-bold uppercase tracking-wider opacity-75">📚 Live Wikipedia Articles (Click to Read Inside BongoChrome)</div>
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-75">📚 Live Wikipedia Articles</div>
                   ${wikiHits.map(hit => `
                     <div onclick="chromeNavigate('https://en.m.wikipedia.org/wiki/${encodeURIComponent(hit.title.replace(/ /g, '_'))}')" class="p-3.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 cursor-pointer transition">
                       <div class="text-sm font-bold text-purple-300">${hit.title}</div>
@@ -1908,19 +1791,18 @@
         }
       }
 
-      // Playable Offline Banana Dino Runner Game
       function renderOfflineDinoGame(view, failedUrl) {
         view.innerHTML = `
           <div class="max-w-lg mx-auto text-center pt-6 px-4">
             <div class="text-4xl mb-2">📵</div>
-            <h2 class="text-lg font-bold">${!isInternetAvailable() ? 'No Internet Connection' : 'Banana Runner Arcade'}</h2>
-            <p class="text-xs opacity-70 mb-4">${!isInternetAvailable() ? 'Wi-Fi is turned off. Turn Wi-Fi on in the bottom-right tray or press Space / Tap to jump!' : 'Press Space or Click/Tap the game canvas to jump over cacti!'}</p>
-            <div class="rounded-2xl overflow-hidden border border-purple-400/30 bg-[#120b24] p-2">
-              <canvas id="${winObj.id}-dino" width="460" height="160" class="w-full h-40 block cursor-pointer"></canvas>
+            <h2 class="text-lg font-bold">${!isInternetAvailable() ? 'No Internet Connection' : 'Banana Runner Arcade (bongo://dino)'}</h2>
+            <p class="text-xs opacity-70 mb-4">${!isInternetAvailable() ? 'Wi-Fi is disconnected. Press Space or Click/Tap to jump over barrels!' : 'Press Space or Click/Tap the canvas to jump over barrels!'}</p>
+            <div class="rounded-2xl overflow-hidden border border-purple-400/35 bg-[#0e081c] p-2">
+              <canvas id="${winObj.id}-dino" width="460" height="165" class="w-full h-40 block cursor-pointer"></canvas>
             </div>
-            <div class="mt-3 flex justify-center gap-3 text-xs">
+            <div class="mt-3 flex justify-center gap-3 text-xs items-center">
               <span id="${winObj.id}-dino-score" class="font-mono font-bold text-yellow-300">Score: 0</span>
-              ${!isInternetAvailable() ? `<button onclick="toggleWifiPower(true); chromeNavigate('${failedUrl === 'bongo://offline-game' ? 'bongo://newtab' : failedUrl}')" class="px-3 py-1 rounded-full bg-purple-600 hover:bg-purple-500 text-white font-semibold">Reconnect Wi-Fi</button>` : ''}
+              ${!isInternetAvailable() ? `<button onclick="toggleWifiOverride(true); chromeNavigate('${failedUrl === 'bongo://dino' ? 'bongo://newtab' : failedUrl}')" class="px-3 py-1 rounded-full bg-purple-600 hover:bg-purple-500 text-white font-semibold">Reconnect Host Wi-Fi</button>` : ''}
             </div>
           </div>
         `;
@@ -1928,262 +1810,56 @@
         const canvas = document.getElementById(`${winObj.id}-dino`);
         const ctx = canvas.getContext('2d');
         const scoreEl = document.getElementById(`${winObj.id}-dino-score`);
-
-        let runnerY = 115, velY = 0, jumping = false;
-        let obsX = 460, score = 0, alive = true;
+        let runnerY = 118, velY = 0, jumping = false, obsX = 460, obsType = '🛢️', score = 0, alive = true;
 
         function jump() {
-          if (!alive) {
-            obsX = 460; score = 0; alive = true; runnerY = 115; velY = 0;
-            return;
-          }
-          if (!jumping) {
-            velY = -10.5;
-            jumping = true;
-          }
+          if (!alive) { obsX = 460; score = 0; alive = true; runnerY = 118; velY = 0; return; }
+          if (!jumping) { velY = -10.8; jumping = true; }
         }
-
         canvas.onclick = jump;
         const keyHandler = (e) => {
-          if (e.code === 'Space' && document.getElementById(`${winObj.id}-dino`)) {
-            e.preventDefault();
-            jump();
-          }
+          if (e.code === 'Space' && document.getElementById(`${winObj.id}-dino`)) { e.preventDefault(); jump(); }
         };
         window.addEventListener('keydown', keyHandler);
 
         const loop = setInterval(() => {
-          if (!document.getElementById(`${winObj.id}-dino`)) {
-            clearInterval(loop);
-            window.removeEventListener('keydown', keyHandler);
-            return;
-          }
-          ctx.fillStyle = '#120b24';
-          ctx.fillRect(0, 0, 460, 160);
-
-          // Ground line
-          ctx.strokeStyle = '#7e22ce';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(0, 142);
-          ctx.lineTo(460, 142);
-          ctx.stroke();
+          if (!document.getElementById(`${winObj.id}-dino`)) { clearInterval(loop); window.removeEventListener('keydown', keyHandler); return; }
+          ctx.fillStyle = '#0e081c'; ctx.fillRect(0, 0, 460, 165);
+          ctx.strokeStyle = '#9333ea'; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(0, 146); ctx.lineTo(460, 146); ctx.stroke();
 
           if (alive) {
-            runnerY += velY;
-            velY += 0.65;
-            if (runnerY >= 115) {
-              runnerY = 115;
-              jumping = false;
-            }
-            obsX -= 5.2;
-            if (obsX < -24) {
-              obsX = 460 + Math.random() * 120;
-              score += 10;
-              scoreEl.textContent = `Score: ${score}`;
-            }
-
-            // Collision check
-            if (obsX < 68 && obsX > 36 && runnerY > 92) {
-              alive = false;
-            }
+            runnerY += velY; velY += 0.65;
+            if (runnerY >= 118) { runnerY = 118; jumping = false; }
+            obsX -= 5.4;
+            if (obsX < -24) { obsX = 460 + Math.random() * 130; obsType = Math.random() > 0.5 ? '🛢️' : '🌵'; score += 10; scoreEl.textContent = `Score: ${score}`; }
+            if (obsX < 68 && obsX > 36 && runnerY > 94) alive = false;
           }
 
-          // Draw Gorilla Runner & Cactus
           ctx.font = '26px sans-serif';
-          ctx.fillText('🦍', 40, runnerY + 22);
-          ctx.fillText('🌵', obsX, 138);
+          ctx.fillText('🦍', 40, runnerY + 24);
+          ctx.fillText(obsType, obsX, 142);
 
           if (!alive) {
-            ctx.fillStyle = 'rgba(0,0,0,0.65)';
-            ctx.fillRect(0, 0, 460, 160);
-            ctx.fillStyle = '#facc15';
-            ctx.font = 'bold 16px Inter, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('GAME OVER! Click or Press Space to Restart', 230, 85);
-            ctx.textAlign = 'left';
+            ctx.fillStyle = 'rgba(0,0,0,0.68)'; ctx.fillRect(0, 0, 460, 165);
+            ctx.fillStyle = '#facc15'; ctx.font = 'bold 15px Inter, sans-serif'; ctx.textAlign = 'center';
+            ctx.fillText('CRASHED! Click or Press Space to Restart', 230, 86); ctx.textAlign = 'left';
           }
         }, 24);
       }
 
       renderBrowserShell();
-      if (winObj.data?.initialQuery) {
-        chromeNavigate(winObj.data.initialQuery);
-      } else {
-        loadTabContent('bongo://newtab');
-      }
+      if (winObj.data?.initialQuery) chromeNavigate(winObj.data.initialQuery);
+      else loadTabContent('bongo://newtab');
     }
 
-    // --- APP 2: FILE EXPLORER & TRASH BIN ---
-    function renderExplorerApp(container, winObj, initialFolder) {
-      let currentFolder = initialFolder;
-
-      function refresh() {
-        const folders = Object.keys(vfs);
-        const items = vfs[currentFolder] || {};
-        const itemNames = Object.keys(items);
-
-        container.innerHTML = `
-          <div class="flex items-center justify-between px-3 py-2 border-b border-white/10 bg-black/15 text-xs gap-2 flex-wrap">
-            <div class="flex items-center gap-1.5">
-              <button id="${winObj.id}-new-file" class="px-2.5 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium transition">+ New Note</button>
-              ${currentFolder === 'Trash' ? `<button id="${winObj.id}-empty-trash" class="px-2.5 py-1 rounded-lg bg-red-600/80 hover:bg-red-500 text-white font-medium transition">Empty Trash</button>` : ''}
-            </div>
-            <div class="px-3 py-1 rounded-md bg-black/20 border border-white/10 font-mono text-[11px] flex-1 max-w-xs truncate">
-              🦍 BongoDrive:\\${currentFolder}
-            </div>
-          </div>
-          <div class="flex flex-1 overflow-hidden">
-            <div class="w-36 sm:w-44 border-r border-white/10 p-2 space-y-1 bg-black/10 flex-shrink-0">
-              ${folders.map(f => `
-                <button data-folder="${f}" class="folder-nav w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-2 transition ${f === currentFolder ? 'bg-purple-600 text-white font-semibold' : 'hover:bg-white/10'}">
-                  <span>${f === 'Trash' ? '🗑️' : f === 'Pictures' ? '🖼️' : f === 'Music' ? '🎵' : f === 'Downloads' ? '⬇️' : '📁'}</span>
-                  <span class="truncate">${f}</span>
-                </button>
-              `).join('')}
-            </div>
-            <div class="flex-1 p-4 overflow-y-auto">
-              ${itemNames.length === 0 ? `<div class="h-full flex flex-col items-center justify-center opacity-50 text-xs"><span class="text-4xl mb-2">🍌</span>Folder is empty</div>` : `
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  ${itemNames.map(name => {
-                    const item = items[name];
-                    const icon = item.type === 'image' ? '🎨' : item.type === 'audio' ? '🎵' : '📄';
-                    return `
-                      <div class="group relative p-3 rounded-xl border border-white/10 hover:bg-purple-500/20 hover:border-purple-400/40 flex flex-col items-center text-center cursor-pointer transition" data-open="${name}">
-                        <span class="text-3xl mb-1.5">${icon}</span>
-                        <span class="text-xs font-medium break-all line-clamp-2">${name}</span>
-                        <button data-del="${name}" title="Delete" class="opacity-0 group-hover:opacity-100 absolute top-1.5 right-1.5 w-6 h-6 rounded-md bg-red-500/80 text-white text-[10px] flex items-center justify-center transition">✕</button>
-                      </div>
-                    `;
-                  }).join('')}
-                </div>
-              `}
-            </div>
-          </div>
-        `;
-
-        container.querySelectorAll('.folder-nav').forEach(btn => {
-          btn.onclick = () => { currentFolder = btn.dataset.folder; refresh(); };
-        });
-
-        container.querySelectorAll('[data-open]').forEach(card => {
-          card.ondblclick = () => {
-            const name = card.dataset.open;
-            const item = vfs[currentFolder][name];
-            if (item.type === 'audio') openApp('music');
-            else if (item.type === 'image') openApp('paint', { imageData: item.content, fileName: name });
-            else openFileInNotepad(currentFolder, name);
-          };
-        });
-
-        container.querySelectorAll('[data-del]').forEach(btn => {
-          btn.onclick = (e) => {
-            e.stopPropagation();
-            const name = btn.dataset.del;
-            if (currentFolder !== 'Trash') vfs.Trash[name] = vfs[currentFolder][name];
-            delete vfs[currentFolder][name];
-            saveVFS();
-            playSFX('close');
-            refresh();
-          };
-        });
-
-        const newBtn = container.querySelector(`#${winObj.id}-new-file`);
-        if (newBtn) {
-          newBtn.onclick = () => {
-            const fileName = `Note_${Object.keys(vfs[currentFolder]).length + 1}.txt`;
-            vfs[currentFolder][fileName] = { type: 'file', content: 'New BongoOS note!' };
-            saveVFS();
-            playSFX('click');
-            refresh();
-          };
-        }
-
-        const emptyBtn = container.querySelector(`#${winObj.id}-empty-trash`);
-        if (emptyBtn) {
-          emptyBtn.onclick = () => {
-            vfs.Trash = {};
-            saveVFS();
-            playSFX('close');
-            refresh();
-          };
-        }
-      }
-
-      refresh();
-    }
-
-    function openFileInNotepad(folder, fileName) {
-      const item = vfs[folder]?.[fileName];
-      if (!item) return;
-      openApp('notepad', { folder, fileName, content: item.content, title: `${fileName} - BongoPad` });
-    }
-
-    // --- APP 3: BONGOPAD ---
-    function renderNotepadApp(container, winObj) {
-      let folder = winObj.data?.folder || 'Documents';
-      let fileName = winObj.data?.fileName || 'Untitled.txt';
-      let content = winObj.data?.content || '';
-      let fontSize = 14;
-
-      container.innerHTML = `
-        <div class="flex items-center justify-between px-3 py-1.5 border-b border-white/10 bg-black/15 text-xs gap-2 flex-wrap">
-          <div class="flex items-center gap-1.5">
-            <button id="${winObj.id}-new" class="px-2.5 py-1 rounded hover:bg-white/10">New</button>
-            <button id="${winObj.id}-save" class="px-2.5 py-1 rounded bg-purple-600 hover:bg-purple-500 text-white font-medium">Save</button>
-            <button id="${winObj.id}-font" class="px-2.5 py-1 rounded hover:bg-white/10">Font: 14px</button>
-          </div>
-          <span id="${winObj.id}-status" class="text-[11px] opacity-70">${folder}\\${fileName}</span>
-        </div>
-        <textarea id="${winObj.id}-editor" class="flex-1 w-full p-4 bg-transparent resize-none focus:outline-none leading-relaxed font-mono" style="font-size: 14px;" placeholder="Start typing...">${content}</textarea>
-        <div class="px-3 py-1 border-t border-white/10 bg-black/15 text-[11px] opacity-75 flex justify-between">
-          <span id="${winObj.id}-counts">Words: 0 | Chars: 0</span>
-          <span>UTF-8 • BongoPad</span>
-        </div>
-      `;
-
-      const editor = container.querySelector(`#${winObj.id}-editor`);
-      const counts = container.querySelector(`#${winObj.id}-counts`);
-      const status = container.querySelector(`#${winObj.id}-status`);
-
-      const updateCounts = () => {
-        const val = editor.value;
-        const words = val.trim() ? val.trim().split(/\s+/).length : 0;
-        counts.textContent = `Words: ${words} | Chars: ${val.length}`;
-      };
-      updateCounts();
-      editor.addEventListener('input', updateCounts);
-
-      container.querySelector(`#${winObj.id}-new`).onclick = () => {
-        editor.value = '';
-        fileName = `Note_${Date.now().toString().slice(-4)}.txt`;
-        folder = 'Documents';
-        status.textContent = `${folder}\\${fileName}`;
-        updateCounts();
-      };
-
-      container.querySelector(`#${winObj.id}-save`).onclick = () => {
-        vfs[folder][fileName] = { type: 'file', content: editor.value };
-        saveVFS();
-        status.textContent = `Saved to ${folder}\\${fileName} ✓`;
-        playSFX('click');
-      };
-
-      container.querySelector(`#${winObj.id}-font`).onclick = (e) => {
-        fontSize = fontSize === 14 ? 18 : fontSize === 18 ? 22 : 14;
-        editor.style.fontSize = fontSize + 'px';
-        e.target.textContent = `Font: ${fontSize}px`;
-      };
-    }
-
-    // --- APP 4: BONGOSHELL (TERMINAL WITH REAL PING & CURL) ---
+    // --- APP 2: BONGO TERMINAL (REAL PING & NETSTAT) ---
     function renderTerminalApp(container, winObj) {
       let cwd = 'Desktop';
-
       container.innerHTML = `
-        <div id="${winObj.id}-term" class="flex-1 bg-[#0c0814] text-green-400 p-4 terminal-font text-xs overflow-y-auto space-y-1.5 selectable-text" onclick="document.getElementById('${winObj.id}-input').focus()">
-          <div class="text-purple-400 font-bold">BongoOS [Version 11.0.26100]</div>
-          <div class="text-slate-400">Type <span class="text-yellow-300">help</span> for commands (supports <span class="text-cyan-300">ping</span>, <span class="text-cyan-300">neofetch</span>, <span class="text-cyan-300">ls</span>, <span class="text-cyan-300">cat</span>).</div>
+        <div id="${winObj.id}-term" class="flex-1 bg-[#0a0712] text-green-400 p-4 terminal-font text-xs overflow-y-auto space-y-1.5 selectable-text" onclick="document.getElementById('${winObj.id}-input').focus()">
+          <div class="text-purple-400 font-bold">BongoOS 11 Terminal [Host Wi-Fi Bridge Enabled]</div>
+          <div class="text-slate-400">Type <span class="text-yellow-300">help</span> for commands (<span class="text-cyan-300">netstat</span>, <span class="text-cyan-300">ping</span>, <span class="text-cyan-300">neofetch</span>, <span class="text-cyan-300">ls</span>, <span class="text-cyan-300">cat</span>).</div>
           <div id="${winObj.id}-history" class="space-y-1 pt-2"></div>
           <div class="flex items-center gap-1.5 pt-1">
             <span id="${winObj.id}-prompt" class="text-purple-400 font-semibold">bongo@os:~/${cwd}$</span>
@@ -2216,65 +1892,50 @@
 
         switch (cmd.toLowerCase()) {
           case 'help':
-            printLine(`<span class="text-yellow-300">Commands:</span> help, ls, cd [folder], cat [file], touch [file], ping [host], neofetch, whoami, bongo, clear`);
+            printLine(`<span class="text-yellow-300">Commands:</span> help, netstat, ping [host], neofetch, ls, cd [dir], cat [file], touch [file], bongo, clear`);
+            break;
+          case 'netstat':
+            await measureRealHostInternet();
+            printLine(`<span class="text-cyan-300">Active Host Computer Bridge:</span><br>  PC Hardware Online: ${networkState.hostHardwareOnline}<br>  BongoOS Wi-Fi Switch: ${networkState.osWifiEnabled}<br>  Effective Link: ${networkState.effectiveType} (${networkState.downlinkMbps || 'Active'} Mbps)<br>  Live Ping: ${networkState.realPingMs || 'N/A'} ms<br>  Public IP: ${networkState.publicIp}`);
+            break;
+          case 'ping':
+            if (!isInternetAvailable()) printLine(`<span class="text-red-400">ping: Network unreachable (Wi-Fi is OFF)</span>`);
+            else {
+              const host = argStr || 'wikipedia.org';
+              printLine(`PING ${host} via Host Computer Wi-Fi...`);
+              await measureRealHostInternet();
+              printLine(`64 bytes from ${host}: icmp_seq=1 ttl=57 time=${networkState.realPingMs || 22} ms`);
+            }
             break;
           case 'ls':
-          case 'dir':
-            printLine(`<span class="text-cyan-300">Folders:</span> ${Object.keys(vfs).join('  ')}`);
+            printLine(`<span class="text-purple-300">Folders:</span> ${Object.keys(vfs).join('  ')}`);
             printLine(`<span class="text-green-300">Files in ${cwd}:</span> ${Object.keys(vfs[cwd] || {}).join('  ') || '(empty)'}`);
             break;
           case 'cd':
             const target = Object.keys(vfs).find(f => f.toLowerCase() === argStr.toLowerCase());
-            if (target) {
-              cwd = target;
-              promptEl.textContent = `bongo@os:~/${cwd}$`;
-            } else {
-              printLine(`<span class="text-red-400">Directory not found.</span>`);
-            }
+            if (target) { cwd = target; promptEl.textContent = `bongo@os:~/${cwd}$`; }
+            else printLine(`<span class="text-red-400">Directory not found.</span>`);
             break;
           case 'touch':
-            if (argStr) {
-              vfs[cwd][argStr] = { type: 'file', content: '' };
-              saveVFS();
-              printLine(`Created ${argStr}`);
-            }
+            if (argStr) { vfs[cwd][argStr] = { type: 'file', content: '' }; saveVFS(); printLine(`Created ${argStr}`); }
             break;
           case 'cat':
             const file = vfs[cwd]?.[argStr];
-            if (file) printLine(`<pre class="whitespace-pre-wrap text-slate-200 bg-white/5 p-2 rounded my-1">${file.content || '[Binary Data]'}</pre>`);
+            if (file) printLine(`<pre class="whitespace-pre-wrap text-slate-200 bg-white/5 p-2 rounded my-1">${file.content || '[Binary]'}</pre>`);
             else printLine(`<span class="text-red-400">File not found: ${argStr}</span>`);
-            break;
-          case 'ping':
-            if (!isInternetAvailable()) {
-              printLine(`<span class="text-red-400">ping: connect: Network is unreachable (Wi-Fi is OFF)</span>`);
-            } else {
-              const host = argStr || 'wikipedia.org';
-              printLine(`PING ${host} via ${wifiState.connectedSsid}...`);
-              const t0 = performance.now();
-              try {
-                await fetch('https://en.wikipedia.org/w/api.php?action=query&meta=siteinfo&format=json&origin=*');
-                const ms = Math.round(performance.now() - t0);
-                printLine(`64 bytes from ${host}: icmp_seq=1 ttl=57 time=${ms} ms`);
-              } catch {
-                printLine(`64 bytes from ${host}: icmp_seq=1 ttl=57 time=24 ms`);
-              }
-            }
             break;
           case 'neofetch':
             printLine(`<pre class="text-purple-300 leading-tight">
    .---.    bongo@bongo-os
   / o o \\   --------------
  |   _   |  OS: BongoOS 11
-  \\ --- /   Wi-Fi: ${isInternetAvailable() ? wifiState.connectedSsid : 'Disconnected'}
-   '---'    Shell: BongoShell 2.0
+  \\ --- /   Network: ${isInternetAvailable() ? 'Host Computer Wi-Fi (' + networkState.effectiveType + ')' : 'Offline'}
+   '---'    Favicon: Embedded SVG Gorilla
             </pre>`);
-            break;
-          case 'whoami':
-            printLine(`bongo_explorer`);
             break;
           case 'bongo':
             bongoQuickAction('trick');
-            printLine(`<span class="text-fuchsia-400">🦍 Bongo did a backflip!</span>`);
+            printLine(`<span class="text-fuchsia-400">🦍 Bongo did a flip!</span>`);
             break;
           case 'clear':
             history.innerHTML = '';
@@ -2283,25 +1944,127 @@
             printLine(`<span class="text-red-400">Command not found: '${cmd}'. Type 'help'.</span>`);
         }
       });
-
       setTimeout(() => input.focus(), 50);
+    }
+
+    // --- APP 3: FILE EXPLORER & TRASH ---
+    function renderExplorerApp(container, winObj, initialFolder) {
+      let currentFolder = initialFolder;
+      function refresh() {
+        const folders = Object.keys(vfs);
+        const items = vfs[currentFolder] || {};
+        const itemNames = Object.keys(items);
+
+        container.innerHTML = `
+          <div class="flex items-center justify-between px-3 py-2 border-b border-white/10 bg-black/15 text-xs gap-2 flex-wrap">
+            <div class="flex items-center gap-1.5">
+              <button id="${winObj.id}-new-file" class="px-2.5 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium transition">+ New Note</button>
+              ${currentFolder === 'Trash' ? `<button id="${winObj.id}-empty-trash" class="px-2.5 py-1 rounded-lg bg-red-600/80 hover:bg-red-500 text-white font-medium transition">Empty Trash</button>` : ''}
+            </div>
+            <div class="px-3 py-1 rounded-md bg-black/25 border border-white/10 font-mono text-[11px] flex-1 max-w-xs truncate">
+              🦍 BongoDrive:\\${currentFolder}
+            </div>
+          </div>
+          <div class="flex flex-1 overflow-hidden">
+            <div class="w-36 sm:w-44 border-r border-white/10 p-2 space-y-1 bg-black/10 flex-shrink-0">
+              ${folders.map(f => `
+                <button data-folder="${f}" class="folder-nav w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-2 transition ${f === currentFolder ? 'bg-purple-600 text-white font-semibold' : 'hover:bg-white/10'}">
+                  <span>${f === 'Trash' ? '🗑️' : f === 'Pictures' ? '🖼️' : '📁'}</span>
+                  <span class="truncate">${f}</span>
+                </button>
+              `).join('')}
+            </div>
+            <div class="flex-1 p-4 overflow-y-auto">
+              ${itemNames.length === 0 ? `<div class="h-full flex flex-col items-center justify-center opacity-50 text-xs"><span class="text-4xl mb-2">🍌</span>Folder is empty</div>` : `
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  ${itemNames.map(name => {
+                    const item = items[name];
+                    const icon = item.type === 'image' ? '🎨' : '📄';
+                    return `
+                      <div class="group relative p-3 rounded-xl border border-white/10 hover:bg-purple-500/20 hover:border-purple-400/40 flex flex-col items-center text-center cursor-pointer transition" data-open="${name}">
+                        <span class="text-3xl mb-1.5">${icon}</span>
+                        <span class="text-xs font-medium break-all line-clamp-2">${name}</span>
+                        <button data-del="${name}" title="Delete" class="opacity-0 group-hover:opacity-100 absolute top-1.5 right-1.5 w-6 h-6 rounded-md bg-red-500/80 text-white text-[10px] flex items-center justify-center transition">✕</button>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+        container.querySelectorAll('.folder-nav').forEach(btn => { btn.onclick = () => { currentFolder = btn.dataset.folder; refresh(); }; });
+        container.querySelectorAll('[data-open]').forEach(card => {
+          card.ondblclick = () => {
+            const name = card.dataset.open;
+            const item = vfs[currentFolder][name];
+            if (item.type === 'image') openApp('paint', { imageData: item.content, fileName: name });
+            else openFileInNotepad(currentFolder, name);
+          };
+        });
+        container.querySelectorAll('[data-del]').forEach(btn => {
+          btn.onclick = (e) => {
+            e.stopPropagation();
+            const name = btn.dataset.del;
+            if (currentFolder !== 'Trash') vfs.Trash[name] = vfs[currentFolder][name];
+            delete vfs[currentFolder][name];
+            saveVFS(); refresh();
+          };
+        });
+        const newBtn = container.querySelector(`#${winObj.id}-new-file`);
+        if (newBtn) newBtn.onclick = () => {
+          const fn = `Note_${Object.keys(vfs[currentFolder]).length + 1}.txt`;
+          vfs[currentFolder][fn] = { type: 'file', content: 'New note in BongoOS 11!' };
+          saveVFS(); refresh();
+        };
+        const emptyBtn = container.querySelector(`#${winObj.id}-empty-trash`);
+        if (emptyBtn) emptyBtn.onclick = () => { vfs.Trash = {}; saveVFS(); refresh(); };
+      }
+      refresh();
+    }
+
+    function openFileInNotepad(folder, fileName) {
+      const item = vfs[folder]?.[fileName];
+      if (!item) return;
+      openApp('notepad', { folder, fileName, content: item.content, title: `${fileName} - BongoPad` });
+    }
+
+    // --- APP 4: BONGOPAD ---
+    function renderNotepadApp(container, winObj) {
+      let folder = winObj.data?.folder || 'Documents';
+      let fileName = winObj.data?.fileName || 'Notes.txt';
+      let content = winObj.data?.content || '';
+
+      container.innerHTML = `
+        <div class="flex items-center justify-between px-3 py-1.5 border-b border-white/10 bg-black/15 text-xs gap-2">
+          <button id="${winObj.id}-save" class="px-3 py-1 rounded bg-purple-600 hover:bg-purple-500 text-white font-medium">Save</button>
+          <span id="${winObj.id}-status" class="text-[11px] opacity-75">${folder}\\${fileName}</span>
+        </div>
+        <textarea id="${winObj.id}-editor" class="flex-1 w-full p-4 bg-transparent resize-none focus:outline-none leading-relaxed font-mono text-sm" placeholder="Start typing...">${content}</textarea>
+      `;
+      const editor = container.querySelector(`#${winObj.id}-editor`);
+      const status = container.querySelector(`#${winObj.id}-status`);
+      container.querySelector(`#${winObj.id}-save`).onclick = () => {
+        vfs[folder][fileName] = { type: 'file', content: editor.value };
+        saveVFS();
+        status.textContent = `Saved to ${folder}\\${fileName} ✓`;
+        playSFX('click');
+      };
     }
 
     // --- APP 5: PAINT STUDIO ---
     function renderPaintApp(container, winObj) {
-      let color = '#9333ea';
-      let brushSize = 6;
-      let drawing = false;
-
+      let color = '#9333ea', brushSize = 6, neonGlow = false, drawing = false;
       container.innerHTML = `
         <div class="flex items-center justify-between px-3 py-2 border-b border-white/10 bg-black/15 gap-2 flex-wrap text-xs">
           <div class="flex items-center gap-1.5">
-            ${['#9333ea', '#facc15', '#ec4899', '#3b82f6', '#22c55e', '#ef4444', '#000000', '#ffffff'].map(c => `
+            ${['#9333ea', '#22d3ee', '#facc15', '#ec4899', '#22c55e', '#ef4444', '#000000', '#ffffff'].map(c => `
               <button data-color="${c}" class="w-6 h-6 rounded-full border border-white/40 transition hover:scale-110" style="background:${c}"></button>
             `).join('')}
           </div>
           <div class="flex items-center gap-2">
-            <label class="flex items-center gap-1">Size: <input id="${winObj.id}-size" type="range" min="2" max="28" value="6" class="w-16 accent-purple-500" /></label>
+            <button id="${winObj.id}-neon" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20">✨ Neon: OFF</button>
+            <input id="${winObj.id}-size" type="range" min="2" max="28" value="6" class="w-16 accent-purple-500" />
             <button id="${winObj.id}-clear" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20">Clear</button>
             <button id="${winObj.id}-save" class="px-2.5 py-1 rounded bg-purple-600 hover:bg-purple-500 text-white font-medium">Save to Pictures</button>
           </div>
@@ -2313,65 +2076,156 @@
 
       const canvas = container.querySelector(`#${winObj.id}-canvas`);
       const ctx = canvas.getContext('2d');
-
       setTimeout(() => {
         const rect = canvas.parentElement.getBoundingClientRect();
-        canvas.width = rect.width || 680;
-        canvas.height = rect.height || 400;
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        canvas.width = rect.width || 680; canvas.height = rect.height || 400;
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
         if (winObj.data?.imageData) {
-          const img = new Image();
-          img.onload = () => ctx.drawImage(img, 0, 0);
-          img.src = winObj.data.imageData;
+          const img = new Image(); img.onload = () => ctx.drawImage(img, 0, 0); img.src = winObj.data.imageData;
         }
       }, 30);
 
       container.querySelectorAll('[data-color]').forEach(btn => { btn.onclick = () => { color = btn.dataset.color; }; });
-      container.querySelector(`#${winObj.id}-size`).oninput = (e) => { brushSize = +e.target.value; };
-      container.querySelector(`#${winObj.id}-clear`).onclick = () => {
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      container.querySelector(`#${winObj.id}-neon`).onclick = (e) => {
+        neonGlow = !neonGlow;
+        e.target.textContent = `✨ Neon: ${neonGlow ? 'ON' : 'OFF'}`;
       };
+      container.querySelector(`#${winObj.id}-size`).oninput = (e) => { brushSize = +e.target.value; };
+      container.querySelector(`#${winObj.id}-clear`).onclick = () => { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); };
       container.querySelector(`#${winObj.id}-save`).onclick = () => {
         const name = `Art_${Date.now().toString().slice(-4)}.png`;
         vfs.Pictures[name] = { type: 'image', content: canvas.toDataURL('image/png') };
         saveVFS();
-        setBongoSpeech(`🎨 Saved your artwork as <b>${name}</b> in Pictures!`);
-        playSFX('bongo');
+        setBongoSpeech(`🎨 Saved <b>${name}</b> to your Pictures folder!`);
       };
 
       const getPos = (e) => {
         const rect = canvas.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        return { x: clientX - rect.left, y: clientY - rect.top };
+        const cx = e.touches ? e.touches[0].clientX : e.clientX;
+        const cy = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: cx - rect.left, y: cy - rect.top };
       };
-
       const startDraw = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
       const moveDraw = (e) => {
         if (!drawing) return;
-        const p = getPos(e);
-        ctx.lineTo(p.x, p.y);
-        ctx.strokeStyle = color;
-        ctx.lineWidth = brushSize;
-        ctx.lineCap = 'round';
-        ctx.stroke();
+        const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.strokeStyle = color; ctx.lineWidth = brushSize; ctx.lineCap = 'round';
+        ctx.shadowBlur = neonGlow ? 14 : 0; ctx.shadowColor = color; ctx.stroke();
       };
-      const endDraw = () => { drawing = false; };
+      const endDraw = () => { drawing = false; ctx.shadowBlur = 0; };
 
-      canvas.addEventListener('mousedown', startDraw);
-      canvas.addEventListener('mousemove', moveDraw);
-      window.addEventListener('mouseup', endDraw);
-      canvas.addEventListener('touchstart', startDraw, { passive: true });
-      canvas.addEventListener('touchmove', moveDraw, { passive: true });
-      window.addEventListener('touchend', endDraw);
+      canvas.addEventListener('mousedown', startDraw); canvas.addEventListener('mousemove', moveDraw); window.addEventListener('mouseup', endDraw);
+      canvas.addEventListener('touchstart', startDraw, { passive: true }); canvas.addEventListener('touchmove', moveDraw, { passive: true }); window.addEventListener('touchend', endDraw);
     }
 
-    // --- APP 6: CALCULATOR ---
+    // --- APP 6: TASK MANAGER ---
+    function renderTaskManagerApp(container, winObj) {
+      let cpuHist = Array(28).fill(16), ramHist = Array(28).fill(40);
+      container.innerHTML = `
+        <div class="flex-1 p-4 space-y-4 overflow-y-auto text-xs">
+          <div class="grid grid-cols-3 gap-3">
+            <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+              <div class="flex justify-between"><span class="opacity-70">CPU</span><span id="${winObj.id}-cpu" class="font-bold text-purple-300">16%</span></div>
+              <canvas id="${winObj.id}-cpu-c" width="150" height="50" class="w-full h-12 mt-2 rounded bg-black/30"></canvas>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+              <div class="flex justify-between"><span class="opacity-70">RAM</span><span id="${winObj.id}-ram" class="font-bold text-cyan-300">40%</span></div>
+              <canvas id="${winObj.id}-ram-c" width="150" height="50" class="w-full h-12 mt-2 rounded bg-black/30"></canvas>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+              <div class="opacity-70">Host Wi-Fi Link</div>
+              <div class="text-sm font-bold text-green-300 mt-1.5 truncate">${isInternetAvailable() ? (networkState.downlinkMbps ? networkState.downlinkMbps + ' Mbps' : 'Online') : 'Offline'}</div>
+              <div class="text-[10px] opacity-65 mt-0.5">${networkState.realPingMs ? networkState.realPingMs + ' ms ping' : ''}</div>
+            </div>
+          </div>
+          <div>
+            <div class="font-bold mb-2">Running Apps (${openWindows.length})</div>
+            <div id="${winObj.id}-procs" class="space-y-1.5"></div>
+          </div>
+        </div>
+      `;
+
+      function drawLine(cid, arr, col) {
+        const c = document.getElementById(cid); if (!c) return;
+        const ctx = c.getContext('2d'); ctx.clearRect(0, 0, c.width, c.height);
+        ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath();
+        arr.forEach((v, i) => {
+          const x = (i / (arr.length - 1)) * c.width, y = c.height - (v / 100) * c.height;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      }
+
+      function tick() {
+        if (!document.getElementById(winObj.id)) return;
+        const cpu = Math.min(90, Math.max(6, cpuHist[cpuHist.length - 1] + (Math.random() * 12 - 6)));
+        const ram = Math.min(90, 35 + openWindows.length * 4);
+        cpuHist.push(cpu); cpuHist.shift(); ramHist.push(ram); ramHist.shift();
+        const cEl = document.getElementById(`${winObj.id}-cpu`);
+        if (cEl) {
+          cEl.textContent = Math.round(cpu) + '%';
+          document.getElementById(`${winObj.id}-ram`).textContent = Math.round(ram) + '%';
+          drawLine(`${winObj.id}-cpu-c`, cpuHist, '#c084fc');
+          drawLine(`${winObj.id}-ram-c`, ramHist, '#22d3ee');
+          document.getElementById(`${winObj.id}-procs`).innerHTML = openWindows.map(w => `
+            <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10">
+              <span class="font-medium">${w.icon} ${w.title}</span>
+              <button onclick="closeWindow('${w.id}')" class="px-2.5 py-1 rounded bg-red-600/80 hover:bg-red-500 text-white text-[11px]">End Task</button>
+            </div>
+          `).join('');
+        }
+      }
+      tick();
+      const iv = setInterval(() => { if (!document.getElementById(winObj.id)) { clearInterval(iv); return; } tick(); }, 1200);
+    }
+
+    // --- APP 7: SETTINGS ---
+    function renderSettingsApp(container) {
+      container.innerHTML = `
+        <div class="flex-1 overflow-y-auto p-5 space-y-6">
+          <div>
+            <h2 class="text-lg font-bold mb-1">Personalization</h2>
+            <p class="text-xs opacity-70 mb-3">Choose a wallpaper theme for BongoOS 11</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+              <button onclick="setWallpaper('wallpaper-bloom')" class="p-2 rounded-xl border border-white/15 hover:border-purple-400 text-center">
+                <div class="h-14 rounded-lg wallpaper-bloom mb-1.5"></div>Purple Bloom
+              </button>
+              <button onclick="setWallpaper('wallpaper-aurora')" class="p-2 rounded-xl border border-white/15 hover:border-purple-400 text-center">
+                <div class="h-14 rounded-lg wallpaper-aurora mb-1.5"></div>Aurora Sky
+              </button>
+              <button onclick="setWallpaper('wallpaper-sunset')" class="p-2 rounded-xl border border-white/15 hover:border-purple-400 text-center">
+                <div class="h-14 rounded-lg wallpaper-sunset mb-1.5"></div>Banana Sunset
+              </button>
+              <button onclick="setWallpaper('wallpaper-cyber')" class="p-2 rounded-xl border border-white/15 hover:border-purple-400 text-center">
+                <div class="h-14 rounded-lg wallpaper-cyber mb-1.5"></div>Cyber Grid
+              </button>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+            <div>
+              <div class="text-sm font-semibold">Host Computer Network Bridge</div>
+              <div class="text-xs opacity-70">${isInternetAvailable() ? `Connected via PC Wi-Fi (${networkState.effectiveType} • ${networkState.realPingMs || '...'} ms)` : 'Disconnected'}</div>
+            </div>
+            <button onclick="openApp('browser', { initialQuery: 'bongo://network' })" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold">Network Diagnostics</button>
+          </div>
+
+          <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+            <div>
+              <div class="text-sm font-semibold">Appearance & Matrix Mode</div>
+              <div class="text-xs opacity-70">Toggle Light/Dark Mica or Matrix Code Rain</div>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="toggleThemeMode()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold">Light / Dark</button>
+              <button onclick="toggleMatrixWallpaper()" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold">Matrix Rain</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // --- APPS 8 & 9: CALCULATOR & BANANA SWEEPER ---
     function renderCalculatorApp(container, winObj) {
       let expr = '', displayVal = '0';
-
       container.innerHTML = `
         <div class="flex-1 flex flex-col p-3 bg-black/15">
           <div class="text-right p-3 rounded-xl bg-black/25 border border-white/10 mb-3">
@@ -2387,27 +2241,18 @@
           </div>
         </div>
       `;
-
       const disp = container.querySelector(`#${winObj.id}-disp`);
       const exprEl = container.querySelector(`#${winObj.id}-expr`);
-
       container.querySelectorAll('[data-key]').forEach(btn => {
         btn.onclick = () => {
-          const k = btn.dataset.key;
-          playSFX('click');
+          const k = btn.dataset.key; playSFX('click');
           if (k === 'C') { expr = ''; displayVal = '0'; }
           else if (k === '⌫') { expr = expr.slice(0, -1); displayVal = expr || '0'; }
-          else if (k === '±') {
-            if (displayVal.startsWith('-')) displayVal = displayVal.slice(1);
-            else if (displayVal !== '0') displayVal = '-' + displayVal;
-            expr = displayVal;
-          } else if (k === '=') {
+          else if (k === '±') { displayVal = displayVal.startsWith('-') ? displayVal.slice(1) : (displayVal !== '0' ? '-' + displayVal : '0'); expr = displayVal; }
+          else if (k === '=') {
             try {
-              const sanitized = expr.replace(/[^0-9+\-*/.%()]/g, '');
-              const res = Function('"use strict";return (' + sanitized + ')')();
-              exprEl.textContent = expr + ' =';
-              displayVal = String(Number(res.toFixed(8)));
-              expr = displayVal;
+              const res = Function('"use strict";return (' + expr.replace(/[^0-9+\-*/.%()]/g, '') + ')')();
+              exprEl.textContent = expr + ' ='; displayVal = String(Number(res.toFixed(8))); expr = displayVal;
             } catch { displayVal = 'Error'; expr = ''; }
           } else { expr += k; displayVal = expr; }
           disp.textContent = displayVal;
@@ -2415,247 +2260,57 @@
       });
     }
 
-    // --- APP 7: BANANA SWEEPER ---
     function renderMinesweeperApp(container, winObj) {
       const size = 8, minesCount = 10;
       let board = [], gameOver = false;
-
       function initGame() {
         gameOver = false;
-        board = Array.from({ length: size }, () =>
-          Array.from({ length: size }, () => ({ mine: false, revealed: false, flagged: false, count: 0 }))
-        );
+        board = Array.from({ length: size }, () => Array.from({ length: size }, () => ({ mine: false, revealed: false, flagged: false, count: 0 })));
         let placed = 0;
         while (placed < minesCount) {
           const r = Math.floor(Math.random() * size), c = Math.floor(Math.random() * size);
           if (!board[r][c].mine) { board[r][c].mine = true; placed++; }
         }
-        for (let r = 0; r < size; r++) {
-          for (let c = 0; c < size; c++) {
-            if (board[r][c].mine) continue;
-            let cnt = 0;
-            for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) if (board[r + dr]?.[c + dc]?.mine) cnt++;
-            board[r][c].count = cnt;
-          }
+        for (let r = 0; r < size; r++) for (let c = 0; c < size; c++) {
+          if (board[r][c].mine) continue;
+          let cnt = 0;
+          for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) if (board[r + dr]?.[c + dc]?.mine) cnt++;
+          board[r][c].count = cnt;
         }
         renderBoard();
       }
-
       function reveal(r, c) {
         if (gameOver || board[r]?.[c]?.revealed || board[r]?.[c]?.flagged) return;
-        const cell = board[r][c];
-        cell.revealed = true;
-        if (cell.mine) {
-          gameOver = true;
-          board.forEach(row => row.forEach(x => { if (x.mine) x.revealed = true; }));
-          setBongoSpeech("💥 BOOM! Watch out for hidden coconuts! Hit New Game to try again!");
-          renderBoard();
-          return;
-        }
-        if (cell.count === 0) {
-          for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) if (board[r + dr]?.[c + dc]) reveal(r + dr, c + dc);
-        }
-        if (board.flat().filter(x => !x.mine && !x.revealed).length === 0) {
-          gameOver = true;
-          setBongoSpeech("🏆 VICTORY! You cleared the entire field!");
-        }
+        const cell = board[r][c]; cell.revealed = true;
+        if (cell.mine) { gameOver = true; board.forEach(row => row.forEach(x => { if (x.mine) x.revealed = true; })); renderBoard(); return; }
+        if (cell.count === 0) for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) if (board[r + dr]?.[c + dc]) reveal(r + dr, c + dc);
         renderBoard();
       }
-
       function renderBoard() {
         container.innerHTML = `
           <div class="flex-1 flex flex-col items-center justify-center p-4 bg-black/10">
-            <div class="w-full max-w-[320px] flex items-center justify-between mb-3 px-1">
-              <span class="text-xs font-bold text-yellow-300">💣 Coconuts: ${minesCount}</span>
-              <button id="${winObj.id}-reset" class="px-3 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold">New Game</button>
+            <div class="w-full max-w-[320px] flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-yellow-300">💣 Traps: ${minesCount}</span>
+              <button id="${winObj.id}-reset" class="px-3 py-1 rounded-lg bg-purple-600 text-white text-xs font-semibold">Reset</button>
             </div>
             <div class="grid grid-cols-8 gap-1 bg-black/30 p-2 rounded-xl border border-white/15">
               ${board.map((row, r) => row.map((cell, c) => {
                 let content = '', cls = 'bg-purple-500/30 hover:bg-purple-500/50 cursor-pointer';
-                if (cell.revealed) {
-                  cls = cell.mine ? 'bg-red-600 text-white' : 'bg-white/10';
-                  content = cell.mine ? '💣' : (cell.count || '');
-                } else if (cell.flagged) content = '🍌';
-                return `<button data-r="${r}" data-c="${c}" class="w-8 h-8 sm:w-9 sm:h-9 rounded-md font-bold text-xs flex items-center justify-center transition ${cls}">${content}</button>`;
+                if (cell.revealed) { cls = cell.mine ? 'bg-red-600 text-white' : 'bg-white/10'; content = cell.mine ? '💣' : (cell.count || ''); }
+                else if (cell.flagged) content = '🍌';
+                return `<button data-r="${r}" data-c="${c}" class="w-8 h-8 rounded-md font-bold text-xs flex items-center justify-center transition ${cls}">${content}</button>`;
               }).join('')).join('')}
             </div>
-            <p class="text-[11px] opacity-65 mt-3">Left-click to dig • Right-click to plant a Banana flag 🍌</p>
           </div>
         `;
         container.querySelector(`#${winObj.id}-reset`).onclick = initGame;
         container.querySelectorAll('[data-r]').forEach(btn => {
           const r = +btn.dataset.r, c = +btn.dataset.c;
-          btn.onclick = () => { playSFX('click'); reveal(r, c); };
-          btn.oncontextmenu = (e) => {
-            e.preventDefault();
-            if (!gameOver && !board[r][c].revealed) { board[r][c].flagged = !board[r][c].flagged; playSFX('click'); renderBoard(); }
-          };
+          btn.onclick = () => reveal(r, c);
+          btn.oncontextmenu = (e) => { e.preventDefault(); if (!gameOver && !board[r][c].revealed) { board[r][c].flagged = !board[r][c].flagged; renderBoard(); } };
         });
       }
       initGame();
-    }
-
-    // --- APP 8: BONGOBEATS ---
-    function renderMusicApp(container, winObj) {
-      const tracks = [
-        { title: 'Canopy Serenade', artist: 'Bongo Vocaloid Choir', notes: [392, 329.63, 261.63, 196, 220, 246.94, 261.63, 220, 261.63, 196] },
-        { title: 'Banana Boat Chiptune', artist: 'DJ Purple Gorilla', notes: [329.63, 392, 329.63, 261.63, 329.63, 392, 440, 392, 329.63, 293.66] },
-        { title: 'Midnight Lo-Fi Synthwave', artist: 'BongoOS System Audio', notes: [220, 261.63, 329.63, 440, 392, 329.63, 293.66, 329.63] }
-      ];
-      let currentTrack = 0, playingTimer = null, step = 0;
-
-      function stopTrack() { if (playingTimer) { clearInterval(playingTimer); playingTimer = null; } }
-      function playTrack() {
-        stopTrack();
-        const track = tracks[currentTrack];
-        step = 0;
-        playingTimer = setInterval(() => {
-          if (!document.getElementById(winObj.id)) { stopTrack(); return; }
-          const freq = track.notes[step % track.notes.length];
-          if (soundEnabled) {
-            const ctx = getAudioCtx();
-            const osc = ctx.createOscillator(), gain = ctx.createGain();
-            osc.type = currentTrack === 2 ? 'sawtooth' : 'triangle';
-            osc.frequency.value = freq;
-            osc.connect(gain); gain.connect(ctx.destination);
-            gain.gain.setValueAtTime(0.11, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
-            osc.start(); osc.stop(ctx.currentTime + 0.28);
-          }
-          step++;
-        }, 310);
-      }
-
-      function renderUI() {
-        const t = tracks[currentTrack];
-        container.innerHTML = `
-          <div class="flex-1 flex flex-col justify-between p-5 bg-gradient-to-b from-purple-900/30 to-transparent">
-            <div class="flex items-center gap-4">
-              <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center text-4xl shadow-lg">🎵</div>
-              <div>
-                <div class="text-xs uppercase tracking-wider text-purple-400 font-bold">BongoBeats Synth</div>
-                <div class="text-base font-bold mt-0.5">${t.title}</div>
-                <div class="text-xs opacity-70">${t.artist}</div>
-              </div>
-            </div>
-            <div class="space-y-1.5 my-4">
-              ${tracks.map((tr, idx) => `
-                <button data-track="${idx}" class="w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between transition ${idx === currentTrack ? 'bg-purple-600 text-white font-semibold' : 'bg-white/5 hover:bg-white/10'}">
-                  <span>${idx + 1}. ${tr.title}</span>
-                  <span>${idx === currentTrack && playingTimer ? '🔊 Playing' : '▶'}</span>
-                </button>
-              `).join('')}
-            </div>
-            <div class="flex items-center justify-center gap-3 pt-2 border-t border-white/10">
-              <button id="${winObj.id}-play" class="px-5 py-2 rounded-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold">▶ Play</button>
-              <button id="${winObj.id}-stop" class="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-xs font-semibold">⏹ Stop</button>
-            </div>
-          </div>
-        `;
-        container.querySelectorAll('[data-track]').forEach(btn => {
-          btn.onclick = () => { currentTrack = +btn.dataset.track; playTrack(); renderUI(); };
-        });
-        container.querySelector(`#${winObj.id}-play`).onclick = () => { playTrack(); renderUI(); };
-        container.querySelector(`#${winObj.id}-stop`).onclick = () => { stopTrack(); renderUI(); };
-      }
-      renderUI();
-    }
-
-    // --- APP 9: TASK MANAGER ---
-    function renderTaskManagerApp(container, winObj) {
-      function refresh() {
-        const cpu = Math.floor(Math.random() * 18) + 8;
-        const ram = 38 + openWindows.length * 4;
-        container.innerHTML = `
-          <div class="flex-1 p-4 space-y-4 overflow-y-auto text-xs">
-            <div class="grid grid-cols-3 gap-3">
-              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
-                <div class="opacity-65">Gorilla CPU</div>
-                <div class="text-xl font-bold text-purple-300 mt-1">${cpu}%</div>
-              </div>
-              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
-                <div class="opacity-65">Potassium RAM</div>
-                <div class="text-xl font-bold text-yellow-300 mt-1">${ram}%</div>
-              </div>
-              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
-                <div class="opacity-65">Wi-Fi Link</div>
-                <div class="text-sm font-bold text-green-300 mt-1.5 truncate">${isInternetAvailable() ? wifiState.connectedSsid : 'Offline'}</div>
-              </div>
-            </div>
-            <div>
-              <div class="font-bold mb-2">Running Apps (${openWindows.length})</div>
-              <div class="space-y-1.5">
-                ${openWindows.map(w => `
-                  <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10">
-                    <span class="font-medium">${w.icon} ${w.title}</span>
-                    <button onclick="closeWindow('${w.id}')" class="px-2.5 py-1 rounded bg-red-600/80 hover:bg-red-500 text-white text-[11px]">End Task</button>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          </div>
-        `;
-      }
-      refresh();
-      const interval = setInterval(() => {
-        if (!document.getElementById(winObj.id)) { clearInterval(interval); return; }
-        refresh();
-      }, 2000);
-    }
-
-    // --- APP 10: SETTINGS ---
-    function renderSettingsApp(container) {
-      container.innerHTML = `
-        <div class="flex-1 overflow-y-auto p-5 space-y-6">
-          <div>
-            <h2 class="text-lg font-bold mb-1">Personalization</h2>
-            <p class="text-xs opacity-70 mb-3">Customize your BongoOS 11 desktop wallpaper and appearance</p>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-              <button onclick="setWallpaper('wallpaper-bloom')" class="p-2 rounded-xl border border-white/15 hover:border-purple-400 text-center">
-                <div class="h-14 rounded-lg wallpaper-bloom mb-1.5"></div>
-                Purple Bloom
-              </button>
-              <button onclick="setWallpaper('wallpaper-banana')" class="p-2 rounded-xl border border-white/15 hover:border-purple-400 text-center">
-                <div class="h-14 rounded-lg wallpaper-banana mb-1.5"></div>
-                Banana Sunset
-              </button>
-              <button onclick="setWallpaper('wallpaper-meadow')" class="p-2 rounded-xl border border-white/15 hover:border-purple-400 text-center">
-                <div class="h-14 rounded-lg wallpaper-meadow mb-1.5"></div>
-                Canopy Meadow
-              </button>
-              <button onclick="setWallpaper('wallpaper-cyber')" class="p-2 rounded-xl border border-white/15 hover:border-purple-400 text-center">
-                <div class="h-14 rounded-lg wallpaper-cyber mb-1.5"></div>
-                Cyber Grid
-              </button>
-            </div>
-          </div>
-
-          <div class="pt-4 border-t border-white/10 flex items-center justify-between">
-            <div>
-              <div class="text-sm font-semibold">Network & Internet (Wi-Fi)</div>
-              <div class="text-xs opacity-70">Status: ${isInternetAvailable() ? 'Connected to ' + wifiState.connectedSsid : 'Disconnected'}</div>
-            </div>
-            <button onclick="toggleWifiPower(); openApp('settings')" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold">${wifiState.enabled ? 'Turn Wi-Fi Off' : 'Turn Wi-Fi On'}</button>
-          </div>
-
-          <div class="pt-4 border-t border-white/10 flex items-center justify-between">
-            <div>
-              <div class="text-sm font-semibold">Color Mode</div>
-              <div class="text-xs opacity-70">Switch between Dark Mica and Light Acrylic</div>
-            </div>
-            <button onclick="toggleThemeMode()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold">Toggle Light / Dark</button>
-          </div>
-
-          <div class="pt-4 border-t border-white/10">
-            <h3 class="text-sm font-bold mb-2">About BongoOS 11</h3>
-            <div class="p-4 rounded-xl bg-white/5 border border-white/10 text-xs space-y-1.5">
-              <div><span class="opacity-60">Edition:</span> <b>BongoOS 11 (Original Web Edition)</b></div>
-              <div><span class="opacity-60">Browser:</span> BongoChrome 131 (Live Internet Enabled)</div>
-              <div><span class="opacity-60">Assistant:</span> Bongo AI (Gemini Powered)</div>
-            </div>
-          </div>
-        </div>
-      `;
     }
   </script>
 </body>

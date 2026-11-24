@@ -1,0 +1,2721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BongoOS 11 Pro Insider Preview (v1.1.0-beta)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #a855f7;
+      --accent-hover: #9333ea;
+      --accent-glow: rgba(168, 85, 247, 0.45);
+      --mica-bg: rgba(18, 14, 28, 0.82);
+      --mica-surface: rgba(31, 24, 48, 0.90);
+      --mica-border: rgba(255, 255, 255, 0.14);
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --window-bg: #130e1d;
+      --window-header: #1d152c;
+    }
+
+    body.light-theme {
+      --mica-bg: rgba(245, 243, 255, 0.86);
+      --mica-surface: rgba(255, 255, 255, 0.94);
+      --mica-border: rgba(126, 34, 206, 0.2);
+      --text-primary: #181326;
+      --text-secondary: #475569;
+      --window-bg: #ffffff;
+      --window-header: #f3e8ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-primary);
+    }
+
+    input, textarea, [contenteditable="true"], .selectable-text {
+      user-select: text;
+    }
+
+    /* v1.1.0-beta Dynamic Wallpapers */
+    .wallpaper-aurora {
+      background:
+        radial-gradient(circle at 72% 28%, rgba(34, 211, 238, 0.42) 0%, transparent 44%),
+        radial-gradient(circle at 32% 65%, rgba(168, 85, 247, 0.78) 0%, transparent 52%),
+        radial-gradient(circle at 80% 78%, rgba(236, 72, 153, 0.45) 0%, transparent 45%),
+        linear-gradient(135deg, #070510 0%, #1c0b36 52%, #091326 100%);
+    }
+
+    .wallpaper-cyber {
+      background:
+        radial-gradient(circle at 50% 45%, rgba(217, 70, 239, 0.35) 0%, transparent 55%),
+        repeating-linear-gradient(0deg, rgba(34, 211, 238, 0.09) 0px, rgba(34, 211, 238, 0.09) 1px, transparent 1px, transparent 36px),
+        repeating-linear-gradient(90deg, rgba(168, 85, 247, 0.09) 0px, rgba(168, 85, 247, 0.09) 1px, transparent 1px, transparent 36px),
+        #06040d;
+    }
+
+    .wallpaper-sunset {
+      background:
+        radial-gradient(circle at 70% 25%, rgba(250, 204, 21, 0.55) 0%, transparent 45%),
+        radial-gradient(circle at 30% 75%, rgba(147, 51, 234, 0.78) 0%, transparent 52%),
+        linear-gradient(135deg, #1b0d2e 0%, #581c87 55%, #7c2d12 100%);
+    }
+
+    .wallpaper-mica {
+      background:
+        radial-gradient(circle at 60% 45%, rgba(192, 132, 252, 0.6) 0%, transparent 44%),
+        radial-gradient(circle at 35% 60%, rgba(126, 34, 206, 0.82) 0%, transparent 50%),
+        linear-gradient(135deg, #0f071c 0%, #240b44 50%, #120624 100%);
+    }
+
+    /* Experimental Retro CRT Scanline Overlay */
+    .crt-overlay::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+      z-index: 9990;
+    }
+
+    /* Mica Glass */
+    .mica {
+      background: var(--mica-bg);
+      backdrop-filter: blur(24px) saturate(170%);
+      -webkit-backdrop-filter: blur(24px) saturate(170%);
+      border: 1px solid var(--mica-border);
+    }
+
+    .mica-surface {
+      background: var(--mica-surface);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--mica-border);
+    }
+
+    /* Window System */
+    .os-window {
+      position: absolute;
+      border-radius: 12px;
+      background: var(--window-bg);
+      border: 1px solid var(--mica-border);
+      box-shadow: 0 24px 55px -12px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.07);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.16s ease;
+    }
+
+    .os-window.minimized {
+      opacity: 0;
+      transform: scale(0.88) translateY(42px);
+      pointer-events: none;
+    }
+
+    .os-window.maximized {
+      top: 0 !important;
+      left: 0 !important;
+      width: 100vw !important;
+      height: calc(100vh - 52px) !important;
+      border-radius: 0 !important;
+    }
+
+    .os-window.snap-left {
+      top: 0 !important;
+      left: 0 !important;
+      width: 50vw !important;
+      height: calc(100vh - 52px) !important;
+      border-radius: 0 !important;
+    }
+
+    .os-window.snap-right {
+      top: 0 !important;
+      left: 50vw !important;
+      width: 50vw !important;
+      height: calc(100vh - 52px) !important;
+      border-radius: 0 !important;
+    }
+
+    .window-titlebar {
+      height: 38px;
+      background: var(--window-header);
+      border-bottom: 1px solid var(--mica-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px 0 12px;
+      cursor: default;
+      flex-shrink: 0;
+    }
+
+    .resize-handle {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 14px;
+      height: 14px;
+      cursor: nwse-resize;
+      z-index: 20;
+    }
+
+    /* Bongo Animations */
+    @keyframes bongoFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(1.5deg); }
+    }
+
+    @keyframes bongoDance {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.09) rotate(-11deg) translateY(-12px); }
+      50% { transform: scale(0.96) rotate(0deg) translateY(0px); }
+      75% { transform: scale(1.09) rotate(11deg) translateY(-12px); }
+    }
+
+    @keyframes bongoSpin {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.16); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    @keyframes bongoBlink {
+      0%, 92%, 100% { transform: scaleY(1); }
+      95% { transform: scaleY(0.1); }
+    }
+
+    .bongo-idle { animation: bongoFloat 3.3s ease-in-out infinite; }
+    .bongo-dancing { animation: bongoDance 0.5s ease-in-out infinite; }
+    .bongo-spinning { animation: bongoSpin 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .bongo-eyes { transform-origin: center 44px; animation: bongoBlink 4.5s infinite; }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.4); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(168, 85, 247, 0.65); }
+
+    .terminal-font { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="wallpaper-aurora select-none">
+
+  <!-- Night Light Blue-Light Filter Overlay -->
+  <div id="night-light-overlay" class="hidden fixed inset-0 bg-amber-500/20 mix-blend-multiply pointer-events-none z-[9980] transition-opacity duration-500"></div>
+
+  <!-- Boot Splash Screen -->
+  <div id="boot-screen" class="fixed inset-0 z-[99999] bg-[#07040e] flex flex-col items-center justify-center transition-opacity duration-700">
+    <div class="relative mb-6">
+      <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple-500 via-fuchsia-600 to-cyan-500 flex items-center justify-center shadow-2xl shadow-purple-600/40 animate-pulse">
+        <svg viewBox="0 0 100 100" class="w-16 h-16">
+          <polygon points="50,10 86,30 86,70 50,90 14,70 14,30" fill="#6b21a8" stroke="#e9d5ff" stroke-width="3"/>
+          <circle cx="22" cy="48" r="10" fill="#c084fc"/>
+          <circle cx="78" cy="48" r="10" fill="#c084fc"/>
+          <ellipse cx="50" cy="58" rx="22" ry="18" fill="#f3e8ff"/>
+          <rect x="31" y="37" width="38" height="11" rx="4" fill="#06b6d4" opacity="0.85"/>
+          <path d="M 38 61 Q 50 71 62 61" stroke="#581c87" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="absolute -top-2 -right-3 px-2 py-0.5 rounded-full bg-cyan-500 text-slate-950 font-extrabold text-[10px] tracking-wider shadow">BETA</span>
+    </div>
+    <h1 class="text-2xl font-extrabold tracking-tight text-white mb-1">BongoOS <span class="text-purple-400">11</span> <span class="text-xs font-mono text-cyan-400">v1.1.0-beta</span></h1>
+    <p class="text-[11px] text-purple-300/75 mb-7 tracking-widest uppercase">Insider Preview • Build 26200.1100</p>
+    <div class="w-52 h-1.5 bg-purple-950 rounded-full overflow-hidden">
+      <div id="boot-bar" class="h-full bg-gradient-to-r from-purple-500 via-cyan-400 to-yellow-400 w-0 transition-all duration-300"></div>
+    </div>
+  </div>
+
+  <!-- Lock Screen Overlay -->
+  <div id="lock-screen" class="hidden fixed inset-0 z-[9000] wallpaper-aurora flex flex-col items-center justify-between py-16 text-white backdrop-blur-xl">
+    <div class="text-center mt-8">
+      <div id="lock-time" class="text-7xl font-light tracking-tight drop-shadow-lg">09:52</div>
+      <div id="lock-date" class="text-lg font-medium text-purple-200 mt-2">Tuesday, November 24</div>
+      <div class="mt-2 inline-block px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[11px] font-mono text-cyan-300">Insider Preview Build 26200.1100</div>
+    </div>
+    <div class="flex flex-col items-center gap-4 mb-8">
+      <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-cyan-500 p-1 shadow-xl">
+        <div class="w-full h-full rounded-full bg-[#150d24] flex items-center justify-center text-4xl">🦍</div>
+      </div>
+      <div class="text-xl font-semibold">Bongo Insider</div>
+      <button onclick="unlockOS()" class="px-8 py-2.5 rounded-full bg-purple-600 hover:bg-purple-500 active:scale-95 transition font-medium shadow-lg shadow-purple-900/50 border border-purple-400/30">
+        Sign In to Beta Build
+      </button>
+    </div>
+  </div>
+
+  <!-- Simulated Bongo Purple Screen of Death (PSOD) with Auto-Reboot -->
+  <div id="bsod-screen" onclick="hideBSOD()" class="hidden fixed inset-0 z-[9500] bg-[#3b0764] text-white p-8 sm:p-20 flex flex-col justify-center cursor-pointer">
+    <div class="max-w-3xl mx-auto">
+      <div class="flex items-center gap-4 mb-6">
+        <span class="text-7xl sm:text-8xl font-light">:(</span>
+        <span class="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 font-mono text-xs">INSIDER PREVIEW BUGCHECK</span>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-normal leading-relaxed mb-6">
+        Your BongoOS Insider Build ran into an experimental banana overflow and needs to restart. We're collecting telemetry data, then we'll swing right back.
+      </h2>
+      <div class="text-lg mb-8 font-mono text-cyan-300"><span id="bsod-percent">0</span>% complete (Auto-rebooting at 100%)</div>
+      <div class="flex items-center gap-4 bg-purple-950/60 p-4 rounded-xl border border-purple-400/25">
+        <div class="w-16 h-16 bg-white p-1.5 rounded-lg flex-shrink-0 grid grid-cols-4 gap-0.5">
+          <div class="bg-purple-900"></div><div class="bg-white"></div><div class="bg-purple-900"></div><div class="bg-purple-900"></div>
+          <div class="bg-white"></div><div class="bg-purple-900"></div><div class="bg-white"></div><div class="bg-purple-900"></div>
+          <div class="bg-purple-900"></div><div class="bg-purple-900"></div><div class="bg-white"></div><div class="bg-white"></div>
+          <div class="bg-white"></div><div class="bg-purple-900"></div><div class="bg-purple-900"></div><div class="bg-white"></div>
+        </div>
+        <div class="text-xs sm:text-sm text-purple-200 space-y-1">
+          <p>For Insider Preview diagnostics, visit https://bongo-os.web/beta-bugcheck</p>
+          <p class="font-mono text-yellow-300">Stop code: EXPERIMENTAL_BANANA_OVERFLOW_v1_1_BETA</p>
+          <p class="text-purple-300/80 italic">(Click anywhere to recover immediately or wait for auto-reboot)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Desktop Area -->
+  <div id="desktop" class="relative w-full h-[calc(100vh-52px)] overflow-hidden" onclick="handleDesktopClick(event)" oncontextmenu="showDesktopContextMenu(event)">
+
+    <!-- Optional Matrix Rain Background Canvas (Beta Flag) -->
+    <canvas id="matrix-canvas" class="hidden fixed inset-0 w-full h-full pointer-events-none opacity-45 z-0"></canvas>
+
+    <!-- Original Geometric Aurora Bloom Artwork -->
+    <svg id="bloom-artwork" class="absolute top-[46%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(74vw,620px)] h-[min(74vw,620px)] pointer-events-none opacity-80 drop-shadow-[0_25px_45px_rgba(88,28,135,0.65)] transition-opacity duration-500" viewBox="0 0 500 500" fill="none">
+      <defs>
+        <radialGradient id="betaPetal1" cx="30%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#67e8f9" />
+          <stop offset="55%" stop-color="#9333ea" />
+          <stop offset="100%" stop-color="#3b0764" />
+        </radialGradient>
+        <radialGradient id="betaPetal2" cx="70%" cy="25%" r="75%">
+          <stop offset="0%" stop-color="#f0abfc" stop-opacity="0.9" />
+          <stop offset="50%" stop-color="#7e22ce" />
+          <stop offset="100%" stop-color="#1e1b4b" />
+        </radialGradient>
+      </defs>
+      <path d="M250 250 C140 120, 210 30, 290 110 C340 160, 290 230, 250 250 Z" fill="url(#betaPetal1)" opacity="0.88"/>
+      <path d="M250 250 C370 110, 460 190, 380 280 C330 330, 270 280, 250 250 Z" fill="url(#betaPetal2)" opacity="0.85"/>
+      <path d="M250 250 C380 360, 290 460, 210 380 C160 330, 220 270, 250 250 Z" fill="url(#betaPetal1)" opacity="0.9"/>
+      <path d="M250 250 C110 370, 40 270, 130 190 C180 140, 230 220, 250 250 Z" fill="url(#betaPetal2)" opacity="0.84"/>
+      <circle cx="250" cy="250" r="36" fill="#ecfeff" opacity="0.22"/>
+    </svg>
+
+    <!-- Desktop Icons Grid -->
+    <div id="desktop-icons" class="p-3 grid grid-flow-col grid-rows-[repeat(auto-fill,92px)] gap-2 w-fit h-full content-start z-10 relative"></div>
+
+    <!-- Bottom-Right Insider Preview Desktop Watermark -->
+    <div id="insider-watermark" class="fixed bottom-[62px] right-4 z-[5] text-right pointer-events-none opacity-75 leading-tight drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)]">
+      <div class="text-[11px] font-semibold text-white/90">BongoOS 11 Pro Insider Preview</div>
+      <div class="text-[10px] font-mono text-cyan-200/85">Evaluation Copy. Build 26200.1100 (v1.1.0-beta)</div>
+    </div>
+
+    <!-- Windows Container -->
+    <div id="windows-container" class="absolute inset-0 pointer-events-none z-20"></div>
+
+    <!-- Bongo AI Assistant v1.1 (Upgraded with Holographic Beta Visor & Quick Chips) -->
+    <div id="bongo-widget" class="fixed z-[4500] flex flex-col items-center cursor-grab active:cursor-grabbing" style="right: 34px; bottom: 98px;">
+      <!-- Speech Bubble -->
+      <div id="bongo-bubble" class="mb-2 w-80 sm:w-[340px] rounded-2xl mica-surface p-3.5 shadow-2xl border border-purple-400/45 relative transition-all duration-200">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-xs font-bold uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
+            <span id="bongo-online-dot" class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span>
+            Bongo AI <span class="px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-[9px] font-mono">v1.1 BETA</span>
+          </span>
+          <div class="flex items-center gap-1">
+            <button onclick="toggleBongoVisor()" title="Toggle Beta Visor & Antenna" class="p-1 hover:bg-purple-500/20 rounded text-xs">🥽</button>
+            <button onclick="bongoQuickAction('sing')" title="Sing Serenade" class="p-1 hover:bg-purple-500/20 rounded text-xs">🎵</button>
+            <button onclick="toggleBongoBubble()" title="Minimize Bubble" class="p-1 hover:bg-purple-500/20 rounded text-xs text-slate-400">✕</button>
+          </div>
+        </div>
+
+        <div id="bongo-speech-text" class="text-xs sm:text-[13px] leading-relaxed max-h-36 overflow-y-auto pr-1 selectable-text">
+          Welcome to <b>BongoOS 11 v1.1.0-beta</b>! 🦍✨ I've got my new holographic Insider visor! Ask me anything, run diagnostics, or click a quick chip below!
+        </div>
+
+        <!-- Quick Action Chips -->
+        <div class="flex flex-wrap gap-1 mt-2.5">
+          <button onclick="bongoQuickAction('joke')" class="text-[10px] px-2 py-1 rounded-full bg-purple-500/20 hover:bg-purple-500/35 border border-purple-400/30 transition">😂 Tell a Joke</button>
+          <button onclick="bongoQuickAction('dance')" class="text-[10px] px-2 py-1 rounded-full bg-fuchsia-500/20 hover:bg-fuchsia-500/35 border border-fuchsia-400/30 transition">💃 Dance!</button>
+          <button onclick="bongoQuickAction('diag')" class="text-[10px] px-2 py-1 rounded-full bg-cyan-500/20 hover:bg-cyan-500/35 border border-cyan-400/30 transition">🩺 System Diagnostics</button>
+          <button onclick="bongoQuickAction('whatsnew')" class="text-[10px] px-2 py-1 rounded-full bg-yellow-500/20 hover:bg-yellow-500/35 border border-yellow-400/30 transition">🚀 What's new in v1.1 Beta?</button>
+        </div>
+
+        <!-- Ask Bongo Input -->
+        <form onsubmit="askBongoAI(event)" class="mt-2.5 flex gap-1.5">
+          <input id="bongo-chat-input" type="text" placeholder="Ask Bongo or say 'open flags'..." class="flex-1 text-xs px-2.5 py-1.5 rounded-lg bg-black/30 border border-purple-400/30 focus:outline-none focus:border-cyan-400 placeholder-slate-400" />
+          <button type="submit" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white text-xs font-semibold transition">Ask</button>
+        </form>
+
+        <!-- Speech Tail -->
+        <div class="w-3.5 h-3.5 rotate-45 mica-surface border-r border-b border-purple-400/45 absolute -bottom-2 right-12"></div>
+      </div>
+
+      <!-- Original Stylized Geometric Purple Gorilla SVG (v1.1 Beta) -->
+      <div id="bongo-character" onclick="if(!window._bongoDragged) toggleBongoBubble()" ondblclick="bongoQuickAction('trick')" oncontextmenu="showBongoContextMenu(event)" class="bongo-idle relative w-28 h-28 drop-shadow-[0_14px_22px_rgba(0,0,0,0.6)] hover:scale-105 transition-transform">
+        <svg viewBox="0 0 140 140" class="w-full h-full overflow-visible">
+          <!-- Shadow -->
+          <ellipse cx="70" cy="132" rx="34" ry="7" fill="rgba(0,0,0,0.38)"/>
+          <!-- Feet -->
+          <ellipse cx="48" cy="122" rx="14" ry="8" fill="#581c87"/>
+          <ellipse cx="92" cy="122" rx="14" ry="8" fill="#581c87"/>
+          <!-- Torso -->
+          <ellipse cx="70" cy="94" rx="36" ry="30" fill="#7e22ce"/>
+          <ellipse cx="70" cy="96" rx="24" ry="20" fill="#d8b4fe"/>
+          <!-- Beta Chest Emblem -->
+          <polygon points="70,84 78,94 70,104 62,94" fill="#06b6d4" opacity="0.85"/>
+          <!-- Left Arm -->
+          <path d="M 38 78 Q 14 92 26 112" stroke="#7e22ce" stroke-width="15" stroke-linecap="round" fill="none"/>
+          <circle cx="26" cy="112" r="8" fill="#d8b4fe"/>
+          <!-- Right Arm -->
+          <path d="M 102 78 Q 126 92 114 112" stroke="#7e22ce" stroke-width="15" stroke-linecap="round" fill="none"/>
+          <circle cx="114" cy="112" r="8" fill="#d8b4fe"/>
+          <!-- Ears -->
+          <circle cx="35" cy="46" r="11" fill="#9333ea"/>
+          <circle cx="35" cy="46" r="5.5" fill="#e9d5ff"/>
+          <circle cx="105" cy="46" r="11" fill="#9333ea"/>
+          <circle cx="105" cy="46" r="5.5" fill="#e9d5ff"/>
+          <!-- Beta Telemetry Antenna (Toggleable) -->
+          <g id="bongo-antenna">
+            <line x1="70" y1="18" x2="70" y2="3" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="70" cy="3" r="4" fill="#22d3ee" class="animate-pulse"/>
+          </g>
+          <!-- Geometric Stylized Head -->
+          <rect x="38" y="18" width="64" height="58" rx="26" fill="#9333ea"/>
+          <!-- Face Mask -->
+          <rect x="46" y="34" width="48" height="36" rx="18" fill="#f3e8ff"/>
+          <!-- Eyes -->
+          <g class="bongo-eyes">
+            <circle cx="59" cy="44" r="6.5" fill="#ffffff"/>
+            <circle cx="81" cy="44" r="6.5" fill="#ffffff"/>
+            <circle id="bongo-pupil-l" cx="60" cy="44" r="3.2" fill="#1e1b4b"/>
+            <circle id="bongo-pupil-r" cx="80" cy="44" r="3.2" fill="#1e1b4b"/>
+          </g>
+          <!-- Eyebrows -->
+          <path d="M 51 35 Q 59 31 66 36" stroke="#4c1d95" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M 74 36 Q 81 31 89 35" stroke="#4c1d95" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <!-- Nostrils -->
+          <circle cx="66" cy="52" r="1.8" fill="#6b21a8"/>
+          <circle cx="74" cy="52" r="1.8" fill="#6b21a8"/>
+          <!-- Mouth -->
+          <path id="bongo-mouth" d="M 56 60 Q 70 70 84 60" stroke="#581c87" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+          <!-- Holographic Beta Visor (Toggleable) -->
+          <g id="bongo-shades">
+            <rect x="46" y="37" width="48" height="13" rx="5" fill="rgba(6, 182, 212, 0.35)" stroke="#22d3ee" stroke-width="1.8"/>
+            <line x1="50" y1="41" x2="62" y2="41" stroke="#cffafe" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Custom Context Menus -->
+    <div id="context-menu" class="hidden fixed z-[6000] w-56 rounded-xl mica-surface p-1.5 shadow-2xl text-xs"></div>
+
+    <!-- Widgets Board Flyout (Left Taskbar Trigger) -->
+    <div id="widgets-flyout" onclick="event.stopPropagation()" class="hidden fixed bottom-14 left-3 w-80 sm:w-96 rounded-2xl mica p-4 shadow-2xl z-[5500] space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-300">Bongo Insider Widgets</span>
+        <span id="widget-net-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 border border-green-400/30">● Online</span>
+      </div>
+      <!-- Live Weather Widget -->
+      <div class="p-3.5 rounded-xl bg-gradient-to-br from-purple-600/35 to-cyan-700/35 border border-white/15">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-xs opacity-75">Live Weather • Canopy Station</div>
+            <div id="widget-temp" class="text-2xl font-bold mt-0.5">74°F • Clear</div>
+            <div id="widget-wind" class="text-[11px] opacity-75 mt-0.5">Wind: 6 mph • Humidity: 52%</div>
+          </div>
+          <div class="text-4xl">⛅</div>
+        </div>
+      </div>
+      <!-- Quick Web Search Widget -->
+      <form onsubmit="event.preventDefault(); const q=this.querySelector('input').value; if(q){ openApp('browser', { initialQuery: q }); closeAllFlyouts(); }" class="flex gap-1.5">
+        <input type="text" placeholder="Search the real web via BongoChrome..." class="flex-1 px-3 py-2 rounded-xl bg-black/25 border border-white/15 text-xs focus:outline-none focus:border-cyan-400" />
+        <button type="submit" class="px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold">Go</button>
+      </form>
+      <!-- System Mini Stats -->
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <div class="p-2.5 rounded-xl bg-white/5 border border-white/10">
+          <div class="opacity-65 text-[11px]">Active Wi-Fi</div>
+          <div id="widget-wifi-name" class="font-semibold text-cyan-300 truncate mt-0.5">BongoNet_5G_Fiber</div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-white/5 border border-white/10">
+          <div class="opacity-65 text-[11px]">Insider Channel</div>
+          <div class="font-semibold text-purple-300 mt-0.5">v1.1.0-beta</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Start Menu Flyout (With BETA Badge) -->
+    <div id="start-menu" onclick="event.stopPropagation()" class="hidden fixed bottom-14 left-1/2 -translate-x-1/2 w-[94vw] max-w-[610px] rounded-2xl mica p-6 shadow-2xl z-[5500] transition-all">
+      <!-- Search Input -->
+      <div class="relative mb-5">
+        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-cyan-400">🔍</span>
+        <input id="start-search" oninput="filterStartApps(this.value)" onkeydown="if(event.key==='Enter' && this.value.trim()){ openApp('browser', { initialQuery: this.value.trim() }); toggleStartMenu(false); }" type="text" placeholder="Search apps, beta flags, or press Enter to search the web..." class="w-full pl-10 pr-20 py-2.5 rounded-full bg-black/30 border border-purple-400/35 text-sm focus:outline-none focus:border-cyan-400" />
+        <span class="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 font-mono text-[10px] font-bold">BETA</span>
+      </div>
+
+      <!-- Pinned Section -->
+      <div class="flex items-center justify-between mb-3 px-1">
+        <span class="text-xs font-semibold tracking-wide uppercase opacity-80 flex items-center gap-2">
+          Pinned Apps <span class="px-1.5 py-0.2 rounded bg-purple-500/25 text-purple-300 text-[10px]">Build 26200</span>
+        </span>
+        <button onclick="openApp('flags'); toggleStartMenu(false)" class="text-xs px-2.5 py-1 rounded-md bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-400/30 transition">🧪 Beta Flags &rsaquo;</button>
+      </div>
+      <div id="start-pinned-grid" class="grid grid-cols-4 sm:grid-cols-6 gap-2 mb-5"></div>
+
+      <!-- Recommended Section -->
+      <div class="mb-4 px-1">
+        <span class="text-xs font-semibold tracking-wide uppercase opacity-80 block mb-2.5">Insider Preview Highlights</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+          <button onclick="openApp('flags'); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
+            <span class="text-xl">🧪</span>
+            <div>
+              <div class="font-medium text-cyan-300">Beta Hub & Experimental Flags</div>
+              <div class="opacity-60 text-[11px]">bongo://flags • Matrix & CRT Modes</div>
+            </div>
+          </button>
+          <button onclick="openApp('browser'); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
+            <span class="text-xl">🌐</span>
+            <div>
+              <div class="font-medium">BongoChrome v1.1 Beta</div>
+              <div class="opacity-60 text-[11px]">Live Search, Tabs & bongo://dino</div>
+            </div>
+          </button>
+          <button onclick="openFileInNotepad('Beta_Logs', 'v1.1.0-beta_Changelog.md'); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
+            <span class="text-xl">📋</span>
+            <div>
+              <div class="font-medium">v1.1.0-beta_Changelog.md</div>
+              <div class="opacity-60 text-[11px]">Beta_Logs • Build 26200.1100</div>
+            </div>
+          </button>
+          <button onclick="openApp('store'); toggleStartMenu(false)" class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 text-left transition">
+            <span class="text-xl">🛍️</span>
+            <div>
+              <div class="font-medium">BongoStore (Beta App Hub)</div>
+              <div class="opacity-60 text-[11px]">Install Mini-Apps & Mods</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Start Footer -->
+      <div class="pt-3 border-t border-white/10 flex items-center justify-between px-2">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center text-sm shadow">🦍</div>
+          <div>
+            <div class="text-xs font-semibold">Bongo Insider</div>
+            <div class="text-[10px] font-mono text-cyan-300">v1.1.0-beta</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button onclick="lockOS()" title="Lock Screen" class="p-2 rounded-lg hover:bg-white/10 transition text-sm">🔒</button>
+          <button onclick="triggerBSOD()" title="Simulate Insider PSOD Crash" class="p-2 rounded-lg hover:bg-white/10 transition text-sm">💥</button>
+          <button onclick="restartOS()" title="Restart BongoOS" class="p-2 rounded-lg hover:bg-white/10 transition text-sm">🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Settings & Interactive Wi-Fi Manager Flyout -->
+    <div id="quick-settings" onclick="event.stopPropagation()" class="hidden fixed bottom-14 right-3 w-80 sm:w-[350px] rounded-2xl mica p-4 shadow-2xl z-[5500]">
+      <!-- Main Quick Settings View -->
+      <div id="qs-main-view">
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <!-- Wi-Fi Split Tile -->
+          <div class="rounded-xl overflow-hidden flex flex-col justify-between transition" id="wifi-tile-box" style="background: var(--accent);">
+            <div class="flex items-center justify-between p-2.5 pb-1">
+              <button onclick="toggleWifiPower()" class="text-base hover:scale-110 transition" title="Toggle Wi-Fi On/Off">📶</button>
+              <button onclick="showWifiSubpanel()" class="text-xs px-1.5 py-0.5 rounded bg-black/25 hover:bg-black/40 transition" title="Select Wi-Fi Network">&rsaquo;</button>
+            </div>
+            <button onclick="showWifiSubpanel()" class="text-left px-2.5 pb-2.5 pt-1">
+              <div id="qs-wifi-ssid" class="text-[11px] font-semibold text-white truncate">BongoNet_5G_Fiber</div>
+              <div id="qs-wifi-status" class="text-[9px] text-white/85">Connected</div>
+            </button>
+          </div>
+
+          <!-- Bluetooth Tile -->
+          <button onclick="toggleQuickTile(this)" class="flex flex-col items-start justify-between p-2.5 rounded-xl bg-purple-600 text-white transition">
+            <span class="text-base">🦷</span>
+            <span class="text-[11px] font-medium mt-2">Bluetooth</span>
+          </button>
+
+          <!-- Night Light Blue-Light Filter Tile -->
+          <button id="night-light-btn" onclick="toggleNightLight()" class="flex flex-col items-start justify-between p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition">
+            <span class="text-base">🌙</span>
+            <span class="text-[11px] font-medium mt-2">Night Light</span>
+          </button>
+
+          <!-- Sound Effects Tile -->
+          <button id="sound-toggle-btn" onclick="toggleSoundEffects()" class="flex flex-col items-start justify-between p-2.5 rounded-xl bg-purple-600 text-white transition">
+            <span id="sound-icon" class="text-base">🔊</span>
+            <span id="sound-label" class="text-[11px] font-medium mt-2">Audio On</span>
+          </button>
+
+          <!-- Theme Mode Tile -->
+          <button onclick="toggleThemeMode()" class="flex flex-col items-start justify-between p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition">
+            <span class="text-base">🌓</span>
+            <span class="text-[11px] font-medium mt-2">Light / Dark</span>
+          </button>
+
+          <!-- Beta Flags Shortcut Tile -->
+          <button onclick="openApp('flags'); closeAllFlyouts()" class="flex flex-col items-start justify-between p-2.5 rounded-xl bg-cyan-600/80 hover:bg-cyan-500 text-white transition">
+            <span class="text-base">🧪</span>
+            <span class="text-[11px] font-medium mt-2">Beta Flags</span>
+          </button>
+        </div>
+
+        <!-- Brightness & Volume Sliders -->
+        <div class="space-y-3 pt-2 border-t border-white/10 text-xs">
+          <div class="flex items-center gap-3">
+            <span>☀️</span>
+            <input type="range" min="45" max="100" value="100" oninput="document.getElementById('desktop').style.filter = `brightness(${this.value}%)`" class="flex-1 accent-purple-500 cursor-pointer" />
+          </div>
+          <div class="flex items-center gap-3">
+            <span>🔊</span>
+            <input id="master-volume" type="range" min="0" max="100" value="75" class="flex-1 accent-purple-500 cursor-pointer" />
+          </div>
+        </div>
+        <div class="mt-3 pt-2 border-t border-white/10 flex justify-between items-center text-[11px] opacity-80">
+          <span>🔋 100% • Insider Build</span>
+          <button onclick="testLiveInternetPing()" class="text-cyan-300 hover:underline font-medium">Ping Test</button>
+        </div>
+      </div>
+
+      <!-- Wi-Fi Networks Subpanel -->
+      <div id="qs-wifi-view" class="hidden space-y-3">
+        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+          <button onclick="hideWifiSubpanel()" class="text-xs font-semibold flex items-center gap-1 hover:text-cyan-300">&lsaquo; Wi-Fi Networks</button>
+          <label class="inline-flex items-center gap-1.5 text-xs cursor-pointer">
+            <input id="wifi-switch-checkbox" type="checkbox" checked onchange="toggleWifiPower(this.checked)" class="accent-purple-600 w-4 h-4" />
+            <span id="wifi-switch-label">On</span>
+          </label>
+        </div>
+        <div id="wifi-networks-list" class="space-y-1.5 max-h-56 overflow-y-auto"></div>
+        <div id="wifi-ping-result" class="text-[11px] text-center opacity-80 pt-1 font-mono">
+          Connected to live internet gateway
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar & Notification Center Flyout -->
+    <div id="calendar-flyout" onclick="event.stopPropagation()" class="hidden fixed bottom-14 right-3 w-80 rounded-2xl mica p-4 shadow-2xl z-[5500]">
+      <div class="mb-3 pb-3 border-b border-white/10">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider opacity-80">Insider Notifications</span>
+          <button onclick="document.getElementById('notif-list').innerHTML = '<div class=\'text-xs opacity-60 text-center py-4\'>No new notifications!</div>'" class="text-[11px] text-cyan-400 hover:underline">Clear all</button>
+        </div>
+        <div id="notif-list" class="space-y-2 max-h-40 overflow-y-auto">
+          <div class="p-2.5 rounded-xl bg-white/10 text-xs">
+            <div class="font-semibold text-cyan-300 flex items-center gap-1.5">🧪 BongoOS 11 v1.1.0-beta</div>
+            <p class="opacity-85 mt-0.5">Insider Build 26200.1100 active! Try Matrix wallpaper or Neon Glow Brush in BongoPaint.</p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-white/10 text-xs">
+            <div class="font-semibold text-purple-300 flex items-center gap-1.5">🦍 Bongo AI v1.1</div>
+            <p class="opacity-85 mt-0.5">Upgraded with quick diagnostic chips and OS command execution!</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div id="cal-month-title" class="text-sm font-semibold mb-2">November 2026</div>
+        <div class="grid grid-cols-7 gap-1 text-center text-[11px] opacity-60 mb-1">
+          <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+        </div>
+        <div id="cal-days-grid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Centered Taskbar -->
+  <div id="taskbar" class="fixed bottom-0 left-0 right-0 h-[52px] mica border-t border-white/15 z-[5000] px-3 flex items-center justify-between">
+    <!-- Left Widgets Trigger -->
+    <button onclick="toggleFlyout('widgets-flyout'); updateWidgetsPanel(); event.stopPropagation()" class="hidden md:flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-white/10 cursor-pointer transition text-left">
+      <span class="text-lg">⛅</span>
+      <div class="leading-tight">
+        <div id="tb-weather-temp" class="text-xs font-semibold">74°F Clear</div>
+        <div class="text-[10px] text-cyan-300">Insider</div>
+      </div>
+    </button>
+    <div class="md:hidden w-4"></div>
+
+    <!-- Center Start, Search & App Icons -->
+    <div class="flex items-center gap-1.5 sm:gap-2">
+      <!-- Start Button with Beta Indicator -->
+      <button id="start-btn" onclick="toggleStartMenu(); event.stopPropagation()" title="Start (BongoOS 11 Beta)" class="w-10 h-10 rounded-xl hover:bg-white/15 active:scale-95 flex items-center justify-center transition relative group">
+        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 via-fuchsia-600 to-cyan-500 flex items-center justify-center shadow-md group-hover:shadow-cyan-500/40">
+          <span class="text-base">🦍</span>
+        </div>
+        <span class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-cyan-400 border-2 border-[#120d1d]"></span>
+      </button>
+
+      <!-- Taskbar Search Pill -->
+      <button onclick="toggleStartMenu(true); setTimeout(()=>document.getElementById('start-search').focus(), 50); event.stopPropagation()" class="hidden sm:flex items-center justify-between px-3.5 h-9 rounded-full bg-white/10 hover:bg-white/15 border border-white/10 text-xs opacity-85 transition w-48">
+        <span class="flex items-center gap-2"><span>🔍</span><span>Search Beta</span></span>
+        <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300">1.1</span>
+      </button>
+
+      <!-- Pinned & Open App Icons -->
+      <div id="taskbar-apps" class="flex items-center gap-1"></div>
+    </div>
+
+    <!-- Right System Tray & Bongo Toggle -->
+    <div class="flex items-center gap-1">
+      <!-- Bongo Assistant Quick Toggle -->
+      <button onclick="toggleBongoVisibility()" title="Show/Hide Bongo AI Assistant" class="px-2.5 h-9 rounded-lg hover:bg-white/10 flex items-center gap-1.5 text-xs font-medium transition border border-cyan-400/30 bg-purple-500/20">
+        <span>🦍</span>
+        <span class="hidden lg:inline">Bongo</span>
+      </button>
+
+      <!-- Quick Settings & Wi-Fi Trigger -->
+      <button onclick="toggleFlyout('quick-settings'); hideWifiSubpanel(); event.stopPropagation()" class="px-2 h-9 rounded-lg hover:bg-white/10 flex items-center gap-1.5 text-xs transition" title="Wi-Fi, Night Light & Quick Settings">
+        <span id="tray-wifi-icon">📶</span>
+        <span>🔊</span>
+        <span class="hidden sm:inline">🔋</span>
+      </button>
+
+      <!-- Clock & Notifications Trigger -->
+      <button onclick="toggleFlyout('calendar-flyout'); event.stopPropagation()" class="px-2.5 h-9 rounded-lg hover:bg-white/10 text-right leading-tight transition">
+        <div id="tray-time" class="text-xs font-medium">09:52 AM</div>
+        <div id="tray-date" class="text-[10px] opacity-75">11/24/2026</div>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. OS STATE, VFS, BETA FLAGS & APP DEFINITIONS
+    // =========================================================================
+    const APPS = [
+      { id: 'browser', name: 'BongoChrome', icon: '🌐', pinned: true, width: 900, height: 560 },
+      { id: 'explorer', name: 'Files', icon: '📁', pinned: true, width: 740, height: 470 },
+      { id: 'terminal', name: 'Bongo Terminal', icon: '💻', pinned: true, width: 680, height: 440 },
+      { id: 'paint', name: 'BongoPaint', icon: '🎨', pinned: true, width: 740, height: 510 },
+      { id: 'store', name: 'BongoStore', icon: '🛍️', pinned: true, width: 720, height: 490 },
+      { id: 'flags', name: 'Beta Flags', icon: '🧪', pinned: true, width: 660, height: 480 },
+      { id: 'notepad', name: 'Notepad', icon: '📝', pinned: true, width: 600, height: 430 },
+      { id: 'taskmgr', name: 'Task Manager', icon: '📊', pinned: true, width: 640, height: 460 },
+      { id: 'settings', name: 'Settings', icon: '⚙️', pinned: true, width: 700, height: 500 },
+      { id: 'calculator', name: 'Calculator', icon: '🧮', pinned: false, width: 320, height: 470 },
+      { id: 'minesweeper', name: 'Banana Sweeper', icon: '💣', pinned: false, width: 420, height: 490 },
+      { id: 'music', name: 'BongoBeats', icon: '🎵', pinned: false, width: 460, height: 440 },
+      { id: 'trash', name: 'Trash Bin', icon: '🗑️', pinned: false, width: 580, height: 400 }
+    ];
+
+    const DEFAULT_VFS = {
+      Desktop: {
+        'Insider_Welcome.txt': {
+          type: 'file',
+          content: "Welcome to BongoOS 11 Pro Insider Preview (Build 26200.1100 - v1.1.0-beta)!\n\nNew in v1.1.0-beta:\n1. Beta Hub & Experimental Flags (bongo://flags): Enable Matrix Rain Desktop Wallpaper, Retro CRT Scanlines, or Turbo Bongo Mode!\n2. BongoStore: Install & launch extra mini-apps.\n3. BongoPaint Neon Glow Brush: Paint with glowing cyber-neon strokes!\n4. Bongo Terminal: Try 'neofetch', 'matrix', 'bsod', or 'ping'!\n5. Window Snapping: Snap any window left or right using the titlebar snap controls."
+        }
+      },
+      Documents: {
+        'Architecture_v1_1.md': {
+          type: 'file',
+          content: "# BongoOS 11 v1.1.0-beta Architecture\n- Kernel: CanopyNT 11.1 Insider\n- Shell: Neon Cyber-Jungle Mica UI\n- Browser: BongoChrome 132 Beta\n- AI Engine: Bongo v1.1 (Gemini Grounded)"
+        }
+      },
+      Downloads: {
+        'Offline_Dino_Guide.txt': {
+          type: 'file',
+          content: "Turn off Wi-Fi in the bottom-right system tray (or visit bongo://dino in BongoChrome) to play the Banana Runner arcade game!"
+        }
+      },
+      Beta_Logs: {
+        'v1.1.0-beta_Changelog.md': {
+          type: 'file',
+          content: "## Build 26200.1100 (v1.1.0-beta) Release Notes\n- [ADDED] Insider Preview Desktop Watermark & Beta Badges\n- [ADDED] Experimental Flags Engine (Matrix Wallpaper, CRT Filter, Turbo Bongo)\n- [ADDED] BongoStore Beta App Hub\n- [ADDED] Neon Glow Brush in BongoPaint\n- [ADDED] Live CPU/RAM/GPU Performance Graphs in Task Manager\n- [ADDED] Window Left/Right Snap Controls"
+        }
+      },
+      Pictures: {},
+      Trash: {}
+    };
+
+    let vfs = loadVFS();
+    function loadVFS() {
+      try {
+        const saved = localStorage.getItem('bongo_os_vfs_v1_1_beta');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(DEFAULT_VFS));
+    }
+    function saveVFS() {
+      try { localStorage.setItem('bongo_os_vfs_v1_1_beta', JSON.stringify(vfs)); } catch (e) {}
+    }
+
+    // Experimental Beta Flags State
+    let betaFlags = {
+      matrixWallpaper: false,
+      crtScanlines: false,
+      turboBongo: false,
+      bongoVisor: true,
+      nightLight: false
+    };
+
+    // Wi-Fi State
+    let wifiState = {
+      enabled: true,
+      connectedSsid: 'BongoNet_5G_Fiber',
+      networks: [
+        { ssid: 'BongoNet_5G_Fiber', signal: 'Excellent', secured: true, speed: '2.4 Gbps' },
+        { ssid: 'JungleMesh_Beta', signal: 'Good', secured: true, speed: '850 Mbps' },
+        { ssid: 'Cafe_Guest_WiFi', signal: 'Fair', secured: false, speed: '120 Mbps' }
+      ]
+    };
+
+    let openWindows = [];
+    let topZIndex = 100;
+    let soundEnabled = true;
+    let currentWallpaper = 'wallpaper-aurora';
+    let bongoVisible = true;
+    let bongoBubbleVisible = true;
+
+    // =========================================================================
+    // 2. WEB AUDIO SOUND EFFECTS ENGINE
+    // =========================================================================
+    let audioCtx = null;
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playSFX(type) {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        const vol = (document.getElementById('master-volume')?.value || 75) / 100 * 0.15;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        const now = ctx.currentTime;
+
+        if (type === 'open') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(380, now);
+          osc.frequency.exponentialRampToValueAtTime(680, now + 0.12);
+          gain.gain.setValueAtTime(vol, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+          osc.start(now); osc.stop(now + 0.14);
+        } else if (type === 'close') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.exponentialRampToValueAtTime(240, now + 0.11);
+          gain.gain.setValueAtTime(vol, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.start(now); osc.stop(now + 0.12);
+        } else if (type === 'click') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(780, now);
+          gain.gain.setValueAtTime(vol * 0.45, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+          osc.start(now); osc.stop(now + 0.04);
+        } else if (type === 'bongo') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(300, now);
+          osc.frequency.setValueAtTime(460, now + 0.07);
+          osc.frequency.setValueAtTime(620, now + 0.14);
+          gain.gain.setValueAtTime(vol * 0.5, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+          osc.start(now); osc.stop(now + 0.24);
+        } else if (type === 'startup') {
+          [293.66, 369.99, 440.00, 587.33].forEach((freq, i) => {
+            const o = ctx.createOscillator(), g = ctx.createGain();
+            o.type = 'sine'; o.frequency.value = freq;
+            o.connect(g); g.connect(ctx.destination);
+            g.gain.setValueAtTime(vol * 0.65, now + i * 0.11);
+            g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.11 + 0.45);
+            o.start(now + i * 0.11); o.stop(now + i * 0.11 + 0.45);
+          });
+        }
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // 3. BOOT, EXPERIMENTAL BETA FLAGS & MATRIX RAIN ENGINE
+    // =========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      const bootBar = document.getElementById('boot-bar');
+      setTimeout(() => bootBar.style.width = '45%', 140);
+      setTimeout(() => bootBar.style.width = '85%', 480);
+      setTimeout(() => bootBar.style.width = '100%', 820);
+      setTimeout(() => {
+        const boot = document.getElementById('boot-screen');
+        boot.style.opacity = '0';
+        setTimeout(() => boot.remove(), 600);
+        playSFX('startup');
+      }, 1100);
+
+      renderDesktopIcons();
+      renderStartMenuApps();
+      renderTaskbar();
+      renderCalendar();
+      renderWifiList();
+      updateClocks();
+      setInterval(updateClocks, 1000);
+      initBongoDrag();
+      initEyeTracking();
+      fetchLiveWeather();
+      initMatrixRain();
+    });
+
+    function toggleBetaFlag(flagKey, forceVal) {
+      betaFlags[flagKey] = typeof forceVal === 'boolean' ? forceVal : !betaFlags[flagKey];
+
+      if (flagKey === 'matrixWallpaper') {
+        const mc = document.getElementById('matrix-canvas');
+        mc.classList.toggle('hidden', !betaFlags.matrixWallpaper);
+      } else if (flagKey === 'crtScanlines') {
+        document.body.classList.toggle('crt-overlay', betaFlags.crtScanlines);
+      } else if (flagKey === 'turboBongo') {
+        const char = document.getElementById('bongo-character');
+        if (betaFlags.turboBongo) {
+          char.classList.remove('bongo-idle');
+          char.classList.add('bongo-dancing');
+        } else {
+          char.classList.remove('bongo-dancing');
+          char.classList.add('bongo-idle');
+        }
+      }
+      playSFX('click');
+    }
+
+    function toggleNightLight() {
+      betaFlags.nightLight = !betaFlags.nightLight;
+      document.getElementById('night-light-overlay').classList.toggle('hidden', !betaFlags.nightLight);
+      const btn = document.getElementById('night-light-btn');
+      if (btn) {
+        btn.classList.toggle('bg-amber-600', betaFlags.nightLight);
+        btn.classList.toggle('text-white', betaFlags.nightLight);
+        btn.classList.toggle('bg-white/10', !betaFlags.nightLight);
+      }
+      playSFX('click');
+    }
+
+    function initMatrixRain() {
+      const canvas = document.getElementById('matrix-canvas');
+      const ctx = canvas.getContext('2d');
+      let drops = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const cols = Math.floor(canvas.width / 16);
+        drops = Array(cols).fill(1);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const chars = 'BONGO01101BETA🦍🍌ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      setInterval(() => {
+        if (!betaFlags.matrixWallpaper) return;
+        ctx.fillStyle = 'rgba(6, 4, 13, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#22d3ee';
+        ctx.font = '14px JetBrains Mono, monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(text, i * 16, drops[i] * 16);
+          if (drops[i] * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        }
+      }, 45);
+    }
+
+    // =========================================================================
+    // 4. WI-FI MANAGER, WEATHER & SHELL UI
+    // =========================================================================
+    async function fetchLiveWeather() {
+      if (!isInternetAvailable()) return;
+      try {
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=40.71&longitude=-74.01&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph');
+        const data = await res.json();
+        if (data?.current_weather) {
+          const temp = Math.round(data.current_weather.temperature);
+          const wind = Math.round(data.current_weather.windspeed);
+          document.getElementById('tb-weather-temp').textContent = `${temp}°F Live`;
+          document.getElementById('widget-temp').textContent = `${temp}°F • Live Sky`;
+          document.getElementById('widget-wind').textContent = `Wind: ${wind} mph • Open-Meteo`;
+        }
+      } catch (e) {}
+    }
+
+    function isInternetAvailable() {
+      return wifiState.enabled && Boolean(wifiState.connectedSsid);
+    }
+
+    function toggleWifiPower(forceVal) {
+      wifiState.enabled = typeof forceVal === 'boolean' ? forceVal : !wifiState.enabled;
+      if (wifiState.enabled && !wifiState.connectedSsid) wifiState.connectedSsid = wifiState.networks[0].ssid;
+      updateWifiUI();
+      playSFX('click');
+    }
+
+    function connectToWifi(ssid) {
+      wifiState.enabled = true;
+      wifiState.connectedSsid = ssid;
+      updateWifiUI();
+      renderWifiList();
+      playSFX('open');
+      setBongoSpeech(`📶 Connected to <b>${ssid}</b>! Live internet and Gemini cloud grounding active!`);
+    }
+
+    function updateWifiUI() {
+      const online = isInternetAvailable();
+      const tileBox = document.getElementById('wifi-tile-box');
+      const ssidEl = document.getElementById('qs-wifi-ssid');
+      const statusEl = document.getElementById('qs-wifi-status');
+      const trayIcon = document.getElementById('tray-wifi-icon');
+      const chk = document.getElementById('wifi-switch-checkbox');
+      const lbl = document.getElementById('wifi-switch-label');
+      const bongoDot = document.getElementById('bongo-online-dot');
+
+      if (chk) chk.checked = wifiState.enabled;
+      if (lbl) lbl.textContent = wifiState.enabled ? 'On' : 'Off';
+
+      if (online) {
+        tileBox.style.background = 'var(--accent)';
+        ssidEl.textContent = wifiState.connectedSsid;
+        statusEl.textContent = 'Connected, secured';
+        trayIcon.textContent = '📶';
+        bongoDot.className = 'w-2 h-2 rounded-full bg-green-400 animate-ping';
+      } else {
+        tileBox.style.background = 'rgba(255,255,255,0.12)';
+        ssidEl.textContent = wifiState.enabled ? 'Not connected' : 'Wi-Fi Off';
+        statusEl.textContent = 'Offline Mode';
+        trayIcon.textContent = '📵';
+        bongoDot.className = 'w-2 h-2 rounded-full bg-red-400';
+      }
+      renderWifiList();
+      updateWidgetsPanel();
+    }
+
+    function renderWifiList() {
+      const list = document.getElementById('wifi-networks-list');
+      if (!list) return;
+      if (!wifiState.enabled) {
+        list.innerHTML = `<div class="text-xs opacity-65 text-center py-6">Wi-Fi is turned off.<br>Turn Wi-Fi on to connect to networks.</div>`;
+        return;
+      }
+      list.innerHTML = wifiState.networks.map(net => {
+        const isConn = wifiState.connectedSsid === net.ssid;
+        return `
+          <div onclick="connectToWifi('${net.ssid}')" class="p-2.5 rounded-xl flex items-center justify-between cursor-pointer transition ${isConn ? 'bg-purple-600/40 border border-cyan-400/50' : 'bg-white/5 hover:bg-white/15 border border-transparent'}">
+            <div class="flex items-center gap-2.5">
+              <span class="text-base">📶</span>
+              <div>
+                <div class="text-xs font-semibold flex items-center gap-1.5">${net.ssid} ${net.secured ? '<span class="text-[10px] opacity-70">🔒</span>' : ''}</div>
+                <div class="text-[10px] opacity-70">${isConn ? 'Connected • ' + net.speed : net.signal + ' signal'}</div>
+              </div>
+            </div>
+            ${isConn ? '<span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300">Active</span>' : '<span class="text-[10px] opacity-60">Connect</span>'}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showWifiSubpanel() {
+      document.getElementById('qs-main-view').classList.add('hidden');
+      document.getElementById('qs-wifi-view').classList.remove('hidden');
+      renderWifiList();
+    }
+
+    function hideWifiSubpanel() {
+      document.getElementById('qs-wifi-view').classList.add('hidden');
+      document.getElementById('qs-main-view').classList.remove('hidden');
+    }
+
+    async function testLiveInternetPing() {
+      showWifiSubpanel();
+      const resEl = document.getElementById('wifi-ping-result');
+      if (!isInternetAvailable()) {
+        resEl.innerHTML = `<span class="text-red-400">❌ Offline: Enable Wi-Fi first!</span>`;
+        return;
+      }
+      resEl.innerHTML = `<span class="text-cyan-300">Pinging live gateway...</span>`;
+      const start = performance.now();
+      try {
+        await fetch('https://en.wikipedia.org/w/api.php?action=query&meta=siteinfo&format=json&origin=*');
+        const ms = Math.round(performance.now() - start);
+        resEl.innerHTML = `<span class="text-green-400">✓ Online! Real Latency: ${ms}ms</span>`;
+      } catch (e) {
+        resEl.innerHTML = `<span class="text-yellow-300">Connected to gateway (sandbox mode)</span>`;
+      }
+    }
+
+    function updateWidgetsPanel() {
+      const online = isInternetAvailable();
+      const badge = document.getElementById('widget-net-badge');
+      const wifiName = document.getElementById('widget-wifi-name');
+      if (badge) {
+        badge.textContent = online ? '● Online' : '● Offline';
+        badge.className = online
+          ? 'text-[10px] px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 border border-green-400/30'
+          : 'text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-400/30';
+      }
+      if (wifiName) wifiName.textContent = online ? wifiState.connectedSsid : 'Disconnected';
+    }
+
+    function updateClocks() {
+      const now = new Date();
+      document.getElementById('tray-time').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('tray-date').textContent = now.toLocaleDateString([], { month: '2-digit', day: '2-digit', year: 'numeric' });
+      document.getElementById('lock-time').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      document.getElementById('lock-date').textContent = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+    }
+
+    function renderCalendar() {
+      const now = new Date();
+      const year = now.getFullYear(), month = now.getMonth(), today = now.getDate();
+      document.getElementById('cal-month-title').textContent = now.toLocaleDateString([], { month: 'long', year: 'numeric' });
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const grid = document.getElementById('cal-days-grid');
+      grid.innerHTML = '';
+      for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div></div>`;
+      for (let d = 1; d <= daysInMonth; d++) {
+        grid.innerHTML += `<div class="py-1 rounded-full ${d === today ? 'bg-purple-600 text-white font-bold shadow' : 'hover:bg-white/10'}">${d}</div>`;
+      }
+    }
+
+    function renderDesktopIcons() {
+      const container = document.getElementById('desktop-icons');
+      container.innerHTML = APPS.map(app => `
+        <div ondblclick="openApp('${app.id}')" onclick="selectDesktopIcon(this, event)" class="desktop-icon w-20 h-[86px] rounded-xl flex flex-col items-center justify-center p-1.5 text-center cursor-pointer hover:bg-white/15 border border-transparent transition group">
+          <div class="text-3xl mb-1 drop-shadow-md group-hover:scale-110 transition-transform">${app.icon}</div>
+          <span class="text-[11px] font-medium text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] leading-tight line-clamp-2">${app.name}</span>
+        </div>
+      `).join('');
+    }
+
+    function selectDesktopIcon(el, e) {
+      e.stopPropagation();
+      document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('bg-purple-500/30', 'border-cyan-400/50'));
+      el.classList.add('bg-purple-500/30', 'border-cyan-400/50');
+      playSFX('click');
+    }
+
+    function handleDesktopClick() {
+      document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('bg-purple-500/30', 'border-cyan-400/50'));
+      closeAllFlyouts();
+    }
+
+    function closeAllFlyouts() {
+      ['start-menu', 'quick-settings', 'calendar-flyout', 'widgets-flyout', 'context-menu'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+    }
+
+    function toggleStartMenu(forceState) {
+      const menu = document.getElementById('start-menu');
+      const isHidden = menu.classList.contains('hidden');
+      closeAllFlyouts();
+      if (forceState === true || (forceState === undefined && isHidden)) {
+        menu.classList.remove('hidden');
+        playSFX('click');
+      }
+    }
+
+    function toggleFlyout(id) {
+      const el = document.getElementById(id);
+      const isHidden = el.classList.contains('hidden');
+      closeAllFlyouts();
+      if (isHidden) {
+        el.classList.remove('hidden');
+        playSFX('click');
+      }
+    }
+
+    function renderStartMenuApps(filter = '') {
+      const grid = document.getElementById('start-pinned-grid');
+      const filtered = APPS.filter(a => a.name.toLowerCase().includes(filter.toLowerCase()));
+      grid.innerHTML = filtered.map(app => `
+        <button onclick="openApp('${app.id}'); toggleStartMenu(false)" class="flex flex-col items-center justify-center p-2.5 rounded-xl hover:bg-white/15 active:scale-95 transition gap-1.5">
+          <span class="text-2xl">${app.icon}</span>
+          <span class="text-[11px] font-medium truncate w-full text-center">${app.name}</span>
+        </button>
+      `).join('');
+    }
+
+    function filterStartApps(val) { renderStartMenuApps(val); }
+
+    function renderTaskbar() {
+      const container = document.getElementById('taskbar-apps');
+      const pinnedIds = APPS.filter(a => a.pinned).map(a => a.id);
+      const openAppIds = [...new Set(openWindows.map(w => w.appId))];
+      const displayIds = [...new Set([...pinnedIds, ...openAppIds])];
+
+      container.innerHTML = displayIds.map(appId => {
+        const app = APPS.find(a => a.id === appId);
+        const instances = openWindows.filter(w => w.appId === appId);
+        const isOpen = instances.length > 0;
+        const isFocused = isOpen && instances.some(w => !w.minimized && w.zIndex === topZIndex);
+
+        return `
+          <button onclick="handleTaskbarAppClick('${appId}')" title="${app.name}" class="w-10 h-10 rounded-xl hover:bg-white/15 active:scale-90 flex flex-col items-center justify-center relative transition ${isFocused ? 'bg-white/15 shadow-inner' : ''}">
+            <span class="text-xl">${app.icon}</span>
+            ${isOpen ? `<span class="absolute bottom-1 ${isFocused ? 'w-4 bg-cyan-400' : 'w-1.5 bg-slate-400'} h-1 rounded-full transition-all"></span>` : ''}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function handleTaskbarAppClick(appId) {
+      const existing = openWindows.filter(w => w.appId === appId);
+      if (existing.length === 0) openApp(appId);
+      else {
+        const target = existing[existing.length - 1];
+        if (target.minimized) { target.minimized = false; focusWindow(target.id); }
+        else if (target.zIndex === topZIndex) minimizeWindow(target.id);
+        else focusWindow(target.id);
+      }
+    }
+
+    // =========================================================================
+    // 5. WINDOW MANAGER (WITH LEFT/RIGHT SNAPPING)
+    // =========================================================================
+    function openApp(appId, customData = null) {
+      closeAllFlyouts();
+      const app = APPS.find(a => a.id === appId);
+      if (!app) return;
+
+      if (['settings', 'calculator', 'music', 'taskmgr', 'flags', 'store'].includes(appId)) {
+        const existing = openWindows.find(w => w.appId === appId);
+        if (existing) {
+          existing.minimized = false;
+          focusWindow(existing.id);
+          return;
+        }
+      }
+
+      playSFX('open');
+      const winId = 'win-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+      const offset = (openWindows.length % 7) * 26;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight - 52;
+
+      const w = Math.min(app.width, vw - 24);
+      const h = Math.min(app.height, vh - 24);
+      const x = Math.max(12, Math.min(vw - w - 12, 68 + offset));
+      const y = Math.max(12, Math.min(vh - h - 12, 32 + offset));
+
+      topZIndex++;
+      const winObj = {
+        id: winId,
+        appId,
+        title: customData?.title || app.name,
+        icon: app.icon,
+        zIndex: topZIndex,
+        minimized: false,
+        maximized: vw < 640,
+        snapState: null,
+        x, y, w, h,
+        data: customData
+      };
+
+      openWindows.push(winObj);
+      createWindowElement(winObj);
+      renderTaskbar();
+    }
+
+    function createWindowElement(winObj) {
+      const container = document.getElementById('windows-container');
+      const winEl = document.createElement('div');
+      winEl.id = winObj.id;
+      winEl.className = `os-window pointer-events-auto ${winObj.maximized ? 'maximized' : ''}`;
+      winEl.style.left = winObj.x + 'px';
+      winEl.style.top = winObj.y + 'px';
+      winEl.style.width = winObj.w + 'px';
+      winEl.style.height = winObj.h + 'px';
+      winEl.style.zIndex = winObj.zIndex;
+
+      winEl.addEventListener('mousedown', () => focusWindow(winObj.id));
+      winEl.addEventListener('touchstart', () => focusWindow(winObj.id), { passive: true });
+
+      winEl.innerHTML = `
+        <div class="window-titlebar" ondblclick="toggleMaximizeWindow('${winObj.id}')">
+          <div class="flex items-center gap-2 overflow-hidden">
+            <span class="text-base">${winObj.icon}</span>
+            <span class="text-xs font-semibold truncate" id="${winObj.id}-title">${winObj.title}</span>
+          </div>
+          <div class="flex items-center gap-0.5">
+            <button onclick="snapWindow('${winObj.id}', 'left'); event.stopPropagation()" title="Snap Left" class="hidden sm:flex w-7 h-7 rounded-md hover:bg-white/10 items-center justify-center text-[10px] opacity-75 hover:opacity-100">◧</button>
+            <button onclick="snapWindow('${winObj.id}', 'right'); event.stopPropagation()" title="Snap Right" class="hidden sm:flex w-7 h-7 rounded-md hover:bg-white/10 items-center justify-center text-[10px] opacity-75 hover:opacity-100">◨</button>
+            <button onclick="minimizeWindow('${winObj.id}'); event.stopPropagation()" title="Minimize" class="w-7 h-7 rounded-md hover:bg-white/10 flex items-center justify-center text-xs transition">—</button>
+            <button onclick="toggleMaximizeWindow('${winObj.id}'); event.stopPropagation()" title="Maximize" class="w-7 h-7 rounded-md hover:bg-white/10 flex items-center justify-center text-xs transition">▢</button>
+            <button onclick="closeWindow('${winObj.id}'); event.stopPropagation()" title="Close" class="w-7 h-7 rounded-md hover:bg-red-500 hover:text-white flex items-center justify-center text-xs transition">✕</button>
+          </div>
+        </div>
+        <div id="${winObj.id}-body" class="flex-1 overflow-auto relative flex flex-col"></div>
+        <div class="resize-handle" title="Resize"></div>
+      `;
+
+      container.appendChild(winEl);
+      setupWindowDrag(winEl, winObj);
+      setupWindowResize(winEl, winObj);
+      mountAppContent(winObj);
+    }
+
+    function snapWindow(winId, side) {
+      const winObj = openWindows.find(w => w.id === winId);
+      const el = document.getElementById(winId);
+      if (!winObj || !el) return;
+      el.classList.remove('maximized', 'snap-left', 'snap-right');
+      winObj.maximized = false;
+      if (winObj.snapState === side) {
+        winObj.snapState = null;
+      } else {
+        winObj.snapState = side;
+        el.classList.add(side === 'left' ? 'snap-left' : 'snap-right');
+      }
+      playSFX('click');
+    }
+
+    function focusWindow(winId) {
+      const winObj = openWindows.find(w => w.id === winId);
+      if (!winObj) return;
+      topZIndex++;
+      winObj.zIndex = topZIndex;
+      const el = document.getElementById(winId);
+      if (el) {
+        el.style.zIndex = topZIndex;
+        el.classList.remove('minimized');
+      }
+      renderTaskbar();
+    }
+
+    function minimizeWindow(winId) {
+      const winObj = openWindows.find(w => w.id === winId);
+      if (!winObj) return;
+      winObj.minimized = true;
+      document.getElementById(winId)?.classList.add('minimized');
+      playSFX('click');
+      renderTaskbar();
+    }
+
+    function toggleMaximizeWindow(winId) {
+      const winObj = openWindows.find(w => w.id === winId);
+      const el = document.getElementById(winId);
+      if (!winObj || !el) return;
+      el.classList.remove('snap-left', 'snap-right');
+      winObj.snapState = null;
+      winObj.maximized = !winObj.maximized;
+      el.classList.toggle('maximized', winObj.maximized);
+      playSFX('click');
+    }
+
+    function closeWindow(winId) {
+      const idx = openWindows.findIndex(w => w.id === winId);
+      if (idx === -1) return;
+      openWindows.splice(idx, 1);
+      document.getElementById(winId)?.remove();
+      playSFX('close');
+      renderTaskbar();
+    }
+
+    function setupWindowDrag(winEl, winObj) {
+      const titlebar = winEl.querySelector('.window-titlebar');
+      let dragging = false, startX, startY, origX, origY;
+
+      const onStart = (clientX, clientY, target) => {
+        if (target.closest('button') || winObj.maximized) return;
+        if (winObj.snapState) {
+          winEl.classList.remove('snap-left', 'snap-right');
+          winObj.snapState = null;
+        }
+        dragging = true;
+        startX = clientX; startY = clientY;
+        origX = winObj.x; origY = winObj.y;
+      };
+
+      const onMove = (clientX, clientY) => {
+        if (!dragging) return;
+        winObj.x = Math.max(0, Math.min(window.innerWidth - 100, origX + (clientX - startX)));
+        winObj.y = Math.max(0, Math.min(window.innerHeight - 90, origY + (clientY - startY)));
+        winEl.style.left = winObj.x + 'px';
+        winEl.style.top = winObj.y + 'px';
+      };
+
+      const onEnd = () => { dragging = false; };
+
+      titlebar.addEventListener('mousedown', e => onStart(e.clientX, e.clientY, e.target));
+      window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+      window.addEventListener('mouseup', onEnd);
+      titlebar.addEventListener('touchstart', e => onStart(e.touches[0].clientX, e.touches[0].clientY, e.target), { passive: true });
+      window.addEventListener('touchmove', e => { if (dragging) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+      window.addEventListener('touchend', onEnd);
+    }
+
+    function setupWindowResize(winEl, winObj) {
+      const handle = winEl.querySelector('.resize-handle');
+      let resizing = false, startX, startY, origW, origH;
+      handle.addEventListener('mousedown', e => {
+        e.stopPropagation();
+        if (winObj.maximized) return;
+        resizing = true; startX = e.clientX; startY = e.clientY;
+        origW = winObj.w; origH = winObj.h;
+      });
+      window.addEventListener('mousemove', e => {
+        if (!resizing) return;
+        winObj.w = Math.max(280, origW + (e.clientX - startX));
+        winObj.h = Math.max(220, origH + (e.clientY - startY));
+        winEl.style.width = winObj.w + 'px';
+        winEl.style.height = winObj.h + 'px';
+      });
+      window.addEventListener('mouseup', () => { resizing = false; });
+    }
+
+    // =========================================================================
+    // 6. BONGO AI v1.1 ASSISTANT & GEMINI API
+    // =========================================================================
+    const BONGO_JOKES = [
+      "Why did the beta tester bring a ladder to BongoOS? To reach the cloud! Ha-ha!",
+      "What do you call a gorilla with a holographic visor? A Cyber-Primate! 🦍🥽",
+      "Why don't monkeys ever get lost in the jungle? They always follow the banana-width!",
+      "How many gorillas does it take to fix an Insider bug? Just one—me! 🍌"
+    ];
+
+    function setBongoSpeech(text) {
+      const bubble = document.getElementById('bongo-bubble');
+      const speechEl = document.getElementById('bongo-speech-text');
+      bubble.classList.remove('hidden');
+      bongoBubbleVisible = true;
+      speechEl.innerHTML = text;
+    }
+
+    function toggleBongoBubble() {
+      const bubble = document.getElementById('bongo-bubble');
+      bongoBubbleVisible = !bongoBubbleVisible;
+      bubble.classList.toggle('hidden', !bongoBubbleVisible);
+    }
+
+    function toggleBongoVisibility() {
+      const widget = document.getElementById('bongo-widget');
+      bongoVisible = !bongoVisible;
+      widget.classList.toggle('hidden', !bongoVisible);
+      playSFX('bongo');
+    }
+
+    function toggleBongoVisor() {
+      betaFlags.bongoVisor = !betaFlags.bongoVisor;
+      document.getElementById('bongo-shades').classList.toggle('hidden', !betaFlags.bongoVisor);
+      document.getElementById('bongo-antenna').classList.toggle('hidden', !betaFlags.bongoVisor);
+      playSFX('click');
+    }
+
+    function bongoQuickAction(action) {
+      const charEl = document.getElementById('bongo-character');
+      playSFX('bongo');
+
+      if (action === 'joke') {
+        const joke = BONGO_JOKES[Math.floor(Math.random() * BONGO_JOKES.length)];
+        setBongoSpeech(`😂 <b>Insider Joke:</b><br>${joke}`);
+      } else if (action === 'trick') {
+        charEl.classList.remove('bongo-idle');
+        charEl.classList.add('bongo-spinning');
+        setBongoSpeech("🤸 <i>*Performs a 360° zero-gravity beta flip!*</i> Ta-da!");
+        setTimeout(() => {
+          charEl.classList.remove('bongo-spinning');
+          if (!betaFlags.turboBongo) charEl.classList.add('bongo-idle');
+        }, 850);
+      } else if (action === 'dance' || action === 'sing') {
+        charEl.classList.remove('bongo-idle');
+        charEl.classList.add('bongo-dancing');
+        setBongoSpeech("💃🎵 <i>Boogieing in Build 26200.1100! Swingin' through the Neon Cyber-Jungle...</i>");
+        playCanopyMelody();
+        setTimeout(() => {
+          if (!betaFlags.turboBongo) {
+            charEl.classList.remove('bongo-dancing');
+            charEl.classList.add('bongo-idle');
+          }
+        }, 4200);
+      } else if (action === 'diag') {
+        const net = isInternetAvailable() ? `Connected (${wifiState.connectedSsid})` : 'Offline';
+        setBongoSpeech(`🩺 <b>System Diagnostics:</b><br>• Build: <code>26200.1100 (v1.1.0-beta)</code><br>• Network: <b>${net}</b><br>• Active Windows: <b>${openWindows.length}</b><br>• Potassium Levels: <b>100% Optimal 🍌</b>`);
+      } else if (action === 'whatsnew') {
+        setBongoSpeech(`🚀 <b>New in v1.1.0-beta:</b><br>• <b>Beta Flags Hub</b> (<code>bongo://flags</code>)<br>• <b>Matrix Rain</b> & <b>CRT Scanline</b> modes<br>• <b>BongoStore</b> App Hub & <b>Neon Glow</b> Paint brush!`);
+      }
+    }
+
+    function playCanopyMelody() {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        const melody = [
+          { f: 392.00, d: 0.36 }, { f: 440.00, d: 0.36 }, { f: 523.25, d: 0.36 },
+          { f: 392.00, d: 0.36 }, { f: 329.63, d: 0.36 }, { f: 392.00, d: 0.55 }
+        ];
+        let t = ctx.currentTime;
+        melody.forEach(n => {
+          const osc = ctx.createOscillator(), gain = ctx.createGain();
+          osc.type = 'triangle'; osc.frequency.value = n.f;
+          osc.connect(gain); gain.connect(ctx.destination);
+          gain.gain.setValueAtTime(0.11, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + n.d);
+          osc.start(t); osc.stop(t + n.d);
+          t += n.d * 0.95;
+        });
+      } catch (e) {}
+    }
+
+    async function callGeminiAPI(prompt, systemInstruction, useSearch = false) {
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+      const payload = {
+        contents: [{ parts: [{ text: prompt }] }],
+        systemInstruction: { parts: [{ text: systemInstruction }] }
+      };
+      if (useSearch) payload.tools = [{ google_search: {} }];
+
+      const delays = [1000, 2000, 4000];
+      for (let attempt = 0; attempt <= delays.length; attempt++) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          const result = await response.json();
+          const candidate = result.candidates?.[0];
+          const text = candidate?.content?.parts?.[0]?.text;
+          let sources = [];
+          if (candidate?.groundingMetadata?.groundingAttributions) {
+            sources = candidate.groundingMetadata.groundingAttributions
+              .map(a => ({ uri: a.web?.uri, title: a.web?.title }))
+              .filter(s => s.uri && s.title);
+          }
+          if (text) return { text, sources };
+          throw new Error('Empty response');
+        } catch (err) {
+          if (attempt === delays.length) throw err;
+          await new Promise(res => setTimeout(res, delays[attempt]));
+        }
+      }
+    }
+
+    async function askBongoAI(e) {
+      e.preventDefault();
+      const input = document.getElementById('bongo-chat-input');
+      const query = input.value.trim();
+      if (!query) return;
+      input.value = '';
+      const lower = query.toLowerCase();
+
+      // OS Commands
+      if (lower.includes('open flags') || lower.includes('beta flags')) {
+        openApp('flags');
+        setBongoSpeech("🧪 Opening <b>Beta Hub & Experimental Flags</b> right now!");
+        return;
+      }
+      if (lower.includes('open store') || lower.includes('bongostore')) {
+        openApp('store');
+        setBongoSpeech("🛍️ Launching <b>BongoStore Beta App Hub</b>!");
+        return;
+      }
+      if (lower.includes('open browser') || lower.includes('chrome')) {
+        openApp('browser');
+        setBongoSpeech("🌐 Opening <b>BongoChrome v1.1 Beta</b>!");
+        return;
+      }
+      if (lower.includes('matrix')) {
+        toggleBetaFlag('matrixWallpaper');
+        setBongoSpeech(`🟢 Matrix Rain Desktop Wallpaper is now <b>${betaFlags.matrixWallpaper ? 'ENABLED' : 'DISABLED'}</b>!`);
+        return;
+      }
+      if (lower.startsWith('search ') || lower.startsWith('google ')) {
+        const term = query.replace(/^(search|google)\s+/i, '');
+        openApp('browser', { initialQuery: term });
+        setBongoSpeech(`🔍 Searching the live web for <b>"${term}"</b> in BongoChrome!`);
+        return;
+      }
+      if (lower.includes('turn off wifi') || lower.includes('disable wifi')) {
+        toggleWifiPower(false);
+        setBongoSpeech("📵 Wi-Fi is OFF! Open BongoChrome to play Banana Runner!");
+        return;
+      }
+      if (lower.includes('turn on wifi') || lower.includes('enable wifi')) {
+        toggleWifiPower(true);
+        setBongoSpeech("📶 Wi-Fi is back ON! Connected to " + wifiState.connectedSsid + "!");
+        return;
+      }
+
+      if (!isInternetAvailable()) {
+        setBongoSpeech("📵 Your Wi-Fi is currently turned off! Turn Wi-Fi on in the bottom-right system tray to connect to my Gemini cloud brain!");
+        return;
+      }
+
+      setBongoSpeech(`<span class="inline-flex items-center gap-1.5 text-cyan-300"><span class="animate-spin">🍌</span> Processing via ${wifiState.connectedSsid}...</span>`);
+      playSFX('click');
+
+      try {
+        const { text } = await callGeminiAPI(
+          query,
+          "You are Bongo v1.1, a futuristic purple gorilla AI desktop assistant inside BongoOS 11 Pro Insider Preview (v1.1.0-beta). Keep answers concise (2-3 short sentences max), witty, helpful, and enthusiastic.",
+          true
+        );
+        setBongoSpeech(text.replace(/\n/g, '<br>'));
+        playSFX('bongo');
+      } catch (err) {
+        setBongoSpeech("My Insider telemetry link hiccuped! Check your connection or try asking again! 🥥");
+      }
+    }
+
+    function initBongoDrag() {
+      const widget = document.getElementById('bongo-widget');
+      let dragging = false, startX, startY, origRight, origBottom;
+
+      const onStart = (clientX, clientY, target) => {
+        if (target.closest('input, button, form')) return;
+        dragging = true;
+        window._bongoDragged = false;
+        startX = clientX; startY = clientY;
+        const rect = widget.getBoundingClientRect();
+        origRight = window.innerWidth - rect.right;
+        origBottom = window.innerHeight - rect.bottom;
+      };
+
+      const onMove = (clientX, clientY) => {
+        if (!dragging) return;
+        if (Math.abs(clientX - startX) > 4 || Math.abs(clientY - startY) > 4) window._bongoDragged = true;
+        const newRight = Math.max(8, Math.min(window.innerWidth - 130, origRight - (clientX - startX)));
+        const newBottom = Math.max(58, Math.min(window.innerHeight - 130, origBottom - (clientY - startY)));
+        widget.style.right = newRight + 'px';
+        widget.style.bottom = newBottom + 'px';
+      };
+
+      const onEnd = () => { dragging = false; };
+
+      widget.addEventListener('mousedown', e => onStart(e.clientX, e.clientY, e.target));
+      window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+      window.addEventListener('mouseup', onEnd);
+      widget.addEventListener('touchstart', e => onStart(e.touches[0].clientX, e.touches[0].clientY, e.target), { passive: true });
+      window.addEventListener('touchmove', e => { if (dragging) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+      window.addEventListener('touchend', onEnd);
+    }
+
+    function initEyeTracking() {
+      window.addEventListener('mousemove', e => {
+        const char = document.getElementById('bongo-character');
+        if (!char) return;
+        const rect = char.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 3;
+        const dx = Math.max(-2.5, Math.min(2.5, (e.clientX - cx) / 140));
+        const dy = Math.max(-2.5, Math.min(2.5, (e.clientY - cy) / 140));
+        document.getElementById('bongo-pupil-l')?.setAttribute('cx', 60 + dx);
+        document.getElementById('bongo-pupil-l')?.setAttribute('cy', 44 + dy);
+        document.getElementById('bongo-pupil-r')?.setAttribute('cx', 80 + dx);
+        document.getElementById('bongo-pupil-r')?.setAttribute('cy', 44 + dy);
+      });
+    }
+
+    // =========================================================================
+    // 7. CONTEXT MENUS & POWER CONTROLS
+    // =========================================================================
+    function showDesktopContextMenu(e) {
+      e.preventDefault();
+      closeAllFlyouts();
+      const menu = document.getElementById('context-menu');
+      menu.innerHTML = `
+        <button onclick="openApp('browser'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">🌐 Open BongoChrome Beta</button>
+        <button onclick="openApp('flags'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-cyan-600 hover:text-white flex items-center gap-2">🧪 Experimental Beta Flags</button>
+        <button onclick="openApp('terminal'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">💻 Open Bongo Terminal</button>
+        <button onclick="toggleBetaFlag('matrixWallpaper'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">🟢 Toggle Matrix Wallpaper</button>
+        <div class="my-1 border-t border-white/10"></div>
+        <button onclick="cycleWallpaper(); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">🖼️ Switch Wallpaper</button>
+        <button onclick="openApp('settings'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white flex items-center gap-2">⚙️ Insider Settings</button>
+      `;
+      menu.style.left = Math.min(window.innerWidth - 230, e.clientX) + 'px';
+      menu.style.top = Math.min(window.innerHeight - 250, e.clientY) + 'px';
+      menu.classList.remove('hidden');
+    }
+
+    function showBongoContextMenu(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeAllFlyouts();
+      const menu = document.getElementById('context-menu');
+      menu.innerHTML = `
+        <button onclick="bongoQuickAction('joke'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white">😂 Tell Insider Joke</button>
+        <button onclick="bongoQuickAction('dance'); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-purple-600 hover:text-white">💃 Dance & Sing</button>
+        <button onclick="toggleBongoVisor(); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-cyan-600 hover:text-white">🥽 Toggle Beta Visor</button>
+        <div class="my-1 border-t border-white/10"></div>
+        <button onclick="toggleBongoVisibility(); closeAllFlyouts()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-red-500 hover:text-white">🙈 Hide Bongo</button>
+      `;
+      menu.style.left = Math.min(window.innerWidth - 220, e.clientX) + 'px';
+      menu.style.top = Math.min(window.innerHeight - 200, e.clientY) + 'px';
+      menu.classList.remove('hidden');
+    }
+
+    function lockOS() { closeAllFlyouts(); document.getElementById('lock-screen').classList.remove('hidden'); playSFX('close'); }
+    function unlockOS() { document.getElementById('lock-screen').classList.add('hidden'); playSFX('startup'); }
+
+    function triggerBSOD() {
+      closeAllFlyouts();
+      const bsod = document.getElementById('bsod-screen');
+      const pct = document.getElementById('bsod-percent');
+      bsod.classList.remove('hidden');
+      let p = 0; pct.textContent = p;
+      const timer = setInterval(() => {
+        if (bsod.classList.contains('hidden')) { clearInterval(timer); return; }
+        p = Math.min(100, p + Math.floor(Math.random() * 20) + 10);
+        pct.textContent = p;
+        if (p >= 100) {
+          clearInterval(timer);
+          setTimeout(() => hideBSOD(), 600);
+        }
+      }, 420);
+    }
+
+    function hideBSOD() {
+      document.getElementById('bsod-screen').classList.add('hidden');
+      setBongoSpeech("Auto-reboot complete! Build 26200.1100 telemetry sent! 🍌");
+    }
+
+    function restartOS() { closeAllFlyouts(); location.reload(); }
+
+    function toggleSoundEffects() {
+      soundEnabled = !soundEnabled;
+      const btn = document.getElementById('sound-toggle-btn');
+      document.getElementById('sound-icon').textContent = soundEnabled ? '🔊' : '🔇';
+      document.getElementById('sound-label').textContent = soundEnabled ? 'Audio On' : 'Muted';
+      btn.classList.toggle('bg-purple-600', soundEnabled);
+      btn.classList.toggle('bg-white/10', !soundEnabled);
+    }
+
+    function toggleThemeMode() { document.body.classList.toggle('light-theme'); playSFX('click'); }
+    function toggleQuickTile(btn) { btn.classList.toggle('bg-purple-600'); btn.classList.toggle('bg-white/10'); playSFX('click'); }
+
+    function setWallpaper(wpClass) {
+      document.body.classList.remove('wallpaper-aurora', 'wallpaper-cyber', 'wallpaper-sunset', 'wallpaper-mica');
+      document.body.classList.add(wpClass);
+      currentWallpaper = wpClass;
+      document.getElementById('bloom-artwork').style.opacity = (wpClass === 'wallpaper-aurora' || wpClass === 'wallpaper-mica') ? '0.80' : '0';
+    }
+
+    function cycleWallpaper() {
+      const list = ['wallpaper-aurora', 'wallpaper-cyber', 'wallpaper-sunset', 'wallpaper-mica'];
+      setWallpaper(list[(list.indexOf(currentWallpaper) + 1) % list.length]);
+    }
+
+    // =========================================================================
+    // 8. APPLICATIONS MOUNTING
+    // =========================================================================
+    function mountAppContent(winObj) {
+      const body = document.getElementById(`${winObj.id}-body`);
+      switch (winObj.appId) {
+        case 'browser': return renderBongoChromeApp(body, winObj);
+        case 'explorer': return renderExplorerApp(body, winObj, 'Desktop');
+        case 'trash': return renderExplorerApp(body, winObj, 'Trash');
+        case 'terminal': return renderTerminalApp(body, winObj);
+        case 'paint': return renderPaintApp(body, winObj);
+        case 'store': return renderBongoStoreApp(body, winObj);
+        case 'flags': return renderBetaFlagsApp(body, winObj);
+        case 'notepad': return renderNotepadApp(body, winObj);
+        case 'taskmgr': return renderTaskManagerApp(body, winObj);
+        case 'settings': return renderSettingsApp(body, winObj);
+        case 'calculator': return renderCalculatorApp(body, winObj);
+        case 'minesweeper': return renderMinesweeperApp(body, winObj);
+        case 'music': return renderMusicApp(body, winObj);
+      }
+    }
+
+    // --- APP 1: BONGOCHROME v1.1 BETA ---
+    function renderBongoChromeApp(container, winObj) {
+      let tabs = [{ id: 't1', title: 'New Tab', url: 'bongo://newtab', history: ['bongo://newtab'], histIdx: 0 }];
+      let activeTabId = 't1';
+      let showInspector = false;
+
+      const getActiveTab = () => tabs.find(t => t.id === activeTabId) || tabs[0];
+
+      function renderBrowserShell() {
+        const activeTab = getActiveTab();
+        container.innerHTML = `
+          <!-- Tab Strip -->
+          <div class="flex items-center gap-1 px-2 pt-1.5 bg-black/40 border-b border-white/10 overflow-x-auto">
+            ${tabs.map(tab => {
+              const isAct = tab.id === activeTabId;
+              return `
+                <div onclick="switchChromeTab('${tab.id}')" class="group flex items-center justify-between gap-2 px-3 py-1.5 rounded-t-lg text-xs max-w-[175px] min-w-[110px] cursor-pointer transition ${isAct ? 'bg-[var(--window-bg)] text-cyan-300 font-semibold border-t border-x border-white/15' : 'bg-white/5 hover:bg-white/10 opacity-75'}">
+                  <span class="truncate">🌐 ${tab.title}</span>
+                  ${tabs.length > 1 ? `<button onclick="closeChromeTab('${tab.id}', event)" class="opacity-60 hover:opacity-100 hover:bg-red-500/80 hover:text-white rounded px-1 text-[10px]">✕</button>` : ''}
+                </div>
+              `;
+            }).join('')}
+            <button onclick="addChromeTab()" title="New Tab" class="w-7 h-7 rounded-full hover:bg-white/15 flex items-center justify-center text-sm font-bold flex-shrink-0">+</button>
+          </div>
+
+          <!-- Omnibox Toolbar -->
+          <div class="flex items-center gap-1.5 px-3 py-2 border-b border-white/10 bg-black/20">
+            <button onclick="chromeBack()" ${activeTab.histIdx <= 0 ? 'disabled class="opacity-30 p-1.5 text-xs"' : 'class="p-1.5 rounded-full hover:bg-white/10 text-xs"'} title="Back">←</button>
+            <button onclick="chromeForward()" ${activeTab.histIdx >= activeTab.history.length - 1 ? 'disabled class="opacity-30 p-1.5 text-xs"' : 'class="p-1.5 rounded-full hover:bg-white/10 text-xs"'} title="Forward">→</button>
+            <button onclick="chromeNavigate(getActiveTabUrl())" class="p-1.5 rounded-full hover:bg-white/10 text-xs" title="Reload">↻</button>
+            <button onclick="chromeNavigate('bongo://newtab')" class="p-1.5 rounded-full hover:bg-white/10 text-xs" title="Home">🏠</button>
+
+            <form id="${winObj.id}-omnibox-form" class="flex-1 flex items-center bg-black/35 border border-white/15 focus-within:border-cyan-400 rounded-full px-3.5 py-1.5">
+              <span class="text-xs mr-2">${isInternetAvailable() ? '🔒' : '⚠️'}</span>
+              <input id="${winObj.id}-omnibox" type="text" value="${activeTab.url}" class="flex-1 bg-transparent text-xs focus:outline-none" placeholder="Search web or enter URL (bongo://dino, bongo://flags, wikipedia.org)..." />
+            </form>
+
+            <button onclick="toggleChromeInspector()" title="DevTools Inspector" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[11px] font-mono">&lt;/&gt;</button>
+          </div>
+
+          <!-- Bookmarks Bar -->
+          <div class="flex items-center gap-2 px-3 py-1 border-b border-white/10 bg-black/10 text-[11px] overflow-x-auto">
+            <button onclick="chromeNavigate('https://en.m.wikipedia.org/wiki/Gorilla')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">📚 Wikipedia</button>
+            <button onclick="chromeNavigate('https://www.openstreetmap.org/export/embed.html?bbox=-74.02,40.70,-73.97,40.73&layer=mapnik')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">🗺️ OpenStreetMap</button>
+            <button onclick="chromeNavigate('https://archive.org')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">🏛️ Internet Archive</button>
+            <button onclick="chromeNavigate('Latest artificial intelligence and space breakthroughs')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap">✨ BongoAI Search</button>
+            <button onclick="chromeNavigate('bongo://dino')" class="px-2 py-0.5 rounded hover:bg-white/10 whitespace-nowrap text-cyan-300">🦖 Mini Games (Dino)</button>
+          </div>
+
+          <!-- Viewport + DevTools -->
+          <div class="flex-1 flex overflow-hidden">
+            <div id="${winObj.id}-viewport" class="flex-1 overflow-y-auto relative"></div>
+            <div id="${winObj.id}-devtools" class="${showInspector ? 'w-64 border-l border-white/15 p-3 bg-black/45 font-mono text-[11px] overflow-y-auto' : 'hidden'}">
+              <div class="font-bold text-cyan-300 mb-2">BongoChrome v1.1 DevTools</div>
+              <div>Status: <span class="${isInternetAvailable() ? 'text-green-400' : 'text-red-400'}">${isInternetAvailable() ? '200 OK (Online)' : 'ERR_INTERNET_DISCONNECTED'}</span></div>
+              <div class="mt-1">Gateway: ${isInternetAvailable() ? wifiState.connectedSsid : 'None'}</div>
+              <div class="mt-1 break-all">URL: ${activeTab.url}</div>
+              <div class="mt-3 text-slate-400">Engine: BongoBlink 132.0-beta</div>
+            </div>
+          </div>
+        `;
+
+        container.querySelector(`#${winObj.id}-omnibox-form`).onsubmit = (e) => {
+          e.preventDefault();
+          const val = document.getElementById(`${winObj.id}-omnibox`).value.trim();
+          if (val) chromeNavigate(val);
+        };
+      }
+
+      window.getActiveTabUrl = () => getActiveTab().url;
+      window.switchChromeTab = (tid) => { activeTabId = tid; renderBrowserShell(); loadTabContent(getActiveTab().url); };
+      window.addChromeTab = () => {
+        const nid = 't-' + Date.now();
+        tabs.push({ id: nid, title: 'New Tab', url: 'bongo://newtab', history: ['bongo://newtab'], histIdx: 0 });
+        activeTabId = nid; renderBrowserShell(); loadTabContent('bongo://newtab');
+      };
+      window.closeChromeTab = (tid, e) => {
+        e.stopPropagation();
+        const idx = tabs.findIndex(t => t.id === tid);
+        if (idx === -1 || tabs.length === 1) return;
+        tabs.splice(idx, 1);
+        if (activeTabId === tid) activeTabId = tabs[Math.max(0, idx - 1)].id;
+        renderBrowserShell(); loadTabContent(getActiveTab().url);
+      };
+      window.chromeBack = () => {
+        const t = getActiveTab();
+        if (t.histIdx > 0) { t.histIdx--; t.url = t.history[t.histIdx]; renderBrowserShell(); loadTabContent(t.url); }
+      };
+      window.chromeForward = () => {
+        const t = getActiveTab();
+        if (t.histIdx < t.history.length - 1) { t.histIdx++; t.url = t.history[t.histIdx]; renderBrowserShell(); loadTabContent(t.url); }
+      };
+      window.toggleChromeInspector = () => { showInspector = !showInspector; renderBrowserShell(); loadTabContent(getActiveTab().url); };
+      window.chromeNavigate = (target) => {
+        if (target === 'bongo://flags') { openApp('flags'); return; }
+        const t = getActiveTab();
+        t.history = t.history.slice(0, t.histIdx + 1);
+        t.history.push(target);
+        t.histIdx = t.history.length - 1;
+        t.url = target;
+        t.title = target.replace(/^https?:\/\//, '').slice(0, 22);
+        renderBrowserShell();
+        loadTabContent(target);
+      };
+
+      async function loadTabContent(query) {
+        const view = document.getElementById(`${winObj.id}-viewport`);
+        if (!view) return;
+
+        if (query === 'bongo://dino' || (!isInternetAvailable() && query !== 'bongo://newtab')) {
+          renderOfflineDinoGame(view, query);
+          return;
+        }
+
+        if (query === 'bongo://newtab') {
+          view.innerHTML = `
+            <div class="max-w-xl mx-auto text-center pt-10 px-4">
+              <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 via-fuchsia-500 to-cyan-400 text-3xl shadow-lg mb-4">🌐</div>
+              <h1 class="text-3xl font-extrabold tracking-tight mb-1">Bongo<span class="text-cyan-400">Chrome</span> <span class="text-xs font-mono px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 align-middle">v1.1 BETA</span></h1>
+              <p class="text-xs opacity-70 mb-6">${isInternetAvailable() ? `Connected via ${wifiState.connectedSsid} • Live Web & AI Search` : '⚠️ Offline Mode • Reconnect Wi-Fi in System Tray'}</p>
+              <form onsubmit="event.preventDefault(); const v=this.querySelector('input').value.trim(); if(v) chromeNavigate(v);" class="flex gap-2 mb-8">
+                <input type="text" placeholder="Search real web, Wikipedia, or enter URL..." class="flex-1 px-4 py-2.5 rounded-full bg-white/10 border border-cyan-400/35 text-sm focus:outline-none focus:border-cyan-400" />
+                <button type="submit" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:opacity-95 text-white text-sm font-semibold">Search</button>
+              </form>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                <button onclick="chromeNavigate('https://en.m.wikipedia.org/wiki/Main_Page')" class="p-3 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center gap-1.5 transition">
+                  <span class="text-2xl">📚</span><span class="font-medium">Wikipedia</span>
+                </button>
+                <button onclick="chromeNavigate('https://www.openstreetmap.org/export/embed.html?bbox=-74.02,40.70,-73.97,40.73&layer=mapnik')" class="p-3 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center gap-1.5 transition">
+                  <span class="text-2xl">🗺️</span><span class="font-medium">OpenStreetMap</span>
+                </button>
+                <button onclick="openApp('flags')" class="p-3 rounded-xl bg-white/5 hover:bg-white/15 border border-cyan-400/25 flex flex-col items-center gap-1.5 transition">
+                  <span class="text-2xl">🧪</span><span class="font-medium text-cyan-300">bongo://flags</span>
+                </button>
+                <button onclick="chromeNavigate('bongo://dino')" class="p-3 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 flex flex-col items-center gap-1.5 transition">
+                  <span class="text-2xl">🦖</span><span class="font-medium">Banana Runner</span>
+                </button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        const isUrl = /^(https?:\/\/|www\.)/i.test(query);
+        if (isUrl) {
+          const fullUrl = query.startsWith('http') ? query : 'https://' + query;
+          const embedSafe = /(wikipedia\.org|openstreetmap\.org|archive\.org|w3schools\.com|example\.com)/i.test(fullUrl);
+          if (embedSafe) {
+            view.innerHTML = `
+              <div class="w-full h-full flex flex-col">
+                <div class="px-3 py-1 bg-purple-950/70 text-[11px] flex items-center justify-between border-b border-white/10">
+                  <span>🌐 Live Embedded Frame: <b>${fullUrl}</b></span>
+                  <a href="${fullUrl}" target="_blank" rel="noopener noreferrer" class="text-cyan-300 underline">Open Externally ↗</a>
+                </div>
+                <iframe src="${fullUrl}" class="w-full flex-1 bg-white border-0"></iframe>
+              </div>
+            `;
+            return;
+          }
+        }
+
+        view.innerHTML = `<div class="flex flex-col items-center justify-center h-64 gap-3 text-sm"><div class="text-3xl animate-bounce">🌐</div><div>Searching live internet via <b>${wifiState.connectedSsid}</b>...</div></div>`;
+
+        try {
+          const [wikiRes, aiRes] = await Promise.allSettled([
+            fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&format=json&origin=*`).then(r => r.json()),
+            callGeminiAPI(
+              `Provide a clear, up-to-date web search overview for: "${query}". Include key facts and structured bullet points.`,
+              "You are BongoChrome v1.1 Beta's Live Web Search Engine. Present accurate, real-time web information clearly.",
+              true
+            )
+          ]);
+
+          const wikiHits = wikiRes.status === 'fulfilled' ? (wikiRes.value?.query?.search || []).slice(0, 3) : [];
+          const aiData = aiRes.status === 'fulfilled' ? aiRes.value : { text: 'Live AI summary unavailable.', sources: [] };
+
+          view.innerHTML = `
+            <div class="max-w-3xl mx-auto p-6 space-y-6 selectable-text">
+              <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <div>
+                  <div class="text-xs text-cyan-400 font-semibold">Live Internet Results • ${wifiState.connectedSsid}</div>
+                  <h2 class="text-xl font-bold mt-0.5">${query}</h2>
+                </div>
+                <span class="text-xs px-2.5 py-1 rounded-full bg-green-500/20 text-green-300 border border-green-400/30">Live Web</span>
+              </div>
+              <div class="p-4 rounded-2xl bg-purple-500/10 border border-cyan-400/25 space-y-2">
+                <div class="text-xs font-bold uppercase tracking-wider text-cyan-300">✨ BongoAI Grounded Overview</div>
+                <div class="text-sm leading-relaxed">${aiData.text.replace(/\n/g, '<br>')}</div>
+                ${aiData.sources?.length ? `
+                  <div class="pt-2 border-t border-white/10 flex flex-wrap gap-2">
+                    ${aiData.sources.slice(0, 4).map(s => `<a href="${s.uri}" target="_blank" rel="noopener noreferrer" class="text-[11px] px-2.5 py-1 rounded-full bg-white/10 hover:bg-purple-600 transition truncate max-w-[220px]">🔗 ${s.title}</a>`).join('')}
+                  </div>
+                ` : ''}
+              </div>
+              ${wikiHits.length ? `
+                <div class="space-y-2.5">
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-75">📚 Live Wikipedia Articles</div>
+                  ${wikiHits.map(hit => `
+                    <div onclick="chromeNavigate('https://en.m.wikipedia.org/wiki/${encodeURIComponent(hit.title.replace(/ /g, '_'))}')" class="p-3.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 cursor-pointer transition">
+                      <div class="text-sm font-bold text-purple-300">${hit.title}</div>
+                      <div class="text-xs opacity-80 mt-1">${hit.snippet}...</div>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : ''}
+            </div>
+          `;
+        } catch (err) {
+          renderOfflineDinoGame(view, query);
+        }
+      }
+
+      // Offline Banana Runner Mini-Game (Jumping over barrels/vines)
+      function renderOfflineDinoGame(view, failedUrl) {
+        view.innerHTML = `
+          <div class="max-w-lg mx-auto text-center pt-6 px-4">
+            <div class="text-4xl mb-2">📵</div>
+            <h2 class="text-lg font-bold">${!isInternetAvailable() ? 'No Internet Connection' : 'Banana Runner Arcade (bongo://dino)'}</h2>
+            <p class="text-xs opacity-70 mb-4">${!isInternetAvailable() ? 'Wi-Fi is disconnected. Press Space or Click/Tap to jump over jungle barrels!' : 'Press Space or Click/Tap the canvas to jump over barrels!'}</p>
+            <div class="rounded-2xl overflow-hidden border border-cyan-400/35 bg-[#0e081c] p-2">
+              <canvas id="${winObj.id}-dino" width="460" height="165" class="w-full h-40 block cursor-pointer"></canvas>
+            </div>
+            <div class="mt-3 flex justify-center gap-3 text-xs items-center">
+              <span id="${winObj.id}-dino-score" class="font-mono font-bold text-yellow-300">Score: 0</span>
+              ${!isInternetAvailable() ? `<button onclick="toggleWifiPower(true); chromeNavigate('${failedUrl === 'bongo://dino' ? 'bongo://newtab' : failedUrl}')" class="px-3 py-1 rounded-full bg-purple-600 hover:bg-purple-500 text-white font-semibold">Reconnect Wi-Fi</button>` : ''}
+            </div>
+          </div>
+        `;
+
+        const canvas = document.getElementById(`${winObj.id}-dino`);
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById(`${winObj.id}-dino-score`);
+
+        let runnerY = 118, velY = 0, jumping = false;
+        let obsX = 460, obsType = '🛢️', score = 0, alive = true;
+
+        function jump() {
+          if (!alive) { obsX = 460; score = 0; alive = true; runnerY = 118; velY = 0; return; }
+          if (!jumping) { velY = -10.8; jumping = true; }
+        }
+
+        canvas.onclick = jump;
+        const keyHandler = (e) => {
+          if (e.code === 'Space' && document.getElementById(`${winObj.id}-dino`)) { e.preventDefault(); jump(); }
+        };
+        window.addEventListener('keydown', keyHandler);
+
+        const loop = setInterval(() => {
+          if (!document.getElementById(`${winObj.id}-dino`)) { clearInterval(loop); window.removeEventListener('keydown', keyHandler); return; }
+          ctx.fillStyle = '#0e081c';
+          ctx.fillRect(0, 0, 460, 165);
+
+          ctx.strokeStyle = '#22d3ee';
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(0, 146); ctx.lineTo(460, 146); ctx.stroke();
+
+          if (alive) {
+            runnerY += velY;
+            velY += 0.65;
+            if (runnerY >= 118) { runnerY = 118; jumping = false; }
+            obsX -= 5.4;
+            if (obsX < -24) {
+              obsX = 460 + Math.random() * 130;
+              obsType = Math.random() > 0.5 ? '🛢️' : '🌿';
+              score += 10;
+              scoreEl.textContent = `Score: ${score}`;
+            }
+            if (obsX < 68 && obsX > 36 && runnerY > 94) alive = false;
+          }
+
+          ctx.font = '26px sans-serif';
+          ctx.fillText('🦍', 40, runnerY + 24);
+          ctx.fillText(obsType, obsX, 142);
+
+          if (!alive) {
+            ctx.fillStyle = 'rgba(0,0,0,0.68)';
+            ctx.fillRect(0, 0, 460, 165);
+            ctx.fillStyle = '#22d3ee';
+            ctx.font = 'bold 15px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('CRASHED! Click or Press Space to Restart', 230, 86);
+            ctx.textAlign = 'left';
+          }
+        }, 24);
+      }
+
+      renderBrowserShell();
+      if (winObj.data?.initialQuery) chromeNavigate(winObj.data.initialQuery);
+      else loadTabContent('bongo://newtab');
+    }
+
+    // --- APP 2: BETA FLAGS & EXPERIMENTAL HUB (bongo://flags) ---
+    function renderBetaFlagsApp(container, winObj) {
+      function renderUI() {
+        const flagsList = [
+          { key: 'matrixWallpaper', title: 'Matrix Rain Live Wallpaper', desc: 'Renders real-time cascading cyber-cyan code across the desktop wallpaper.', tag: 'Experimental UI' },
+          { key: 'crtScanlines', title: 'Retro CRT Monitor Scanlines', desc: 'Applies a nostalgic phosphor scanline overlay across the entire BongoOS shell.', tag: 'Visual Filter' },
+          { key: 'turboBongo', title: 'Turbo Bongo Hyper-Dance Mode', desc: 'Keeps Bongo dancing continuously on your desktop with high-energy physics.', tag: 'Assistant Mod' },
+          { key: 'bongoVisor', title: 'Bongo Holographic Beta Visor & Antenna', desc: 'Equips Bongo with his Insider Preview telemetry antenna and cyan AR visor.', tag: 'Hardware Cosmetic' }
+        ];
+
+        container.innerHTML = `
+          <div class="flex-1 overflow-y-auto p-5 space-y-5">
+            <div class="p-4 rounded-2xl bg-gradient-to-r from-purple-900/50 to-cyan-900/40 border border-cyan-400/30 flex items-center justify-between gap-4">
+              <div>
+                <div class="text-xs font-mono text-cyan-300">bongo://flags • Build 26200.1100</div>
+                <h2 class="text-lg font-extrabold mt-0.5">Insider Experimental Flags</h2>
+                <p class="text-xs opacity-80 mt-1">Toggle experimental v1.1.0-beta features in real time. Warning: Maximum fun ahead!</p>
+              </div>
+              <span class="text-4xl">🧪</span>
+            </div>
+
+            <div class="space-y-3">
+              ${flagsList.map(f => {
+                const active = betaFlags[f.key];
+                return `
+                  <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between gap-4">
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm font-bold">${f.title}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-400/25">${f.tag}</span>
+                      </div>
+                      <p class="text-xs opacity-75 mt-1">${f.desc}</p>
+                    </div>
+                    <button data-flag="${f.key}" class="px-4 py-1.5 rounded-full text-xs font-bold transition flex-shrink-0 ${active ? 'bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/30' : 'bg-white/10 hover:bg-white/20'}">
+                      ${active ? 'Enabled' : 'Disabled'}
+                    </button>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
+              <div class="text-xs font-bold text-purple-300">📣 Send Insider Feedback</div>
+              <form id="${winObj.id}-fb-form" class="flex gap-2">
+                <input type="text" placeholder="Tell the BongoOS team what feature to add next..." class="flex-1 px-3 py-2 rounded-lg bg-black/30 border border-white/15 text-xs focus:outline-none focus:border-cyan-400" />
+                <button type="submit" class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold">Submit</button>
+              </form>
+            </div>
+          </div>
+        `;
+
+        container.querySelectorAll('[data-flag]').forEach(btn => {
+          btn.onclick = () => {
+            const k = btn.dataset.flag;
+            if (k === 'bongoVisor') toggleBongoVisor();
+            else toggleBetaFlag(k);
+            renderUI();
+          };
+        });
+
+        container.querySelector(`#${winObj.id}-fb-form`).onsubmit = (e) => {
+          e.preventDefault();
+          const inp = e.target.querySelector('input');
+          if (!inp.value.trim()) return;
+          setBongoSpeech(`📨 Thanks for your Insider feedback: <i>"${inp.value}"</i> — logged to <b>Beta_Logs</b>!`);
+          vfs.Beta_Logs[`Feedback_${Date.now().toString().slice(-4)}.txt`] = { type: 'file', content: inp.value };
+          saveVFS();
+          inp.value = '';
+          playSFX('bongo');
+        };
+      }
+      renderUI();
+    }
+
+    // --- APP 3: BONGOSTORE (BETA APP HUB) ---
+    function renderBongoStoreApp(container) {
+      const storeItems = [
+        { id: 'paint', name: 'BongoPaint Neon Studio', desc: 'Draw with experimental glowing cyber-neon brushes & export PNGs.', icon: '🎨', badge: 'Updated v1.1' },
+        { id: 'terminal', name: 'Bongo Terminal Pro', desc: 'Execute neofetch, matrix rain, network ping, and PSOD tests.', icon: '💻', badge: 'Insider Pick' },
+        { id: 'minesweeper', name: 'Banana Sweeper', desc: 'Classic 8x8 logic puzzle with coconut traps and banana flags.', icon: '💣', badge: 'Arcade' },
+        { id: 'music', name: 'BongoBeats Synth', desc: 'Web Audio API chiptune & synthwave music studio.', icon: '🎵', badge: 'Audio' },
+        { id: 'calculator', name: 'Quantum Calculator', desc: 'Fast arithmetic calculator with glassmorphic keypad.', icon: '🧮', badge: 'Utility' },
+        { id: 'flags', name: 'Beta Flags Lab', desc: 'Unlock hidden visual mods like Matrix Rain & CRT Scanlines.', icon: '🧪', badge: 'Experimental' }
+      ];
+
+      container.innerHTML = `
+        <div class="flex-1 overflow-y-auto p-5 space-y-5">
+          <div class="p-5 rounded-2xl bg-gradient-to-br from-purple-700/60 via-fuchsia-800/50 to-cyan-700/50 border border-white/15">
+            <span class="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-black/30 text-cyan-300">BongoStore Beta Hub</span>
+            <h2 class="text-xl font-extrabold mt-1.5">Apps & Experimental Mods</h2>
+            <p class="text-xs opacity-85 mt-1">Instant zero-install web apps built for BongoOS 11 v1.1.0-beta.</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            ${storeItems.map(item => `
+              <div class="p-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-start justify-between gap-3 transition">
+                <div class="flex items-start gap-3">
+                  <div class="w-11 h-11 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl flex-shrink-0">${item.icon}</div>
+                  <div>
+                    <div class="text-xs font-bold flex items-center gap-1.5">${item.name}</div>
+                    <span class="inline-block text-[9px] px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 mt-0.5">${item.badge}</span>
+                    <p class="text-[11px] opacity-75 mt-1 leading-snug">${item.desc}</p>
+                  </div>
+                </div>
+                <button onclick="openApp('${item.id}')" class="px-3 py-1.5 rounded-full bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold flex-shrink-0">Launch</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // --- APP 4: BONGO TERMINAL (POWERSHELL / BASH SIMULATOR) ---
+    function renderTerminalApp(container, winObj) {
+      let cwd = 'Desktop';
+
+      container.innerHTML = `
+        <div id="${winObj.id}-term" class="flex-1 bg-[#080510] text-cyan-300 p-4 terminal-font text-xs overflow-y-auto space-y-1.5 selectable-text" onclick="document.getElementById('${winObj.id}-input').focus()">
+          <div class="text-purple-400 font-bold">BongoOS Insider Terminal [Build 26200.1100.v1_1_beta]</div>
+          <div class="text-slate-400">Type <span class="text-yellow-300">help</span> for commands (<span class="text-green-400">neofetch</span>, <span class="text-green-400">matrix</span>, <span class="text-green-400">bsod</span>, <span class="text-green-400">ping</span>, <span class="text-green-400">ls</span>, <span class="text-green-400">mkdir</span>, <span class="text-green-400">touch</span>).</div>
+          <div id="${winObj.id}-history" class="space-y-1 pt-2"></div>
+          <div class="flex items-center gap-1.5 pt-1">
+            <span id="${winObj.id}-prompt" class="text-purple-400 font-semibold">insider@bongo-beta:~/${cwd}$</span>
+            <input id="${winObj.id}-input" type="text" autocomplete="off" class="flex-1 bg-transparent text-green-300 focus:outline-none" />
+          </div>
+        </div>
+      `;
+
+      const input = container.querySelector(`#${winObj.id}-input`);
+      const history = container.querySelector(`#${winObj.id}-history`);
+      const promptEl = container.querySelector(`#${winObj.id}-prompt`);
+      const termBox = container.querySelector(`#${winObj.id}-term`);
+
+      function printLine(html) {
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        history.appendChild(div);
+        termBox.scrollTop = termBox.scrollHeight;
+      }
+
+      input.addEventListener('keydown', async (e) => {
+        if (e.key !== 'Enter') return;
+        const raw = input.value.trim();
+        input.value = '';
+        printLine(`<span class="text-purple-400">insider@bongo-beta:~/${cwd}$</span> ${raw}`);
+        if (!raw) return;
+
+        const [cmd, ...args] = raw.split(' ');
+        const argStr = args.join(' ');
+
+        switch (cmd.toLowerCase()) {
+          case 'help':
+            printLine(`<span class="text-yellow-300">Available Commands:</span> help, neofetch, ping [host], ls, cd [dir], cat [file], mkdir [dir], touch [file], matrix, bsod, clear`);
+            break;
+          case 'ls':
+          case 'dir':
+            printLine(`<span class="text-purple-300">Directories:</span> ${Object.keys(vfs).join('  ')}`);
+            printLine(`<span class="text-green-300">Files in ${cwd}:</span> ${Object.keys(vfs[cwd] || {}).join('  ') || '(empty)'}`);
+            break;
+          case 'cd':
+            const target = Object.keys(vfs).find(f => f.toLowerCase() === argStr.toLowerCase());
+            if (target) { cwd = target; promptEl.textContent = `insider@bongo-beta:~/${cwd}$`; }
+            else printLine(`<span class="text-red-400">cd: ${argStr}: No such directory</span>`);
+            break;
+          case 'mkdir':
+            if (argStr && !vfs[argStr]) { vfs[argStr] = {}; saveVFS(); printLine(`Created directory: ${argStr}`); }
+            break;
+          case 'touch':
+            if (argStr) { vfs[cwd][argStr] = { type: 'file', content: '' }; saveVFS(); printLine(`Created file: ${argStr}`); }
+            break;
+          case 'cat':
+            const file = vfs[cwd]?.[argStr];
+            if (file) printLine(`<pre class="whitespace-pre-wrap text-slate-200 bg-white/5 p-2 rounded my-1">${file.content || '[Binary]'}</pre>`);
+            else printLine(`<span class="text-red-400">cat: ${argStr}: No such file</span>`);
+            break;
+          case 'ping':
+            if (!isInternetAvailable()) printLine(`<span class="text-red-400">ping: Network unreachable (Wi-Fi is OFF)</span>`);
+            else {
+              const host = argStr || 'bongo-os.web';
+              printLine(`PING ${host} via ${wifiState.connectedSsid}...`);
+              const t0 = performance.now();
+              try {
+                await fetch('https://en.wikipedia.org/w/api.php?action=query&meta=siteinfo&format=json&origin=*');
+                printLine(`64 bytes from ${host}: icmp_seq=1 ttl=58 time=${Math.round(performance.now() - t0)} ms`);
+              } catch { printLine(`64 bytes from ${host}: icmp_seq=1 ttl=58 time=19 ms`); }
+            }
+            break;
+          case 'neofetch':
+            printLine(`<pre class="text-cyan-300 leading-tight">
+    .---.     insider@bongo-beta
+   /[===]\\    ------------------
+  |  (_)  |   OS: BongoOS 11 v1.1.0-beta
+   \\ --- /    Build: 26200.1100 (Insider)
+    '---'     Wi-Fi: ${isInternetAvailable() ? wifiState.connectedSsid : 'Offline'}
+              Assistant: Bongo AI v1.1
+            </pre>`);
+            break;
+          case 'matrix':
+            toggleBetaFlag('matrixWallpaper');
+            printLine(`<span class="text-green-400">Matrix Rain Wallpaper toggled: ${betaFlags.matrixWallpaper ? 'ON' : 'OFF'}</span>`);
+            break;
+          case 'bsod':
+            printLine(`<span class="text-fuchsia-400">Triggering Insider Bugcheck PSOD...</span>`);
+            setTimeout(() => triggerBSOD(), 350);
+            break;
+          case 'clear':
+            history.innerHTML = '';
+            break;
+          default:
+            printLine(`<span class="text-red-400">Command not recognized: '${cmd}'. Type 'help'.</span>`);
+        }
+      });
+      setTimeout(() => input.focus(), 50);
+    }
+
+    // --- APP 5: BONGOPAINT (WITH NEON GLOW BRUSH BETA FEATURE) ---
+    function renderPaintApp(container, winObj) {
+      let color = '#22d3ee';
+      let brushSize = 6;
+      let neonGlow = true;
+      let eraser = false;
+      let drawing = false;
+
+      container.innerHTML = `
+        <div class="flex items-center justify-between px-3 py-2 border-b border-white/10 bg-black/20 gap-2 flex-wrap text-xs">
+          <div class="flex items-center gap-1.5">
+            ${['#22d3ee', '#a855f7', '#f43f5e', '#facc15', '#4ade80', '#3b82f6', '#ffffff', '#000000'].map(c => `
+              <button data-color="${c}" class="w-6 h-6 rounded-full border border-white/40 transition hover:scale-110" style="background:${c}"></button>
+            `).join('')}
+          </div>
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <button id="${winObj.id}-neon" class="px-2.5 py-1 rounded-lg bg-cyan-500 text-slate-950 font-bold">✨ Neon Glow: ON</button>
+            <button id="${winObj.id}-eraser" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20">Eraser</button>
+            <input id="${winObj.id}-size" type="range" min="2" max="28" value="6" class="w-16 accent-cyan-400" />
+            <button id="${winObj.id}-clear" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20">Clear</button>
+            <button id="${winObj.id}-export" class="px-2.5 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold">Export PNG</button>
+          </div>
+        </div>
+        <div class="flex-1 bg-[#090612] relative overflow-hidden">
+          <canvas id="${winObj.id}-canvas" class="w-full h-full block cursor-crosshair"></canvas>
+        </div>
+      `;
+
+      const canvas = container.querySelector(`#${winObj.id}-canvas`);
+      const ctx = canvas.getContext('2d');
+
+      setTimeout(() => {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width || 700;
+        canvas.height = rect.height || 410;
+        ctx.fillStyle = '#090612';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (winObj.data?.imageData) {
+          const img = new Image();
+          img.onload = () => ctx.drawImage(img, 0, 0);
+          img.src = winObj.data.imageData;
+        }
+      }, 30);
+
+      container.querySelectorAll('[data-color]').forEach(btn => {
+        btn.onclick = () => { color = btn.dataset.color; eraser = false; };
+      });
+      container.querySelector(`#${winObj.id}-neon`).onclick = (e) => {
+        neonGlow = !neonGlow;
+        e.target.textContent = `✨ Neon Glow: ${neonGlow ? 'ON' : 'OFF'}`;
+        e.target.className = neonGlow ? 'px-2.5 py-1 rounded-lg bg-cyan-500 text-slate-950 font-bold' : 'px-2.5 py-1 rounded-lg bg-white/10';
+      };
+      container.querySelector(`#${winObj.id}-eraser`).onclick = () => { eraser = !eraser; };
+      container.querySelector(`#${winObj.id}-size`).oninput = (e) => { brushSize = +e.target.value; };
+      container.querySelector(`#${winObj.id}-clear`).onclick = () => {
+        ctx.fillStyle = '#090612';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      };
+      container.querySelector(`#${winObj.id}-export`).onclick = () => {
+        const dataUrl = canvas.toDataURL('image/png');
+        const name = `NeonArt_${Date.now().toString().slice(-4)}.png`;
+        vfs.Pictures[name] = { type: 'image', content: dataUrl };
+        saveVFS();
+        const a = document.createElement('a');
+        a.href = dataUrl; a.download = name; a.click();
+        setBongoSpeech(`🎨 Exported <b>${name}</b> & saved to Pictures!`);
+      };
+
+      const getPos = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const cx = e.touches ? e.touches[0].clientX : e.clientX;
+        const cy = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: cx - rect.left, y: cy - rect.top };
+      };
+
+      const startDraw = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+      const moveDraw = (e) => {
+        if (!drawing) return;
+        const p = getPos(e);
+        ctx.lineTo(p.x, p.y);
+        ctx.strokeStyle = eraser ? '#090612' : color;
+        ctx.lineWidth = eraser ? brushSize * 2 : brushSize;
+        ctx.lineCap = 'round';
+        ctx.shadowBlur = (!eraser && neonGlow) ? 16 : 0;
+        ctx.shadowColor = color;
+        ctx.stroke();
+      };
+      const endDraw = () => { drawing = false; ctx.shadowBlur = 0; };
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', moveDraw);
+      window.addEventListener('mouseup', endDraw);
+      canvas.addEventListener('touchstart', startDraw, { passive: true });
+      canvas.addEventListener('touchmove', moveDraw, { passive: true });
+      window.addEventListener('touchend', endDraw);
+    }
+
+    // --- APP 6: TASK MANAGER (LIVE CANVAS CPU/RAM/GPU GRAPHS) ---
+    function renderTaskManagerApp(container, winObj) {
+      let cpuHist = Array(30).fill(18);
+      let ramHist = Array(30).fill(42);
+      let gpuHist = Array(30).fill(14);
+
+      function renderShell() {
+        container.innerHTML = `
+          <div class="flex-1 p-4 space-y-4 overflow-y-auto text-xs">
+            <div class="grid grid-cols-3 gap-3">
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <div class="flex justify-between"><span class="opacity-70">CPU</span><span id="${winObj.id}-cpu-val" class="font-bold text-purple-300">18%</span></div>
+                <canvas id="${winObj.id}-cpu-c" width="160" height="55" class="w-full h-14 mt-2 rounded bg-black/30"></canvas>
+              </div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <div class="flex justify-between"><span class="opacity-70">RAM</span><span id="${winObj.id}-ram-val" class="font-bold text-cyan-300">42%</span></div>
+                <canvas id="${winObj.id}-ram-c" width="160" height="55" class="w-full h-14 mt-2 rounded bg-black/30"></canvas>
+              </div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <div class="flex justify-between"><span class="opacity-70">GPU</span><span id="${winObj.id}-gpu-val" class="font-bold text-fuchsia-300">14%</span></div>
+                <canvas id="${winObj.id}-gpu-c" width="160" height="55" class="w-full h-14 mt-2 rounded bg-black/30"></canvas>
+              </div>
+            </div>
+            <div>
+              <div class="font-bold mb-2">Active Processes (${openWindows.length})</div>
+              <div id="${winObj.id}-procs" class="space-y-1.5"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      function drawGraph(canvasId, data, strokeColor) {
+        const c = document.getElementById(canvasId);
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        ctx.clearRect(0, 0, c.width, c.height);
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        data.forEach((v, i) => {
+          const x = (i / (data.length - 1)) * c.width;
+          const y = c.height - (v / 100) * c.height;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      }
+
+      function tick() {
+        if (!document.getElementById(winObj.id)) return;
+        const cpu = Math.min(95, Math.max(6, cpuHist[cpuHist.length - 1] + (Math.random() * 14 - 7)));
+        const ram = Math.min(92, 36 + openWindows.length * 4 + Math.random() * 3);
+        const gpu = Math.min(90, Math.max(5, gpuHist[gpuHist.length - 1] + (Math.random() * 12 - 6)));
+
+        cpuHist.push(cpu); cpuHist.shift();
+        ramHist.push(ram); ramHist.shift();
+        gpuHist.push(gpu); gpuHist.shift();
+
+        const cpuEl = document.getElementById(`${winObj.id}-cpu-val`);
+        if (cpuEl) {
+          cpuEl.textContent = Math.round(cpu) + '%';
+          document.getElementById(`${winObj.id}-ram-val`).textContent = Math.round(ram) + '%';
+          document.getElementById(`${winObj.id}-gpu-val`).textContent = Math.round(gpu) + '%';
+          drawGraph(`${winObj.id}-cpu-c`, cpuHist, '#c084fc');
+          drawGraph(`${winObj.id}-ram-c`, ramHist, '#22d3ee');
+          drawGraph(`${winObj.id}-gpu-c`, gpuHist, '#f472b6');
+
+          document.getElementById(`${winObj.id}-procs`).innerHTML = openWindows.map(w => `
+            <div class="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10">
+              <span class="font-medium">${w.icon} ${w.title}</span>
+              <button onclick="closeWindow('${w.id}')" class="px-2.5 py-1 rounded bg-red-600/80 hover:bg-red-500 text-white text-[11px]">End Task</button>
+            </div>
+          `).join('');
+        }
+      }
+
+      renderShell();
+      tick();
+      const iv = setInterval(() => {
+        if (!document.getElementById(winObj.id)) { clearInterval(iv); return; }
+        tick();
+      }, 1200);
+    }
+
+    // --- APP 7: FILE EXPLORER & TRASH BIN ---
+    function renderExplorerApp(container, winObj, initialFolder) {
+      let currentFolder = initialFolder;
+
+      function refresh() {
+        const folders = Object.keys(vfs);
+        const items = vfs[currentFolder] || {};
+        const itemNames = Object.keys(items);
+
+        container.innerHTML = `
+          <div class="flex items-center justify-between px-3 py-2 border-b border-white/10 bg-black/15 text-xs gap-2 flex-wrap">
+            <div class="flex items-center gap-1.5">
+              <button id="${winObj.id}-new-file" class="px-2.5 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium transition">+ New File</button>
+              ${currentFolder === 'Trash' ? `<button id="${winObj.id}-empty-trash" class="px-2.5 py-1 rounded-lg bg-red-600/80 hover:bg-red-500 text-white font-medium transition">Empty Trash</button>` : ''}
+            </div>
+            <div class="px-3 py-1 rounded-md bg-black/25 border border-white/10 font-mono text-[11px] flex-1 max-w-xs truncate">
+              🦍 BongoDrive:\\${currentFolder}
+            </div>
+          </div>
+          <div class="flex flex-1 overflow-hidden">
+            <div class="w-36 sm:w-44 border-r border-white/10 p-2 space-y-1 bg-black/10 flex-shrink-0">
+              ${folders.map(f => `
+                <button data-folder="${f}" class="folder-nav w-full text-left px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-2 transition ${f === currentFolder ? 'bg-purple-600 text-white font-semibold' : 'hover:bg-white/10'}">
+                  <span>${f === 'Trash' ? '🗑️' : f === 'Beta_Logs' ? '🧪' : f === 'Pictures' ? '🖼️' : '📁'}</span>
+                  <span class="truncate">${f}</span>
+                </button>
+              `).join('')}
+            </div>
+            <div class="flex-1 p-4 overflow-y-auto">
+              ${itemNames.length === 0 ? `<div class="h-full flex flex-col items-center justify-center opacity-50 text-xs"><span class="text-4xl mb-2">🍌</span>Folder is empty</div>` : `
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  ${itemNames.map(name => {
+                    const item = items[name];
+                    const icon = item.type === 'image' ? '🎨' : '📄';
+                    return `
+                      <div class="group relative p-3 rounded-xl border border-white/10 hover:bg-purple-500/20 hover:border-cyan-400/40 flex flex-col items-center text-center cursor-pointer transition" data-open="${name}">
+                        <span class="text-3xl mb-1.5">${icon}</span>
+                        <span class="text-xs font-medium break-all line-clamp-2">${name}</span>
+                        <button data-del="${name}" title="Delete" class="opacity-0 group-hover:opacity-100 absolute top-1.5 right-1.5 w-6 h-6 rounded-md bg-red-500/80 text-white text-[10px] flex items-center justify-center transition">✕</button>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+
+        container.querySelectorAll('.folder-nav').forEach(btn => { btn.onclick = () => { currentFolder = btn.dataset.folder; refresh(); }; });
+        container.querySelectorAll('[data-open]').forEach(card => {
+          card.ondblclick = () => {
+            const name = card.dataset.open;
+            const item = vfs[currentFolder][name];
+            if (item.type === 'image') openApp('paint', { imageData: item.content, fileName: name });
+            else openFileInNotepad(currentFolder, name);
+          };
+        });
+        container.querySelectorAll('[data-del]').forEach(btn => {
+          btn.onclick = (e) => {
+            e.stopPropagation();
+            const name = btn.dataset.del;
+            if (currentFolder !== 'Trash') vfs.Trash[name] = vfs[currentFolder][name];
+            delete vfs[currentFolder][name];
+            saveVFS(); refresh();
+          };
+        });
+        const newBtn = container.querySelector(`#${winObj.id}-new-file`);
+        if (newBtn) newBtn.onclick = () => {
+          const fn = `InsiderNote_${Object.keys(vfs[currentFolder]).length + 1}.txt`;
+          vfs[currentFolder][fn] = { type: 'file', content: 'Created in BongoOS 11 v1.1.0-beta!' };
+          saveVFS(); refresh();
+        };
+        const emptyBtn = container.querySelector(`#${winObj.id}-empty-trash`);
+        if (emptyBtn) emptyBtn.onclick = () => { vfs.Trash = {}; saveVFS(); refresh(); };
+      }
+      refresh();
+    }
+
+    function openFileInNotepad(folder, fileName) {
+      const item = vfs[folder]?.[fileName];
+      if (!item) return;
+      openApp('notepad', { folder, fileName, content: item.content, title: `${fileName} - Notepad` });
+    }
+
+    // --- APP 8: NOTEPAD ---
+    function renderNotepadApp(container, winObj) {
+      let folder = winObj.data?.folder || 'Documents';
+      let fileName = winObj.data?.fileName || 'Notes.txt';
+      let content = winObj.data?.content || '';
+
+      container.innerHTML = `
+        <div class="flex items-center justify-between px-3 py-1.5 border-b border-white/10 bg-black/15 text-xs gap-2">
+          <div class="flex items-center gap-1.5">
+            <button id="${winObj.id}-save" class="px-3 py-1 rounded bg-purple-600 hover:bg-purple-500 text-white font-medium">Save</button>
+          </div>
+          <span id="${winObj.id}-status" class="text-[11px] opacity-75">${folder}\\${fileName}</span>
+        </div>
+        <textarea id="${winObj.id}-editor" class="flex-1 w-full p-4 bg-transparent resize-none focus:outline-none leading-relaxed font-mono text-sm" placeholder="Start typing...">${content}</textarea>
+      `;
+
+      const editor = container.querySelector(`#${winObj.id}-editor`);
+      const status = container.querySelector(`#${winObj.id}-status`);
+      container.querySelector(`#${winObj.id}-save`).onclick = () => {
+        vfs[folder][fileName] = { type: 'file', content: editor.value };
+        saveVFS();
+        status.textContent = `Saved to ${folder}\\${fileName} ✓`;
+        playSFX('click');
+      };
+    }
+
+    // --- APP 9: SETTINGS ---
+    function renderSettingsApp(container) {
+      container.innerHTML = `
+        <div class="flex-1 overflow-y-auto p-5 space-y-6">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <h2 class="text-lg font-bold">Personalization & Themes</h2>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300">v1.1.0-beta</span>
+            </div>
+            <p class="text-xs opacity-70 mb-3">Choose a dynamic Insider wallpaper theme</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+              <button onclick="setWallpaper('wallpaper-aurora')" class="p-2 rounded-xl border border-white/15 hover:border-cyan-400 text-center">
+                <div class="h-14 rounded-lg wallpaper-aurora mb-1.5"></div>
+                Beta Aurora
+              </button>
+              <button onclick="setWallpaper('wallpaper-cyber')" class="p-2 rounded-xl border border-white/15 hover:border-cyan-400 text-center">
+                <div class="h-14 rounded-lg wallpaper-cyber mb-1.5"></div>
+                Cyber Jungle
+              </button>
+              <button onclick="setWallpaper('wallpaper-sunset')" class="p-2 rounded-xl border border-white/15 hover:border-cyan-400 text-center">
+                <div class="h-14 rounded-lg wallpaper-sunset mb-1.5"></div>
+                Sunset Canopy
+              </button>
+              <button onclick="setWallpaper('wallpaper-mica')" class="p-2 rounded-xl border border-white/15 hover:border-cyan-400 text-center">
+                <div class="h-14 rounded-lg wallpaper-mica mb-1.5"></div>
+                Classic Mica
+              </button>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+            <div>
+              <div class="text-sm font-semibold">Experimental Beta Flags</div>
+              <div class="text-xs opacity-70">Configure Matrix Rain wallpaper, CRT scanlines, and Turbo Bongo</div>
+            </div>
+            <button onclick="openApp('flags')" class="px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 text-xs font-bold">Open Beta Flags</button>
+          </div>
+
+          <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+            <div>
+              <div class="text-sm font-semibold">Glass Appearance</div>
+              <div class="text-xs opacity-70">Toggle Dark Mica / Light Acrylic mode</div>
+            </div>
+            <button onclick="toggleThemeMode()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold">Toggle Mode</button>
+          </div>
+
+          <div class="pt-4 border-t border-white/10">
+            <h3 class="text-sm font-bold mb-2">Windows / BongoOS Insider Specifications</h3>
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10 text-xs space-y-1.5 font-mono">
+              <div>Edition: <b>BongoOS 11 Pro Insider Preview</b></div>
+              <div>Version: <b>v1.1.0-beta (Build 26200.1100)</b></div>
+              <div>Channel: <b>Dev / Beta Unstable Channel</b></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // --- APPS 10, 11, 12: CALCULATOR, BANANA SWEEPER, BONGOBEATS ---
+    function renderCalculatorApp(container, winObj) {
+      let expr = '', displayVal = '0';
+      container.innerHTML = `
+        <div class="flex-1 flex flex-col p-3 bg-black/15">
+          <div class="text-right p-3 rounded-xl bg-black/25 border border-white/10 mb-3">
+            <div id="${winObj.id}-expr" class="text-xs opacity-60 h-4 truncate"></div>
+            <div id="${winObj.id}-disp" class="text-3xl font-bold tracking-tight truncate">0</div>
+          </div>
+          <div class="grid grid-cols-4 gap-1.5 flex-1 text-sm font-semibold">
+            ${['C', '⌫', '%', '/', '7', '8', '9', '*', '4', '5', '6', '-', '1', '2', '3', '+', '±', '0', '.', '='].map(key => {
+              const isEq = key === '=';
+              const isOp = ['/', '*', '-', '+', '%', 'C', '⌫'].includes(key);
+              return `<button data-key="${key}" class="rounded-xl transition active:scale-95 ${isEq ? 'bg-purple-600 hover:bg-purple-500 text-white' : isOp ? 'bg-white/15 hover:bg-white/25 text-cyan-300' : 'bg-white/5 hover:bg-white/15'}">${key}</button>`;
+            }).join('')}
+          </div>
+        </div>
+      `;
+      const disp = container.querySelector(`#${winObj.id}-disp`);
+      const exprEl = container.querySelector(`#${winObj.id}-expr`);
+      container.querySelectorAll('[data-key]').forEach(btn => {
+        btn.onclick = () => {
+          const k = btn.dataset.key; playSFX('click');
+          if (k === 'C') { expr = ''; displayVal = '0'; }
+          else if (k === '⌫') { expr = expr.slice(0, -1); displayVal = expr || '0'; }
+          else if (k === '±') { displayVal = displayVal.startsWith('-') ? displayVal.slice(1) : (displayVal !== '0' ? '-' + displayVal : '0'); expr = displayVal; }
+          else if (k === '=') {
+            try {
+              const res = Function('"use strict";return (' + expr.replace(/[^0-9+\-*/.%()]/g, '') + ')')();
+              exprEl.textContent = expr + ' ='; displayVal = String(Number(res.toFixed(8))); expr = displayVal;
+            } catch { displayVal = 'Error'; expr = ''; }
+          } else { expr += k; displayVal = expr; }
+          disp.textContent = displayVal;
+        };
+      });
+    }
+
+    function renderMinesweeperApp(container, winObj) {
+      const size = 8, minesCount = 10;
+      let board = [], gameOver = false;
+      function initGame() {
+        gameOver = false;
+        board = Array.from({ length: size }, () => Array.from({ length: size }, () => ({ mine: false, revealed: false, flagged: false, count: 0 })));
+        let placed = 0;
+        while (placed < minesCount) {
+          const r = Math.floor(Math.random() * size), c = Math.floor(Math.random() * size);
+          if (!board[r][c].mine) { board[r][c].mine = true; placed++; }
+        }
+        for (let r = 0; r < size; r++) for (let c = 0; c < size; c++) {
+          if (board[r][c].mine) continue;
+          let cnt = 0;
+          for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) if (board[r + dr]?.[c + dc]?.mine) cnt++;
+          board[r][c].count = cnt;
+        }
+        renderBoard();
+      }
+      function reveal(r, c) {
+        if (gameOver || board[r]?.[c]?.revealed || board[r]?.[c]?.flagged) return;
+        const cell = board[r][c]; cell.revealed = true;
+        if (cell.mine) { gameOver = true; board.forEach(row => row.forEach(x => { if (x.mine) x.revealed = true; })); renderBoard(); return; }
+        if (cell.count === 0) for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) if (board[r + dr]?.[c + dc]) reveal(r + dr, c + dc);
+        renderBoard();
+      }
+      function renderBoard() {
+        container.innerHTML = `
+          <div class="flex-1 flex flex-col items-center justify-center p-4 bg-black/10">
+            <div class="w-full max-w-[320px] flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-yellow-300">💣 Traps: ${minesCount}</span>
+              <button id="${winObj.id}-reset" class="px-3 py-1 rounded-lg bg-purple-600 text-white text-xs font-semibold">Reset</button>
+            </div>
+            <div class="grid grid-cols-8 gap-1 bg-black/30 p-2 rounded-xl border border-white/15">
+              ${board.map((row, r) => row.map((cell, c) => {
+                let content = '', cls = 'bg-purple-500/30 hover:bg-purple-500/50 cursor-pointer';
+                if (cell.revealed) { cls = cell.mine ? 'bg-red-600 text-white' : 'bg-white/10'; content = cell.mine ? '💣' : (cell.count || ''); }
+                else if (cell.flagged) content = '🍌';
+                return `<button data-r="${r}" data-c="${c}" class="w-8 h-8 rounded-md font-bold text-xs flex items-center justify-center transition ${cls}">${content}</button>`;
+              }).join('')).join('')}
+            </div>
+          </div>
+        `;
+        container.querySelector(`#${winObj.id}-reset`).onclick = initGame;
+        container.querySelectorAll('[data-r]').forEach(btn => {
+          const r = +btn.dataset.r, c = +btn.dataset.c;
+          btn.onclick = () => reveal(r, c);
+          btn.oncontextmenu = (e) => { e.preventDefault(); if (!gameOver && !board[r][c].revealed) { board[r][c].flagged = !board[r][c].flagged; renderBoard(); } };
+        });
+      }
+      initGame();
+    }
+
+    function renderMusicApp(container, winObj) {
+      const tracks = [
+        { title: 'Cyber-Jungle Synthwave (v1.1)', artist: 'Bongo Insider Choir', notes: [392, 440, 523.25, 392, 329.63, 392, 587.33, 523.25] },
+        { title: 'Banana Boat Chiptune', artist: 'DJ Purple Gorilla', notes: [329.63, 392, 329.63, 261.63, 329.63, 392, 440, 392] }
+      ];
+      let currentTrack = 0, timer = null, step = 0;
+      const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
+      const play = () => {
+        stop(); step = 0;
+        timer = setInterval(() => {
+          if (!document.getElementById(winObj.id)) { stop(); return; }
+          if (soundEnabled) {
+            const ctx = getAudioCtx(), osc = ctx.createOscillator(), g = ctx.createGain();
+            osc.type = 'triangle'; osc.frequency.value = tracks[currentTrack].notes[step % tracks[currentTrack].notes.length];
+            osc.connect(g); g.connect(ctx.destination);
+            g.gain.setValueAtTime(0.11, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.26);
+            osc.start(); osc.stop(ctx.currentTime + 0.26);
+          }
+          step++;
+        }, 300);
+      };
+      function renderUI() {
+        const t = tracks[currentTrack];
+        container.innerHTML = `
+          <div class="flex-1 flex flex-col justify-between p-5">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center text-3xl">🎵</div>
+              <div><div class="text-sm font-bold">${t.title}</div><div class="text-xs opacity-70">${t.artist}</div></div>
+            </div>
+            <div class="space-y-1.5 my-3">
+              ${tracks.map((tr, i) => `<button data-t="${i}" class="w-full text-left px-3 py-2 rounded-xl text-xs ${i === currentTrack ? 'bg-purple-600 text-white' : 'bg-white/5'}">${tr.title}</button>`).join('')}
+            </div>
+            <div class="flex justify-center gap-3">
+              <button id="${winObj.id}-p" class="px-5 py-2 rounded-full bg-purple-600 text-white text-xs font-semibold">▶ Play</button>
+              <button id="${winObj.id}-s" class="px-5 py-2 rounded-full bg-white/10 text-xs font-semibold">⏹ Stop</button>
+            </div>
+          </div>
+        `;
+        container.querySelectorAll('[data-t]').forEach(b => b.onclick = () => { currentTrack = +b.dataset.t; play(); renderUI(); });
+        container.querySelector(`#${winObj.id}-p`).onclick = play;
+        container.querySelector(`#${winObj.id}-s`).onclick = stop;
+      }
+      renderUI();
+    }
+  </script>
+</body>
+</html>
